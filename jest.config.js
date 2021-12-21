@@ -3,7 +3,7 @@ const esModules = [].join('|');
 module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   moduleFileExtensions: ['js', 'ts', 'json'],
-  testMatch: ['<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}', '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}'],
+  testMatch: ['<rootDir>/packages/**/__tests__/**/*.{js,jsx,ts,tsx}', '<rootDir>/packages/**/*.{spec,test}.{js,jsx,ts,tsx}'],
   transform: {
     '^.+\\.[t|j]sx?$': 'babel-jest',
   },
