@@ -1,9 +1,9 @@
 import { define, html } from 'hybrids';
-import tailwind from '../style.css';
+import tailwind from '../../tailwind.css';
 
-export type ColumnsProps = {};
+export type GridProps = {};
 
-export default define<ColumnsProps>({
+export default define<GridProps>({
   tag: 'tw-grid',
   render: props =>
     html`
