@@ -4,6 +4,7 @@ import { pickClassNames } from '../../utils/styling.util';
 
 export type Props = {
   block?: boolean;
+  class?: string;
   circle?: boolean;
   disabled?: boolean;
   loading?: boolean;
@@ -16,6 +17,7 @@ export type Props = {
 
 export const props: Props = {
   block: undefined,
+  class: undefined,
   circle: undefined,
   disabled: undefined,
   loading: undefined,
@@ -30,7 +32,7 @@ customElements.define(
   'tw-button',
   class extends WebComponentHTMLElement<Props> {
     static get observedAttributes() {
-      return ['class', ...Object.keys(props)];
+      return [...Object.keys(props)];
     }
 
     connectedCallback() {
@@ -51,9 +53,9 @@ customElements.define(
           case 'outline':
           case 'variant':
           case 'rounded':
-            const el = this.shadowRoot?.querySelector('button') as HTMLButtonElement;
+            const el = this.shadowRoot?.querySelector('button');
             if (el) {
-              el.className = this.getClassNames(props);
+              el.className = this.getClassNames({ ...props });
             }
             break;
           case 'loading':
@@ -67,9 +69,8 @@ customElements.define(
       return /*html*/ `
         <link rel="stylesheet" href="/tailwind.css">
         <button class="${this.getClassNames(props)}">
-          <slot name="loading">
-          </slot>
-           <slot></slot>
+          <slot name="loading"></slot>
+          <slot></slot>
         </button>
       `;
     }
@@ -98,6 +99,7 @@ customElements.define(
 
     getClassNames(props: Props) {
       return pickClassNames(
+        props.class,
         'inline-flex border-transparent flex-wrap items-center justify-center text-center',
         'font-semibold text-current',
         this.hasProp('rounded') ? 'rounded-full' : 'rounded-lg',

@@ -1,32 +1,40 @@
 export abstract class WebComponentHTMLElement<T extends Record<string, any>> extends HTMLElement {
   #props!: T;
+  #eventList: { el: HTMLElement; event: string; action: (...args: any) => void }[] = [];
 
   constructor() {
     super();
   }
 
-  init({ props }: { props: T }) {
-    this.#props = props;
-    const template = this.generateTemplate();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot?.appendChild(template.content.cloneNode(true));
+  #generateTemplate(): HTMLTemplateElement {
+    const template = document.createElement('template');
+    template.innerHTML = this.render(this.#props);
+    return template;
   }
 
-  generateTemplate(): HTMLTemplateElement {
-    const template = document.createElement('template');
-    template.innerHTML = this.render(this.withAttributes());
-    return template;
+  disconnectedCallback() {
+    this.#eventList.forEach(({ el, event, action }) => {
+      el.addEventListener(event, action);
+    });
   }
 
   abstract render(props: T): string;
 
-  withAttributes(): T {
-    const entries: Entries<T> = Object.entries(this.#props);
-    return entries.reduce<T>((acc, [key, val]) => {
-      // @ts-ignore
-      acc[key] = this.getAttribute(key) || val;
-      return acc;
-    }, {} as T);
+  addEvent(name: string, event: string, action: (...args: any) => void) {
+    const el = this.shadowRoot?.querySelector(name) as HTMLElement;
+    el.addEventListener(event, action);
+    this.#eventList.push({ el, event, action });
+  }
+
+  fire(eventType: string, detail: any) {
+    this.dispatchEvent(new CustomEvent(eventType, { detail }));
+  }
+
+  init({ props }: { props: T }) {
+    this.#props = props;
+    const template = this.#generateTemplate();
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot?.appendChild(template.content.cloneNode(true));
   }
 
   hasProp(name: keyof T) {

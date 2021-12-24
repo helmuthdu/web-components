@@ -5,7 +5,7 @@ import './button';
 export default {
   title: 'Elements/Button',
   args: {
-    variant: 'secondary',
+    variant: 'blue',
     rounded: true
   }
 } as Meta<Props>;

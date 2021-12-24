@@ -14,11 +14,17 @@
       <div class="relative rounded-xl overflow-auto">
         <div class="flex h-screen items-center justify-center">
           <tw-button class="uppercase" variant="rose" outline>
-            demo
+            demo 2
           </tw-button>
         </div>
       </div>
       <div class="absolute inset-0 pointer-events-none border sborder-black/5 rounded-xl dark:border-white/5"></div>
     </div>
   </body>
+  <script>
+    const el = document.querySelector('tw-button');
+    el.addEventListener('click', (event) => {
+      console.log('tw-button was clicked', event)
+    })
+  </script>
 </html>
