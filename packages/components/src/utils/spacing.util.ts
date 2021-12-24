@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { pickClassNames } from './styling.util';
 
 export type SpacingModifier = {
   p?: number | 'auto';
@@ -22,7 +22,7 @@ export type SpacingModifier = {
 const modifier = {
   defaultProps: {},
   getClassName: ({ m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl, sx, sy }: SpacingModifier): string =>
-    clsx({
+    pickClassNames({
       [`p-${p}`]: p,
       [`pt-${pt}`]: pt,
       [`pl-${py}`]: py,

@@ -40,7 +40,7 @@ export type TextColor =
   | 'text-white'
   | `text-${Color}-${ColorVariant}`;
 
-export type Sizes = 'small' | 'medium' | 'large';
+export type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export type Spacing = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 

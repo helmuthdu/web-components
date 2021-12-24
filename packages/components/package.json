@@ -1,13 +1,14 @@
 {
-  "name": "@tailwind/components",
+  "name": "@tailwind/hybrids",
   "private": true,
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && tailwindcss -i tailwind.css -o dist/tailwind.css -m",
     "preview": "vite preview",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "npm run storybook:update-tailwind && start-storybook -p 6006",
+    "storybook:build": "build-storybook",
+    "storybook:update-tailwind": "tailwindcss -i tailwind.css -o .storybook/public/tailwind.css -m"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",

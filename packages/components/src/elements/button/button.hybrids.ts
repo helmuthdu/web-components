@@ -1,7 +1,7 @@
 import tailwind from '../../../tailwind.css';
 import { define, html } from 'hybrids';
 import type { Sizes } from '../../types';
-import { pickClassNames } from '../../utils/web-component.util';
+import { pickClassNames } from '../../utils/styling.util';
 
 type Color = 'primary' | 'secondary' | 'link';
 
