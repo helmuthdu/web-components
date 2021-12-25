@@ -48,16 +48,14 @@ export const define = <T extends Record<string, string | number | boolean>>(
       constructor() {
         super();
 
-        // @ts-ignore
         this.#attributes = Object.entries(attributes).reduce(
           (acc, [key, val]) => ({ ...acc, [key]: this.getAttribute(key) ?? val }),
-          {}
+          {} as typeof attributes
         );
 
         Object.defineProperties(
           this,
           Object.keys(this.#attributes).reduce((acc, key) => {
-            // @ts-ignore
             acc[key] = {
               get: () => this.#attributes[key],
               set: (newVal: any) => {
@@ -69,7 +67,7 @@ export const define = <T extends Record<string, string | number | boolean>>(
               }
             };
             return acc;
-          }, {})
+          }, {} as PropertyDescriptorMap)
         );
       }
 
