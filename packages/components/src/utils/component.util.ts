@@ -1,7 +1,7 @@
-type DefineOptions<T> = {
+type DefineOptions<T extends Record<string, string | number | boolean>> = {
   attributes: T;
   render: (attributes: T) => string;
-  onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: HTMLElement) => boolean | void;
+  onAttributeChanged?: (name: keyof T, prev: string, curr: string, attrs: T, host: HTMLElement) => boolean | void;
   onConnected?: (host: HTMLElement) => void;
   onDisconnected?: () => void;
 };
@@ -31,16 +31,15 @@ export const useElementRef = (selector: string) => {
   return currentInstance?.shadowRoot?.querySelector(`*[ref="${selector}"]`);
 };
 
-export const define = <T>(
+export const define = <T extends Record<string, string | number | boolean>>(
   name: string,
   { attributes, render, onAttributeChanged, onConnected, onDisconnected }: DefineOptions<T>
-) => {
-  let attrs: T;
-
+) =>
   customElements.define(
     name,
     class extends HTMLElement {
       token = Symbol(name);
+      #attributes: T;
 
       static get observedAttributes() {
         return [...Object.keys(attributes)];
@@ -49,37 +48,16 @@ export const define = <T>(
       constructor() {
         super();
 
-        this.getAttributeNames().forEach(attr => {
-          // @ts-ignore
-          attributes[attr] = this.getAttribute(attr);
+        this.#attributes = this.getAttributeNames().reduce((acc, key) => ({ ...acc, [key]: this.getAttribute(key) }), {
+          ...attributes
         });
-
-        // @ts-ignore
-        attrs = new Proxy(attributes, {
-          get: (target: T, key: keyof T) => {
-            return target[key];
-          },
-          set: (target: T, key: keyof T, val: any) => {
-            if (val === '' || val) {
-              this.setAttribute(key as string, val);
-            } else {
-              this.removeAttribute(key as string);
-            }
-            target[key] = val;
-            return true;
-          }
-        });
-      }
-
-      getAttributes(): T {
-        return attrs;
       }
 
       connectedCallback() {
         this.attachShadow({ mode: 'open' });
 
         const template = document.createElement('template');
-        template.innerHTML = render(attributes);
+        template.innerHTML = render(this.#attributes);
         this.shadowRoot?.appendChild(template.content.cloneNode(true));
 
         if (onConnected) {
@@ -102,15 +80,14 @@ export const define = <T>(
       attributeChangedCallback(name: keyof T, prev: string, curr: string) {
         if (prev !== curr && this.shadowRoot) {
           // @ts-ignore
-          this.getAttributes()[name] = curr;
+          this.#attributes[name] = curr;
           if (onAttributeChanged) {
             currentInstance = this;
-            if (onAttributeChanged(name, prev, curr, this)) {
-              this.shadowRoot.innerHTML = render(attributes);
+            if (onAttributeChanged(name, prev, curr, this.#attributes, this)) {
+              this.shadowRoot.innerHTML = render(this.#attributes);
             }
           }
         }
       }
     }
   );
-};

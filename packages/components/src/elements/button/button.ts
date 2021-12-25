@@ -1,5 +1,5 @@
 import type { Color, Sizes } from '../../types';
-import { define, event, useElementRef } from '../../utils/component.util';
+import { define, useElementRef } from '../../utils/component.util';
 import { pickClassNames } from '../../utils/styling.util';
 
 export type Attributes = {
@@ -141,12 +141,7 @@ const getClassNames = (attrs: Attributes) => {
 
 define('tw-button', {
   attributes,
-  onConnected: () => {
-    event('button', 'mouseenter', () => {
-      console.log(`I'm over the button`);
-    });
-  },
-  onAttributeChanged: (name: string) => {
+  onAttributeChanged: (name, _prev, _curr, attrs) => {
     switch (name) {
       case 'append':
       case 'block':
@@ -157,20 +152,19 @@ define('tw-button', {
       case 'variant':
         const el = useElementRef('button');
         if (el) {
-          el.className = getClassNames({ ...attributes });
+          el.className = getClassNames(attrs);
         }
         return false;
       default:
         return true;
     }
   },
-  render: (props: Attributes) => {
-    return /*html*/ `
+  render: (attrs: Attributes) =>
+    `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button ref="button" class="${getClassNames(props)}">
-        ${hasValue(props.loading) ? renderLoading(props) : ''}
+      <button ref="button" class="${getClassNames(attrs)}">
+        ${hasValue(attrs.loading) ? renderLoading(attrs) : ''}
         <slot></slot>
       </button>
-    `;
-  }
+    `
 });
