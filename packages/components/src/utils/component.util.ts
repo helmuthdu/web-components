@@ -1,6 +1,6 @@
 type DefineOptions<T extends Record<string, string | number | boolean>> = {
   attributes: T;
-  render: (attributes: T) => string;
+  render: (attributes: T, host: HTMLElement) => string;
   onAttributeChanged?: (name: keyof T, prev: string, curr: string, attrs: T, host: HTMLElement) => boolean | void;
   onConnected?: (host: HTMLElement) => void;
   onDisconnected?: () => void;
@@ -75,7 +75,7 @@ export const define = <T extends Record<string, string | number | boolean>>(
         this.attachShadow({ mode: 'open' });
 
         const template = document.createElement('template');
-        template.innerHTML = render(this.#attributes);
+        template.innerHTML = render(this.#attributes, this);
         this.shadowRoot?.appendChild(template.content.cloneNode(true));
 
         if (onConnected) {
@@ -98,11 +98,11 @@ export const define = <T extends Record<string, string | number | boolean>>(
       attributeChangedCallback(name: keyof T, prev: string, curr: string) {
         if (prev !== curr && this.shadowRoot) {
           // @ts-ignore
-          this.#attributes[name] = curr;
+          this.#attributes[name] = curr === null ? undefined : curr;
           if (onAttributeChanged) {
             currentInstance = this;
             if (onAttributeChanged(name, prev, curr, this.#attributes, this)) {
-              this.shadowRoot.innerHTML = render(this.#attributes);
+              this.shadowRoot.innerHTML = render(this.#attributes, this);
             }
           }
         }
