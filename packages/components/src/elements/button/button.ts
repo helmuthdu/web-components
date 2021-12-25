@@ -7,6 +7,7 @@ export type Attributes = {
   block?: boolean;
   circle?: boolean;
   disabled?: boolean;
+  group?: string;
   loading?: boolean;
   outline?: boolean;
   rounded?: boolean;
@@ -20,6 +21,7 @@ export const attributes: Attributes = {
   block: undefined,
   circle: undefined,
   disabled: undefined,
+  group: undefined,
   loading: undefined,
   outline: undefined,
   rounded: undefined,
@@ -63,7 +65,15 @@ const getClassNames = (attrs: Attributes) => {
     attrs.append,
     'inline-flex border-transparent flex-wrap items-center justify-center text-center',
     'font-semibold text-current',
-    hasValue(attrs.rounded) ? 'rounded-full' : 'rounded-lg',
+    hasValue(attrs.group)
+      ? {
+          '-mx-px': true,
+          'rounded-l-lg': attrs.group === 'first',
+          'rounded-r-lg': attrs.group === 'last'
+        }
+      : hasValue(attrs.rounded)
+      ? 'rounded-full'
+      : 'rounded-lg',
     hasValue(attrs.block) && 'w-full',
     hasValue(attrs.circle)
       ? {
@@ -74,12 +84,20 @@ const getClassNames = (attrs: Attributes) => {
           'h-14 w-14': attrs.size === 'lg',
           'h-16 w-16': attrs.size === 'xl'
         }
+      : hasValue(attrs.outline)
+      ? {
+          'text-xs px-2 py-0.5 mt-0.5': attrs.size === 'xs',
+          'text-sm px-2.5 py-1.5': attrs.size === 'sm',
+          'text-base px-3.5 py-2.5': attrs.size === 'md',
+          'text-lg px-3.5 py-3.5': attrs.size === 'lg',
+          'text-xl px-3.5 py-3.5': attrs.size === 'xl'
+        }
       : {
           'text-xs px-2 py-1': attrs.size === 'xs',
           'text-sm px-3 py-2': attrs.size === 'sm',
           'text-base px-4 py-3': attrs.size === 'md',
-          'text-lg px-5 py-4': attrs.size === 'lg',
-          'text-xl px-6 py-5': attrs.size === 'xl'
+          'text-lg px-4 py-4': attrs.size === 'lg',
+          'text-xl px-4 py-4': attrs.size === 'xl'
         },
     hasValue(attrs.disabled)
       ? 'bg-neutral-500 border-opacity-0 bg-opacity-20 text-neutral-700/25'
@@ -147,6 +165,7 @@ define('tw-button', {
       case 'block':
       case 'circle':
       case 'disabled':
+      case 'group':
       case 'outline':
       case 'rounded':
       case 'variant':
