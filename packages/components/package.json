@@ -10,6 +10,8 @@
     "storybook:build": "build-storybook",
     "storybook:update-tailwind": "tailwindcss -i tailwind.css -o .storybook/public/tailwind.css -m"
   },
+  "dependencies": {
+  },
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@storybook/addon-actions": "^6.4.9",
@@ -18,6 +20,8 @@
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/html": "^6.4.9",
     "@tailwindcss/typography": "^0.5.0",
+    "@uppercod/vite-meta-url": "^1.5.0",
+    "@uppercod/vite-meta-url-load-css": "^1.2.0",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^8.2.3",
     "postcss": "^8.4.5",
@@ -26,12 +30,5 @@
     "tailwindcss": "^3.0.7",
     "typescript": "^4.5.4",
     "vite": "^2.7.6"
-  },
-  "dependencies": {
-    "@types/vhtml": "^2.2.4",
-    "@uppercod/vite-meta-url": "^1.5.0",
-    "@uppercod/vite-meta-url-load-css": "^1.2.0",
-    "htm": "^3.1.0",
-    "vhtml": "^2.2.0"
   }
 }

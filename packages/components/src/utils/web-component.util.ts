@@ -1,9 +1,6 @@
-import htm from 'htm';
-import vhtml from 'vhtml';
-
 type DefineOptions<T> = {
   props: T;
-  render: (props: T) => string | string[];
+  render: (props: T) => string;
   onUpdate?: (name: keyof T, prev: string, curr: string) => boolean | void;
   onMounted?: () => void;
   onRemoved?: () => void;
@@ -44,13 +41,6 @@ export const define = <T>(name: string, { props, render, onUpdate, onMounted, on
       token = Symbol(name);
       props: T;
 
-      #updateContent() {
-        if (this.shadowRoot) {
-          const content = render(props);
-          this.shadowRoot.innerHTML = Array.isArray(content) ? content.join('') : content;
-        }
-      }
-
       static get observedAttributes() {
         return [...Object.keys(props)];
       }
@@ -81,8 +71,7 @@ export const define = <T>(name: string, { props, render, onUpdate, onMounted, on
         this.attachShadow({ mode: 'open' });
 
         const template = document.createElement('template');
-        const content = render(props);
-        template.innerHTML = Array.isArray(content) ? content.join('') : content;
+        template.innerHTML = render(props);
         this.shadowRoot?.appendChild(template.content.cloneNode(true));
 
         if (onMounted) {
@@ -110,7 +99,9 @@ export const define = <T>(name: string, { props, render, onUpdate, onMounted, on
           if (onUpdate) {
             currentlyRenderedInstance = this;
             if (onUpdate(name, prev, curr)) {
-              this.#updateContent();
+              if (this.shadowRoot) {
+                this.shadowRoot.innerHTML = render(props);
+              }
             }
           }
         }
@@ -118,5 +109,3 @@ export const define = <T>(name: string, { props, render, onUpdate, onMounted, on
     }
   );
 };
-
-export const html = htm.bind(vhtml);

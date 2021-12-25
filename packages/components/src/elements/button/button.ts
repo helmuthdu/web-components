@@ -1,5 +1,5 @@
 import type { Color, Sizes } from '../../types';
-import { define, html, useElementRef } from '../../utils/web-component.util';
+import { define, useElementRef } from '../../utils/web-component.util';
 import { pickClassNames } from '../../utils/styling.util';
 
 export type Props = {
@@ -31,10 +31,10 @@ export const props: Props = {
 const hasValue = (value: any) => value === '' || value;
 
 const renderLoading = (props: Props) => {
-  return html`
+  return /*html*/ `
     <svg
       id="loading"
-      class=${pickClassNames(
+      class="${pickClassNames(
         'animate-spin',
         { 'mr-2': !hasValue(props.circle), [`text-${props.variant}`]: props.variant },
         {
@@ -44,7 +44,7 @@ const renderLoading = (props: Props) => {
           'h-6 w-6': props.size === 'lg',
           'h-7 w-7': props.size === 'xl'
         }
-      )}
+      )}"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -141,7 +141,7 @@ const getClassNames = (props: Props) => {
 
 define('tw-button', {
   props,
-  onUpdate: (name: string, _prev: string, _curr: string) => {
+  onUpdate: (name: string) => {
     switch (name) {
       case 'append':
       case 'block':
@@ -159,12 +159,13 @@ define('tw-button', {
         return true;
     }
   },
-  render: (props: Props) =>
-    html`
+  render: (props: Props) => {
+    return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button ref="button" class=${getClassNames(props)}>
-        ${hasValue(props.loading) && renderLoading(props)}
+      <button ref="button" class="${getClassNames(props)}">
+        ${hasValue(props.loading) ? renderLoading(props) : ''}
         <slot></slot>
       </button>
-    `
+    `;
+  }
 });
