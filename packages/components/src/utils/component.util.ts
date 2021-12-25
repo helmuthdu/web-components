@@ -58,7 +58,7 @@ export const define = <T extends Record<string, string | number | boolean>>(
           Object.keys(this.#attributes).reduce((acc, key) => {
             acc[key] = {
               get: () => this.#attributes[key],
-              set: (newVal: any) => {
+              set: (newVal?: string) => {
                 if (newVal === '' || newVal) {
                   this.setAttribute(key, newVal);
                 } else {
