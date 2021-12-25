@@ -48,9 +48,29 @@ export const define = <T extends Record<string, string | number | boolean>>(
       constructor() {
         super();
 
-        this.#attributes = this.getAttributeNames().reduce((acc, key) => ({ ...acc, [key]: this.getAttribute(key) }), {
-          ...attributes
-        });
+        // @ts-ignore
+        this.#attributes = Object.entries(attributes).reduce(
+          (acc, [key, val]) => ({ ...acc, [key]: this.getAttribute(key) ?? val }),
+          {}
+        );
+
+        Object.defineProperties(
+          this,
+          Object.keys(this.#attributes).reduce((acc, key) => {
+            // @ts-ignore
+            acc[key] = {
+              get: () => this.#attributes[key],
+              set: (newVal: any) => {
+                if (newVal === '' || newVal) {
+                  this.setAttribute(key, newVal);
+                } else {
+                  this.removeAttribute(key);
+                }
+              }
+            };
+            return acc;
+          }, {})
+        );
       }
 
       connectedCallback() {
