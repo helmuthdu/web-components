@@ -65,9 +65,10 @@ const getClassNames = (attrs: Attributes) => {
     attrs.append,
     'inline-flex border-transparent flex-wrap items-center justify-center text-center',
     'font-semibold text-current',
-    hasValue(attrs.group)
+    !hasValue(attrs.group) && 'shadow-sm',
+    hasValue(attrs.group) && !hasValue(attrs.circle)
       ? {
-          '-mx-px': true,
+          '-mx-px': hasValue(attrs.outline),
           'rounded-l-lg': attrs.group === 'first',
           'rounded-r-lg': attrs.group === 'last'
         }
@@ -84,7 +85,7 @@ const getClassNames = (attrs: Attributes) => {
           'h-14 w-14': attrs.size === 'lg',
           'h-16 w-16': attrs.size === 'xl'
         }
-      : hasValue(attrs.outline)
+      : hasValue(attrs.outline) && !hasValue(attrs.disabled)
       ? {
           'text-xs px-2 py-0.5 mt-0.5': attrs.size === 'xs',
           'text-sm px-2.5 py-1.5': attrs.size === 'sm',
