@@ -12,24 +12,36 @@ type EventItem = { el: HTMLElement; event: string; callback: (...args: any) => v
 
 const eventList: Map<any, Set<EventItem>> = new Map();
 
-export const event = (selector: string | HTMLElement, event: string, callback: (...args: any) => void) => {
-  const el = typeof selector === 'string' ? useElementRef(selector) : selector;
+export const uuid = (): string => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
 
-  if (!eventList.has(currentInstance.token)) {
-    eventList.set(currentInstance.token, new Set<EventItem>());
+export const event = (
+  selector: string | HTMLElement,
+  event: string,
+  callback: (...args: any) => void,
+  options?: boolean | AddEventListenerOptions
+) => {
+  const el = typeof selector === 'string' ? ref(selector) : selector;
+
+  if ((options as AddEventListenerOptions)?.once !== true) {
+    if (!eventList.has(currentInstance.token)) {
+      eventList.set(currentInstance.token, new Set<EventItem>());
+    }
+    eventList.get(currentInstance.token)?.add({ el, event, callback });
   }
-  eventList.get(currentInstance.token)?.add({ el, event, callback });
 
-  el.addEventListener(event, callback);
+  el.addEventListener(event, callback, options);
+};
+
+event.once = (selector: string | HTMLElement, event: string, callback: (...args: any) => void) => {
+  const el = typeof selector === 'string' ? ref(selector) : selector;
+  el.addEventListener(event, callback, { once: true });
 };
 
 export const emit = (event: string, detail: any) => {
   currentInstance.dispatchEvent(new CustomEvent(event, { detail }));
 };
 
-export const useElementRef = (selector: string) => {
-  return currentInstance?.shadowRoot?.querySelector(`*[ref="${selector}"]`);
-};
+export const ref = (selector: string) => currentInstance?.shadowRoot?.querySelector(`*[ref="${selector}"]`);
 
 export const define = <T extends Record<string, string | number | boolean>>(
   name: string,
