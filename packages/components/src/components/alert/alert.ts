@@ -22,6 +22,8 @@ const pickColorClasses = (attrs: Attributes) => {
       attrs.variant === 'zinc',
     'text-neutral-700 bg-neutral-100 border-neutral-200 dark:text-neutral-800 dark:bg-neutral-200 dark:border-neutral-300':
       attrs.variant === 'neutral',
+    'text-stone-700 bg-stone-100 border-stone-200 dark:text-stone-800 dark:bg-stone-200 dark:border-stone-300':
+      attrs.variant === 'stone',
     'text-red-700 bg-red-100 border-red-200 dark:text-red-800 dark:bg-red-200 dark:border-red-300':
       attrs.variant === 'red',
     'text-orange-700 bg-orange-100 border-orange-200 dark:text-orange-800 dark:bg-orange-200 dark:border-orange-300':
@@ -62,7 +64,7 @@ const pickColorClasses = (attrs: Attributes) => {
 const getClassNames = (attrs: Attributes) => {
   return pickClassNames(
     attrs.append,
-    'flex items-center p-4 text-sm border rounded-lg shadow-sm',
+    'flex justify-between items-center p-4 text-sm border rounded-lg shadow-sm',
     pickColorClasses(attrs)
   );
 };
