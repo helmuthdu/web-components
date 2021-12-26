@@ -72,9 +72,14 @@ const getClassNames = (attrs: Attributes) => {
 define<Attributes>('tw-alert', {
   attributes,
   onConnected: host => {
-    event.once('close', 'click', () => {
-      host.remove();
-    });
+    event(
+      'close',
+      'click',
+      () => {
+        host.remove();
+      },
+      { once: true }
+    );
   },
   render: attrs => {
     const id = uuid();
