@@ -1,0 +1,7 @@
+:host {
+    content-visibility: auto;
+}
+
+.box {
+    @apply block bg-white border border-gray-300 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white shadow-md rounded-lg p-5;
+}
