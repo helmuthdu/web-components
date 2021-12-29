@@ -209,7 +209,11 @@
 }
 
 .btn-loading {
-  @apply text-transparent;
+  @apply text-transparent hover:text-transparent;
+
+  & > svg {
+    @apply text-white;
+  }
 }
 
 :not(.btn-outline):not(.btn-disabled) {

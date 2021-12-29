@@ -1,9 +1,8 @@
 import type { Color, Sizes } from '../../types';
-import { define, hasAttribute, ref } from '../../utils/component.util';
-import { pickClassNames } from '../../utils/styling.util';
+import { classMap, define, hasValue, ref } from '../../lib/custom-elements';
 import styles from './button.css';
 
-export type Attributes = {
+export type Props = {
   append?: string;
   block?: boolean;
   circle?: boolean;
@@ -17,25 +16,11 @@ export type Attributes = {
   variant?: Color | 'link';
 };
 
-export const attributes: Attributes = {
-  append: undefined,
-  block: undefined,
-  circle: undefined,
-  disabled: undefined,
-  group: undefined,
-  loading: undefined,
-  outline: undefined,
-  rounded: undefined,
-  size: 'md',
-  type: 'button',
-  variant: 'blue'
-};
-
-const renderLoading = (attrs: Attributes) => {
+const renderLoading = (attrs: Props) => {
   return /*html*/ `
     <svg
       id="loading"
-      class="${pickClassNames('absolute animate-spin', {
+      class="${classMap('absolute animate-spin', {
         'h-3 w-3': attrs.size === 'xs',
         'h-4 w-4': attrs.size === 'sm',
         'h-5 w-5': attrs.size === 'md',
@@ -55,29 +40,37 @@ const renderLoading = (attrs: Attributes) => {
   `;
 };
 
-const getClassNames = (attrs: Attributes) =>
-  pickClassNames(attrs.append, 'btn', {
-    'btn-block': hasAttribute(attrs.block),
-    'btn-circle': hasAttribute(attrs.circle),
-    'btn-disabled': hasAttribute(attrs.disabled),
-    'btn-group': hasAttribute(attrs.group),
+const getClassNames = (attrs: Props) =>
+  classMap(attrs.append, 'btn', {
+    'btn-block': hasValue(attrs.block),
+    'btn-circle': hasValue(attrs.circle),
+    'btn-disabled': hasValue(attrs.disabled),
+    'btn-group': hasValue(attrs.group),
     'btn-group-first': attrs.group === 'first',
     'btn-group-last': attrs.group === 'last',
-    'btn-outline': hasAttribute(attrs.outline),
-    'btn-loading': hasAttribute(attrs.loading),
-    'btn-rounded': hasAttribute(attrs.rounded),
+    'btn-outline': hasValue(attrs.outline),
+    'btn-loading': hasValue(attrs.loading),
+    'btn-rounded': hasValue(attrs.rounded),
     [`btn-${attrs.size}`]: attrs.size,
     [`btn-${attrs.variant}`]: attrs.variant
   });
 
-define<Attributes>('tw-button', {
-  attributes,
-  onAttributeChanged: (name, _prev, _curr, attrs) => {
+define<Props>('tw-button', {
+  props: {
+    append: undefined,
+    block: undefined,
+    circle: undefined,
+    disabled: undefined,
+    group: undefined,
+    loading: undefined,
+    outline: undefined,
+    rounded: undefined,
+    size: 'md',
+    type: 'button',
+    variant: 'blue'
+  },
+  onAttributeChanged: (name, prev, curr, flush, props) => {
     const el = ref('button');
-
-    if (!el) {
-      return false;
-    }
 
     switch (name) {
       case 'append':
@@ -87,19 +80,21 @@ define<Attributes>('tw-button', {
       case 'group':
       case 'outline':
       case 'rounded':
+      case 'size':
       case 'variant':
-        el.className = getClassNames(attrs);
-        return false;
+        el.className = getClassNames(props);
+        break;
       case 'loading':
-        el.className = getClassNames(attrs);
-        return true;
+        el.className = getClassNames(props);
+        flush();
+        break;
       default:
-        return true;
+        flush();
     }
   },
   styles: [styles],
-  template: (attrs, host) => {
-    if (hasAttribute(attrs.block)) {
+  template: (props, host) => {
+    if (hasValue(props.block)) {
       host.classList.add('w-full');
     } else {
       host.classList.remove('w-full');
@@ -107,8 +102,8 @@ define<Attributes>('tw-button', {
 
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button ref="button" class="${getClassNames(attrs)}">
-        ${hasAttribute(attrs.loading) ? renderLoading(attrs) : ''}
+      <button ref="button" class="${getClassNames(props)}">
+        ${hasValue(props.loading) ? renderLoading(props) : ''}
         <slot></slot>
       </button>
     `;

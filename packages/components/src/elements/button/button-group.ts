@@ -1,23 +1,22 @@
-import { define } from '../../utils/component.util';
-import { pickClassNames } from '../../utils/styling.util';
+import { classMap, define } from '../../lib/custom-elements';
 import styles from './button-group.css';
 
-export type Attributes = {
+export type Props = {
   append?: string;
 };
 
-export const attributes: Attributes = {
+export const props: Props = {
   append: undefined
 };
 
-const getClassNames = (attrs: Attributes) => {
-  return pickClassNames(attrs.append, 'inline-flex rounded-md shadow-sm');
+const getClassNames = (attrs: Props) => {
+  return classMap(attrs.append, 'inline-flex rounded-md shadow-sm');
 };
 
-define<Attributes>('tw-button-group', {
-  attributes,
+define<Props>('tw-button-group', {
+  props,
   styles: [styles],
-  template: (attrs, { children }) => {
+  template: (props, { children }) => {
     for (let idx = 0; idx < children.length; idx++) {
       switch (idx) {
         case 0:
@@ -32,7 +31,7 @@ define<Attributes>('tw-button-group', {
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div ref="button-group" class="${getClassNames(attrs)}">
+      <div ref="button-group" class="${getClassNames(props)}">
         <slot></slot>
       </div>
     `;

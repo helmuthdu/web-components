@@ -1,20 +1,17 @@
-import { define, event, uuid } from '../../utils/component.util';
-import { pickClassNames } from '../../utils/styling.util';
+import { classMap, define, event, uuid } from '../../lib/custom-elements';
 import { Color } from '../../types';
 import styles from './alert.css';
 
-export type Attributes = {
+export type Props = {
   append?: string;
   variant?: Color;
 };
 
-export const attributes: Attributes = {
-  append: undefined,
-  variant: 'neutral'
-};
-
-define<Attributes>('tw-alert', {
-  attributes,
+define<Props>('tw-alert', {
+  props: {
+    append: undefined,
+    variant: 'neutral'
+  },
   onConnected: host => {
     event(
       'close',
@@ -26,16 +23,16 @@ define<Attributes>('tw-alert', {
     );
   },
   styles: [styles],
-  template: attrs => {
+  template: props => {
     const id = uuid();
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div id="${id}" class="${pickClassNames('alert', `alert-${attrs.variant}`, attrs.append)}" role="alert">
+      <div id="${id}" class="${classMap('alert', `alert-${props.variant}`, props.append)}" role="alert">
         <div class="text-sm"><slot></slot></div>
         <button 
           ref="close"
           type="button" 
-          class="inline-flex items-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${attrs.variant}" 
+          class="inline-flex items-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${props.variant}" 
           data-collapse-toggle="${id}"
           aria-label="Close">
           <span class="sr-only">Close</span>

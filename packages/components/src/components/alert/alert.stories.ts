@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/html';
-import type { Attributes } from './alert';
+import type { Props } from './alert';
 import './alert';
 
 export default {
@@ -7,9 +7,9 @@ export default {
   args: {
     variant: 'blue'
   }
-} as Meta<Attributes>;
+} as Meta<Props>;
 
-const Template: Story<Partial<Attributes>> = (_attrs: Partial<Attributes>) => {
+const Template: Story<Partial<Props>> = (_attrs: Partial<Props>) => {
   return /*html*/ `
     <tw-alert append="mb-4" variant="blue">
       <span class="font-medium">Info alert!</span> Change a few things up and try submitting again.

@@ -1,5 +1,5 @@
 {
-  "name": "tailwind-components",
+  "name": "@windtail/monorepo",
   "version": "1.0.0",
   "description": "Web Components using Tailwind CSS",
   "scripts": {
@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/helmuthdu/tailwind-components#readme",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.8.0",
-    "@typescript-eslint/parser": "^5.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/parser": "^5.8.1",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "jest": "^27.4.5",

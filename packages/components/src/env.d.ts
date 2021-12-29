@@ -1,4 +1,6 @@
 /// <reference types="vite/client" />
+type Primitive = string | boolean | number;
+
 type ValueOf<T> = T[keyof T];
 
 type Nullable<T> = T | null;

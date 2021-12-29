@@ -1,22 +1,20 @@
-import { define } from '../../utils/component.util';
-import { pickClassNames } from '../../utils/styling.util';
-// styles
-import tailwind from '../../../tailwind.css';
+import { classMap, define } from '../../lib/custom-elements';
 import styles from './box.css';
 
-export type Attributes = {
+export type Props = {
   append?: string;
 };
 
-export const attributes: Attributes = {
+export const props: Props = {
   append: undefined
 };
 
 define('tw-box', {
-  attributes,
-  styles: [tailwind, styles],
-  template: (attrs: Attributes) => /*html*/ `
-      <div class="${pickClassNames(attrs.append, 'box')}">
+  props,
+  styles: [styles],
+  template: (props: Props) => /*html*/ `
+      <link rel="stylesheet" href="/tailwind.css" />
+      <div class="${classMap(props.append, 'box')}">
         <slot></slot>
       </div>
     `

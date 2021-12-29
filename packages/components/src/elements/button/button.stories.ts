@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/html';
-import type { Attributes } from './button';
+import type { Props } from './button';
 import './button';
 
 export default {
@@ -58,9 +58,9 @@ export default {
       defaultValue: false
     }
   }
-} as Meta<Attributes>;
+} as Meta<Props>;
 
-const Template: Story<Attributes & { text: any }> = ({ text, ...props }) =>
+const Template: Story<Props & { text: any }> = ({ text, ...props }) =>
   `
     <tw-button 
       variant="${props.variant}" 
