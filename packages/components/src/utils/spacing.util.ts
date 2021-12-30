@@ -1,4 +1,4 @@
-import { classMap } from '../lib/custom-elements';
+import { classMap } from '../lib/custom-element';
 
 export type SpacingModifier = {
   p?: number | 'auto';

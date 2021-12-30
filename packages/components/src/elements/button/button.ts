@@ -1,5 +1,5 @@
 import type { Color, Sizes } from '../../types';
-import { classMap, define, hasValue, ref } from '../../lib/custom-elements';
+import { classMap, define, ref } from '../../lib/custom-element';
 import styles from './button.css';
 
 export type Props = {
@@ -42,15 +42,15 @@ const renderLoading = (attrs: Props) => {
 
 const getClassNames = (attrs: Props) =>
   classMap(attrs.append, 'btn', {
-    'btn-block': hasValue(attrs.block),
-    'btn-circle': hasValue(attrs.circle),
-    'btn-disabled': hasValue(attrs.disabled),
-    'btn-group': hasValue(attrs.group),
+    'btn-block': attrs.block,
+    'btn-circle': attrs.circle,
+    'btn-disabled': attrs.disabled,
+    'btn-group': attrs.group,
     'btn-group-first': attrs.group === 'first',
     'btn-group-last': attrs.group === 'last',
-    'btn-outline': hasValue(attrs.outline),
-    'btn-loading': hasValue(attrs.loading),
-    'btn-rounded': hasValue(attrs.rounded),
+    'btn-outline': attrs.outline,
+    'btn-loading': attrs.loading,
+    'btn-rounded': attrs.rounded,
     [`btn-${attrs.size}`]: attrs.size,
     [`btn-${attrs.variant}`]: attrs.variant
   });
@@ -69,12 +69,11 @@ define<Props>('tw-button', {
     type: 'button',
     variant: 'blue'
   },
-  onAttributeChanged: (name, prev, curr, flush, props) => {
+  onAttributeChanged: (name, prev, curr, props, flush) => {
     const el = ref('button');
 
     switch (name) {
       case 'append':
-      case 'block':
       case 'circle':
       case 'disabled':
       case 'group':
@@ -84,6 +83,7 @@ define<Props>('tw-button', {
       case 'variant':
         el.className = getClassNames(props);
         break;
+      case 'block':
       case 'loading':
         el.className = getClassNames(props);
         flush();
@@ -94,7 +94,7 @@ define<Props>('tw-button', {
   },
   styles: [styles],
   template: (props, host) => {
-    if (hasValue(props.block)) {
+    if (props.block) {
       host.classList.add('w-full');
     } else {
       host.classList.remove('w-full');
@@ -103,7 +103,7 @@ define<Props>('tw-button', {
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
       <button ref="button" class="${getClassNames(props)}">
-        ${hasValue(props.loading) ? renderLoading(props) : ''}
+        ${props.loading ? renderLoading(props) : ''}
         <slot></slot>
       </button>
     `;

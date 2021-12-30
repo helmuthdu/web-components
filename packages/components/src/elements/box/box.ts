@@ -1,4 +1,4 @@
-import { classMap, define } from '../../lib/custom-elements';
+import { classMap, define } from '../../lib/custom-element';
 import styles from './box.css';
 
 export type Props = {

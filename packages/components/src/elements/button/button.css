@@ -184,23 +184,43 @@
   }
 
   &.btn-xs {
-    @apply text-xs px-4 py-0.5 mt-0.5;
+    @apply text-xs mt-0.5;
+
+    &:not(.btn-circle) {
+      @apply px-4 py-0.5;
+    }
   }
 
   &.btn-sm {
-    @apply text-sm px-4 py-1.5;
+    @apply text-sm;
+
+    &:not(.btn-circle) {
+      @apply px-4 py-1.5;
+    }
   }
 
   &.btn-md {
-    @apply text-base px-5 py-2.5;
+    @apply text-base;
+
+    &:not(.btn-circle) {
+      @apply px-5 py-2.5;
+    }
   }
 
   &.btn-lg {
-    @apply text-lg px-5 py-3.5;
+    @apply text-lg;
+
+    &:not(.btn-circle) {
+      @apply px-5 py-3.5;
+    }
   }
 
   &.btn-xl {
-    @apply text-xl px-6 py-3.5;
+    @apply text-xl;
+
+    &:not(.btn-circle) {
+      @apply px-6 py-3.5;
+    }
   }
 
   &.btn-loading {

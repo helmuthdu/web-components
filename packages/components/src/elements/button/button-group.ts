@@ -1,4 +1,4 @@
-import { classMap, define } from '../../lib/custom-elements';
+import { classMap, define } from '../../lib/custom-element';
 import styles from './button-group.css';
 
 export type Props = {

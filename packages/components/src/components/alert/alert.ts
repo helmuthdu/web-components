@@ -1,4 +1,4 @@
-import { classMap, define, event, uuid } from '../../lib/custom-elements';
+import { classMap, define, event, uuid } from '../../lib/custom-element';
 import { Color } from '../../types';
 import styles from './alert.css';
 
