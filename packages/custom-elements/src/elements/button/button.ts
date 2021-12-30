@@ -69,7 +69,7 @@ define<Props>('tw-button', {
     type: 'button',
     variant: 'blue'
   },
-  onAttributeChanged: (name, prev, curr, { ref, flush, ...props }) => {
+  onAttributeChanged: (name, prev, curr, { ref, update, ...props }) => {
     const el = ref('button');
 
     switch (name) {
@@ -86,10 +86,10 @@ define<Props>('tw-button', {
       case 'block':
       case 'loading':
         el.className = getClassNames(props);
-        flush();
+        update();
         break;
       default:
-        flush();
+        update();
     }
   },
   styles: [styles],

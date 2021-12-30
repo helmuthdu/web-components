@@ -1,7 +1,7 @@
 type Props = Record<string, Primitive>;
 
 type CustomElement<T extends Props> = HTMLElement & {
-  flush: () => void;
+  update: () => void;
   ref: (selector: string) => HTMLElement | CustomElement<T>;
   fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
   event: (
@@ -50,9 +50,8 @@ export const component = <T extends Props>({
     constructor() {
       super();
       defineProperties(this as any, props);
-      const shadowRoot = this.attachShadow({ mode: 'open' });
-      applyStyles(shadowRoot, styles);
-      this.flush();
+      applyStyles(this.attachShadow({ mode: 'open' }), styles);
+      this.update();
     }
 
     static get observedAttributes() {
@@ -84,7 +83,7 @@ export const component = <T extends Props>({
       }
     }
 
-    flush() {
+    update() {
       // @ts-ignore
       this.shadowRoot.innerHTML = template(this.#self as any);
     }
