@@ -47,16 +47,16 @@ export const component = <T extends Props>({
       }
     });
 
-    static get observedAttributes() {
-      return [...Object.keys(props).map(prop => getAttrName(prop))];
-    }
-
     constructor() {
       super();
       defineProperties(this as any, props);
       const shadowRoot = this.attachShadow({ mode: 'open' });
       applyStyles(shadowRoot, styles);
       this.flush();
+    }
+
+    static get observedAttributes() {
+      return [...Object.keys(props).map(prop => getAttrName(prop))];
     }
 
     connectedCallback() {
@@ -119,6 +119,8 @@ export const define = <T extends Props>(name: string, options: CustomElementOpti
   customElements.define(name, component(options));
 };
 
+export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
+
 export const classMap = (...classes: unknown[]) =>
   classes
     .reduce((acc: string, arg: unknown) => {
@@ -180,5 +182,3 @@ const defineProperties = <T extends Props>(target: CustomElement<T>, props: T) =
 };
 
 const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
-
-export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
