@@ -1,3 +1,14 @@
+type CustomElementEvent = {
+  el: HTMLElement;
+  event: string | keyof HTMLElementEventMap;
+  callback: EventListenerOrEventListenerObject;
+};
+
+type CustomElementInstance = {
+  current: HTMLElement;
+  events: Map<any, Set<CustomElementEvent>>;
+};
+
 type CustomElementOptions<T extends Record<string, Primitive>> = {
   onAttributeChanged?: (
     name: keyof T,
@@ -22,6 +33,8 @@ export const component = <T extends Record<string, Primitive>>({
   onConnected,
   onDisconnected
 }: CustomElementOptions<T>) => {
+  const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+
   return class extends HTMLElement {
     ready = false;
     token = uuid();
@@ -68,9 +81,8 @@ export const component = <T extends Record<string, Primitive>>({
     }
 
     flush() {
-      if (this.shadowRoot) {
-        this.shadowRoot.innerHTML = template(this.props, this);
-      }
+      // @ts-ignore
+      this.shadowRoot.innerHTML = template(this.props, this);
     }
 
     get props() {
@@ -81,7 +93,7 @@ export const component = <T extends Record<string, Primitive>>({
     }
 
     #applyStyles() {
-      if (this.shadowRoot && styles && styles.length > 0) {
+      if (styles && styles.length > 0) {
         Promise.all(
           styles.map((style, idx) => {
             if (typeof style === 'string') {
@@ -124,23 +136,17 @@ export const component = <T extends Record<string, Primitive>>({
 export const define = <T extends Record<string, Primitive>>(name: string, options: CustomElementOptions<T>) =>
   customElements.define(name, component(options));
 
-type CustomElementEvent = { el: HTMLElement; event: string; callback: (...args: any) => void };
-
-type CustomElementInstance = {
-  current: HTMLElement;
-  events: Map<any, Set<CustomElementEvent>>;
-};
-
 export const instance: CustomElementInstance = {
   current: undefined as any,
   events: new Map()
 };
 
-export const append = (selector: string | HTMLElement, content: string) => {
-  const el = typeof selector === 'string' ? ref(selector) : selector;
-  const template = document.createElement('template');
-  template.innerHTML = content;
-  el?.appendChild(template.content.cloneNode(true));
+export const ref = (selector: string) => {
+  const el = instance.current?.shadowRoot?.querySelector(`*[ref="${selector}"]`) as HTMLElement;
+  if (!el) {
+    throw new Error(`element with ref="${selector}" not found`);
+  }
+  return el;
 };
 
 export const fire = (event: string, detail: any) => {
@@ -149,12 +155,11 @@ export const fire = (event: string, detail: any) => {
 
 export const event = (
   selector: string | HTMLElement,
-  event: string,
-  callback: (...args: any) => void,
+  event: string | keyof HTMLElementEventMap,
+  callback: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
 ) => {
-  // @ts-ignore
-  const { token } = instance.current;
+  const token = (instance.current as any).token;
   const el = typeof selector === 'string' ? ref(selector) : selector;
 
   if ((options as AddEventListenerOptions)?.once !== true) {
@@ -165,14 +170,6 @@ export const event = (
   }
 
   el.addEventListener(event, callback, options);
-};
-
-export const ref = (selector: string) => {
-  const el = instance.current?.shadowRoot?.querySelector(`*[ref="${selector}"]`) as HTMLElement;
-  if (!el) {
-    throw new Error(`element with ref="${selector}" not found`);
-  }
-  return el;
 };
 
 export const classMap = (...classes: unknown[]) =>
@@ -193,4 +190,9 @@ export const classMap = (...classes: unknown[]) =>
 
 export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
 
-const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+export const append = (selector: string | HTMLElement, content: string) => {
+  const el = typeof selector === 'string' ? ref(selector) : selector;
+  const template = document.createElement('template');
+  template.innerHTML = content;
+  el?.appendChild(template.content.cloneNode(true));
+};

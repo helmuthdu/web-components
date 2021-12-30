@@ -1,4 +1,10 @@
 /// <reference types="vite/client" />
+declare global {
+  interface ShadowRoot {
+    adoptedStyleSheets: CSSStyleSheet[];
+  }
+}
+
 type Primitive = string | boolean | number;
 
 type ValueOf<T> = T[keyof T];

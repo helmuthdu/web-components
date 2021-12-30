@@ -20,5 +20,5 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
   },
-  "include": ["./src"]
+  "include": ["./src", "./src/*.d.ts"]
 }
