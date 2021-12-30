@@ -1,43 +1,51 @@
-type CustomElementEvent = {
-  el: HTMLElement;
+type Props = Record<string, Primitive>;
+
+type CustomElement<T extends Props> = HTMLElement & {
+  flush: () => void;
+  ref: (selector: string) => HTMLElement | CustomElement<T>;
+  fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
+  event: (
+    selector: string | HTMLElement | CustomElement<T>,
+    event: string | keyof HTMLElementEventMap,
+    callback: EventListener,
+    options?: boolean | AddEventListenerOptions
+  ) => void;
+} & {
+  [K in keyof T]: T[K];
+};
+
+type CustomElementEvent<T extends Props> = {
+  el: HTMLElement | CustomElement<T>;
   event: string | keyof HTMLElementEventMap;
-  callback: EventListenerOrEventListenerObject;
+  callback: EventListener;
 };
 
-type CustomElementInstance = {
-  current: HTMLElement;
-  events: Map<any, Set<CustomElementEvent>>;
-};
-
-type CustomElementOptions<T extends Record<string, Primitive>> = {
-  onAttributeChanged?: (
-    name: keyof T,
-    prev: string,
-    curr: string,
-    props: T,
-    flush: () => void,
-    host: HTMLElement
-  ) => boolean | void;
-  onConnected?: (host: HTMLElement, props: T, flush: () => void) => void;
+type CustomElementOptions<T extends Props> = {
+  onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => boolean | void;
+  onConnected?: (host: CustomElement<T>) => void;
   onDisconnected?: () => void;
   props: T;
   styles?: unknown[];
-  template: (props: T, host: HTMLElement) => string;
+  template: (host: CustomElement<T>) => string;
 };
 
-export const component = <T extends Record<string, Primitive>>({
+export const component = <T extends Props>({
   props,
   template,
   styles,
   onAttributeChanged,
   onConnected,
   onDisconnected
-}: CustomElementOptions<T>) => {
-  const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
-
-  return class extends HTMLElement {
-    ready = false;
-    token = uuid();
+}: CustomElementOptions<T>) =>
+  class extends HTMLElement {
+    #events: Set<CustomElementEvent<T>> = new Set();
+    #ready = false;
+    #self = new Proxy(this, {
+      get(target, key) {
+        const value = Reflect.get(target, key);
+        return typeof value === 'function' ? value.bind(target) : value;
+      }
+    });
 
     static get observedAttributes() {
       return [...Object.keys(props).map(prop => getAttrName(prop))];
@@ -45,131 +53,70 @@ export const component = <T extends Record<string, Primitive>>({
 
     constructor() {
       super();
-      this.attachShadow({ mode: 'open' });
-      this.#defineProperties();
-      this.#applyStyles();
+      defineProperties(this as any, props);
+      const shadowRoot = this.attachShadow({ mode: 'open' });
+      applyStyles(shadowRoot, styles);
       this.flush();
-      this.flush = this.flush.bind(this);
     }
 
     connectedCallback() {
-      this.ready = true;
+      this.#ready = true;
       if (onConnected) {
-        instance.current = this;
-        onConnected(this, this.props, this.flush);
+        onConnected(this.#self as any);
       }
     }
 
     disconnectedCallback() {
-      instance.events.get(this.token)?.forEach(({ el, event, callback }) => {
+      this.#events.forEach(({ el, event, callback }) => {
         el.addEventListener(event, callback);
       });
 
       if (onDisconnected) {
-        instance.current = this;
         onDisconnected();
       }
     }
 
     attributeChangedCallback(name: keyof T, prev: string, curr: string) {
-      if (this.ready && prev !== curr) {
+      if (this.#ready && prev !== curr) {
         if (onAttributeChanged) {
-          instance.current = this;
-          onAttributeChanged(name, prev, curr, this.props, this.flush, this);
+          onAttributeChanged(name, prev, curr, this.#self as any);
         }
       }
     }
 
     flush() {
       // @ts-ignore
-      this.shadowRoot.innerHTML = template(this.props, this);
+      this.shadowRoot.innerHTML = template(this.#self as any);
     }
 
-    get props() {
-      return Object.entries(props).reduce((acc, [key, val]) => {
-        const attr = this.getAttribute(getAttrName(key));
-        return { ...acc, [key]: (attr === '' ? true : attr) ?? val };
-      }, {} as typeof props);
-    }
-
-    #applyStyles() {
-      if (styles && styles.length > 0) {
-        Promise.all(
-          styles.map((style, idx) => {
-            if (typeof style === 'string') {
-              const sheet = new CSSStyleSheet(); // @ts-ignore
-              return sheet.replace(style);
-            } else if (style instanceof CSSStyleSheet) {
-              return Promise.resolve(style);
-            } else {
-              throw new Error(`invalid css in styles`);
-            }
-          })
-        ).then(sheets => {
-          // @ts-ignore
-          this.shadowRoot.adoptedStyleSheets = sheets;
-        });
+    ref(selector: string) {
+      const el = this?.shadowRoot?.querySelector(`*[ref="${selector}"]`) as HTMLElement;
+      if (!el) {
+        throw new Error(`element with ref="${selector}" not found`);
       }
+      return el;
     }
 
-    #defineProperties() {
-      Object.defineProperties(
-        this,
-        Object.keys(props).reduce((acc, key) => {
-          acc[key] = {
-            get: () => this.props[key],
-            set: (val?: string) => {
-              if (val === '' || val) {
-                this.setAttribute(getAttrName(key), val);
-              } else {
-                this.removeAttribute(key);
-              }
-            }
-          };
-          return acc;
-        }, {} as PropertyDescriptorMap)
-      );
+    fire(event: string | keyof HTMLElementEventMap, options?: CustomEventInit) {
+      this.dispatchEvent(new CustomEvent(event, options));
+    }
+
+    event(
+      selector: string | HTMLElement | CustomElement<T>,
+      event: string | keyof HTMLElementEventMap,
+      callback: EventListener,
+      options?: boolean | AddEventListenerOptions
+    ) {
+      const el = typeof selector === 'string' ? this.ref(selector) : selector;
+      if ((options as AddEventListenerOptions)?.once !== true) {
+        this.#events.add({ el, event, callback });
+      }
+      el.addEventListener(event, callback, options);
     }
   };
-};
 
-export const define = <T extends Record<string, Primitive>>(name: string, options: CustomElementOptions<T>) =>
+export const define = <T extends Props>(name: string, options: CustomElementOptions<T>) => {
   customElements.define(name, component(options));
-
-export const instance: CustomElementInstance = {
-  current: undefined as any,
-  events: new Map()
-};
-
-export const ref = (selector: string) => {
-  const el = instance.current?.shadowRoot?.querySelector(`*[ref="${selector}"]`) as HTMLElement;
-  if (!el) {
-    throw new Error(`element with ref="${selector}" not found`);
-  }
-  return el;
-};
-
-export const fire = (event: string, detail: any) => {
-  instance.current.dispatchEvent(new CustomEvent(event, { detail }));
-};
-
-export const event = (
-  selector: string | HTMLElement,
-  event: string | keyof HTMLElementEventMap,
-  callback: EventListenerOrEventListenerObject,
-  options?: boolean | AddEventListenerOptions
-) => {
-  const token = (instance.current as any).token;
-  const el = typeof selector === 'string' ? ref(selector) : selector;
-
-  if ((options as AddEventListenerOptions)?.once !== true) {
-    if (!instance.events.has(token)) {
-      instance.events.set(token, new Set<CustomElementEvent>());
-    }
-    instance.events.get(token)?.add({ el, event, callback });
-  }
-
-  el.addEventListener(event, callback, options);
 };
 
 export const classMap = (...classes: unknown[]) =>
@@ -188,11 +135,50 @@ export const classMap = (...classes: unknown[]) =>
     }, '')
     .trim();
 
-export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-
-export const append = (selector: string | HTMLElement, content: string) => {
-  const el = typeof selector === 'string' ? ref(selector) : selector;
-  const template = document.createElement('template');
-  template.innerHTML = content;
-  el?.appendChild(template.content.cloneNode(true));
+const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
+  if (styles && styles.length > 0) {
+    Promise.all(
+      styles.map((style, idx) => {
+        if (typeof style === 'string') {
+          const sheet = new CSSStyleSheet(); // @ts-ignore
+          return sheet.replace(style);
+        } else if (style instanceof CSSStyleSheet) {
+          return Promise.resolve(style);
+        } else {
+          throw new Error(`invalid css in styles`);
+        }
+      })
+    ).then((sheets: CSSStyleSheet[]) => {
+      // @ts-ignore
+      shadowRoot.adoptedStyleSheets = sheets;
+    });
+  }
 };
+
+const defineProperties = <T extends Props>(target: CustomElement<T>, props: T) => {
+  Object.defineProperties(
+    target,
+    Object.keys(props).reduce((acc, key) => {
+      acc[key] = {
+        enumerable: true,
+        configurable: true,
+        get: () => {
+          const attr = target.getAttribute(getAttrName(key));
+          return (attr === '' ? true : attr) ?? props[key];
+        },
+        set: (val?: any) => {
+          if (val === '' || val) {
+            target.setAttribute(getAttrName(key), val === true ? '' : val);
+          } else {
+            target.removeAttribute(key);
+          }
+        }
+      };
+      return acc;
+    }, {} as PropertyDescriptorMap)
+  );
+};
+
+const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+
+export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);

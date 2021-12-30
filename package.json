@@ -1,5 +1,5 @@
 {
-  "name": "@windtail/monorepo",
+  "name": "@windtail/components",
   "version": "1.0.0",
   "description": "Web Components using Tailwind CSS",
   "scripts": {
@@ -28,6 +28,6 @@
     "prettier": "^2.5.1"
   },
   "workspaces": [
-    "packages/components"
+    "packages/custom-elements"
   ]
 }

@@ -1,5 +1,5 @@
 import type { Color, Sizes } from '../../types';
-import { classMap, define, ref } from '../../lib/custom-element';
+import { classMap, define } from '../../lib/custom-element';
 import styles from './button.css';
 
 export type Props = {
@@ -16,16 +16,16 @@ export type Props = {
   variant?: Color | 'link';
 };
 
-const renderLoading = (attrs: Props) => {
+const renderLoading = (props: Props) => {
   return /*html*/ `
     <svg
       id="loading"
       class="${classMap('absolute animate-spin', {
-        'h-3 w-3': attrs.size === 'xs',
-        'h-4 w-4': attrs.size === 'sm',
-        'h-5 w-5': attrs.size === 'md',
-        'h-6 w-6': attrs.size === 'lg',
-        'h-7 w-7': attrs.size === 'xl'
+        'h-3 w-3': props.size === 'xs',
+        'h-4 w-4': props.size === 'sm',
+        'h-5 w-5': props.size === 'md',
+        'h-6 w-6': props.size === 'lg',
+        'h-7 w-7': props.size === 'xl'
       })}"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -40,19 +40,19 @@ const renderLoading = (attrs: Props) => {
   `;
 };
 
-const getClassNames = (attrs: Props) =>
-  classMap(attrs.append, 'btn', {
-    'btn-block': attrs.block,
-    'btn-circle': attrs.circle,
-    'btn-disabled': attrs.disabled,
-    'btn-group': attrs.group,
-    'btn-group-first': attrs.group === 'first',
-    'btn-group-last': attrs.group === 'last',
-    'btn-outline': attrs.outline,
-    'btn-loading': attrs.loading,
-    'btn-rounded': attrs.rounded,
-    [`btn-${attrs.size}`]: attrs.size,
-    [`btn-${attrs.variant}`]: attrs.variant
+const getClassNames = (props: Props) =>
+  classMap(props.append, 'btn', {
+    'btn-block': props.block,
+    'btn-circle': props.circle,
+    'btn-disabled': props.disabled,
+    'btn-group': props.group,
+    'btn-group-first': props.group === 'first',
+    'btn-group-last': props.group === 'last',
+    'btn-outline': props.outline,
+    'btn-loading': props.loading,
+    'btn-rounded': props.rounded,
+    [`btn-${props.size}`]: props.size,
+    [`btn-${props.variant}`]: props.variant
   });
 
 define<Props>('tw-button', {
@@ -69,7 +69,7 @@ define<Props>('tw-button', {
     type: 'button',
     variant: 'blue'
   },
-  onAttributeChanged: (name, prev, curr, props, flush) => {
+  onAttributeChanged: (name, prev, curr, { ref, flush, ...props }) => {
     const el = ref('button');
 
     switch (name) {
@@ -93,11 +93,11 @@ define<Props>('tw-button', {
     }
   },
   styles: [styles],
-  template: (props, host) => {
+  template: ({ classList, ...props }) => {
     if (props.block) {
-      host.classList.add('w-full');
+      classList.add('w-full');
     } else {
-      host.classList.remove('w-full');
+      classList.remove('w-full');
     }
 
     return /*html*/ `

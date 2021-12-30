@@ -9,12 +9,12 @@ export const props: Props = {
   append: undefined
 };
 
-define('tw-box', {
+define<Props>('tw-box', {
   props,
   styles: [styles],
-  template: (props: Props) => /*html*/ `
+  template: host => /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div class="${classMap(props.append, 'box')}">
+      <div class="${classMap(host.append, 'box')}">
         <slot></slot>
       </div>
     `
