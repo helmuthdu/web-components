@@ -67,17 +67,17 @@ export const component = <T extends Record<string, Primitive>>({
       }
     }
 
+    flush() {
+      if (this.shadowRoot) {
+        this.shadowRoot.innerHTML = template(this.props, this);
+      }
+    }
+
     get props() {
       return Object.entries(props).reduce((acc, [key, val]) => {
         const attr = this.getAttribute(getAttrName(key));
         return { ...acc, [key]: (attr === '' ? true : attr) ?? val };
       }, {} as typeof props);
-    }
-
-    flush() {
-      if (this.shadowRoot) {
-        this.shadowRoot.innerHTML = template(this.props, this);
-      }
     }
 
     #applyStyles() {
