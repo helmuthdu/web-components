@@ -1,16 +1,16 @@
-type ComponentOptions<T extends Record<string, Primitive>> = {
+type CustomElementOptions<T extends Record<string, Primitive>> = {
   onAttributeChanged?: (
     name: keyof T,
     prev: string,
     curr: string,
-    flush: () => void,
     props: T,
+    flush: () => void,
     host: HTMLElement
   ) => boolean | void;
   onConnected?: (host: HTMLElement, props: T, flush: () => void) => void;
   onDisconnected?: () => void;
   props: T;
-  styles?: string[];
+  styles?: unknown[];
   template: (props: T, host: HTMLElement) => string;
 };
 
@@ -21,7 +21,7 @@ export const component = <T extends Record<string, Primitive>>({
   onAttributeChanged,
   onConnected,
   onDisconnected
-}: ComponentOptions<T>) => {
+}: CustomElementOptions<T>) => {
   return class extends HTMLElement {
     ready = false;
     token = uuid();
@@ -30,40 +30,12 @@ export const component = <T extends Record<string, Primitive>>({
       return [...Object.keys(props).map(prop => getAttrName(prop))];
     }
 
-    get props() {
-      return Object.entries(props).reduce(
-        (acc, [key, val]) => ({ ...acc, [key]: this.getAttribute(getAttrName(key)) ?? val }),
-        {} as typeof props
-      );
-    }
-
     constructor() {
       super();
-
-      Object.defineProperties(
-        this,
-        Object.keys(props).reduce((acc, key) => {
-          acc[key] = {
-            get: () => this.props[key],
-            set: (val?: string | number) => {
-              if (hasValue(val)) {
-                this.setAttribute(getAttrName(key), val as string);
-              } else {
-                this.removeAttribute(key);
-              }
-            }
-          };
-          return acc;
-        }, {} as PropertyDescriptorMap)
-      );
-
-      const shadow = this.attachShadow({ mode: 'open' });
-      shadow.innerHTML = template(this.props, this);
-      if (styles) {
-        // @ts-ignore
-        shadow.adoptedStyleSheets = styles;
-      }
-
+      this.attachShadow({ mode: 'open' });
+      this.#defineProperties();
+      this.#applyStyles();
+      this.flush();
       this.flush = this.flush.bind(this);
     }
 
@@ -90,9 +62,16 @@ export const component = <T extends Record<string, Primitive>>({
       if (this.ready && prev !== curr) {
         if (onAttributeChanged) {
           instance.current = this;
-          onAttributeChanged(name, prev, curr, this.flush, this.props, this);
+          onAttributeChanged(name, prev, curr, this.props, this.flush, this);
         }
       }
+    }
+
+    get props() {
+      return Object.entries(props).reduce((acc, [key, val]) => {
+        const attr = this.getAttribute(getAttrName(key));
+        return { ...acc, [key]: (attr === '' ? true : attr) ?? val };
+      }, {} as typeof props);
     }
 
     flush() {
@@ -100,20 +79,59 @@ export const component = <T extends Record<string, Primitive>>({
         this.shadowRoot.innerHTML = template(this.props, this);
       }
     }
+
+    #applyStyles() {
+      if (this.shadowRoot && styles && styles.length > 0) {
+        Promise.all(
+          styles.map((style, idx) => {
+            if (typeof style === 'string') {
+              const sheet = new CSSStyleSheet(); // @ts-ignore
+              return sheet.replace(style);
+            } else if (style instanceof CSSStyleSheet) {
+              return Promise.resolve(style);
+            } else {
+              throw new Error(`invalid css in styles`);
+            }
+          })
+        ).then(sheets => {
+          // @ts-ignore
+          this.shadowRoot.adoptedStyleSheets = sheets;
+        });
+      }
+    }
+
+    #defineProperties() {
+      Object.defineProperties(
+        this,
+        Object.keys(props).reduce((acc, key) => {
+          acc[key] = {
+            get: () => this.props[key],
+            set: (val?: string) => {
+              if (val === '' || val) {
+                this.setAttribute(getAttrName(key), val);
+              } else {
+                this.removeAttribute(key);
+              }
+            }
+          };
+          return acc;
+        }, {} as PropertyDescriptorMap)
+      );
+    }
   };
 };
 
-export const define = <T extends Record<string, Primitive>>(name: string, options: ComponentOptions<T>) =>
+export const define = <T extends Record<string, Primitive>>(name: string, options: CustomElementOptions<T>) =>
   customElements.define(name, component(options));
 
-type ComponentEvent = { el: HTMLElement; event: string; callback: (...args: any) => void };
+type CustomElementEvent = { el: HTMLElement; event: string; callback: (...args: any) => void };
 
-type ComponentInstance = {
+type CustomElementInstance = {
   current: HTMLElement;
-  events: Map<any, Set<ComponentEvent>>;
+  events: Map<any, Set<CustomElementEvent>>;
 };
 
-export const instance: ComponentInstance = {
+export const instance: CustomElementInstance = {
   current: undefined as any,
   events: new Map()
 };
@@ -125,7 +143,7 @@ export const append = (selector: string | HTMLElement, content: string) => {
   el?.appendChild(template.content.cloneNode(true));
 };
 
-export const emit = (event: string, detail: any) => {
+export const fire = (event: string, detail: any) => {
   instance.current.dispatchEvent(new CustomEvent(event, { detail }));
 };
 
@@ -141,7 +159,7 @@ export const event = (
 
   if ((options as AddEventListenerOptions)?.once !== true) {
     if (!instance.events.has(token)) {
-      instance.events.set(token, new Set<ComponentEvent>());
+      instance.events.set(token, new Set<CustomElementEvent>());
     }
     instance.events.get(token)?.add({ el, event, callback });
   }
@@ -152,7 +170,7 @@ export const event = (
 export const ref = (selector: string) => {
   const el = instance.current?.shadowRoot?.querySelector(`*[ref="${selector}"]`) as HTMLElement;
   if (!el) {
-    throw new Error(`element ${selector} not found`);
+    throw new Error(`element with ref="${selector}" not found`);
   }
   return el;
 };
@@ -175,6 +193,4 @@ export const classMap = (...classes: unknown[]) =>
 
 export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
 
-export const hasValue = (value: any) => value === '' || Boolean(value);
-
-export const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
