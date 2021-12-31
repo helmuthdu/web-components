@@ -75,7 +75,7 @@ export const component = <T extends Props>({
     }
 
     attributeChangedCallback(name: keyof T, prev: string, curr: string) {
-      if (this.#ready && onAttributeChanged) {
+      if (this.#ready && prev === curr && onAttributeChanged) {
         onAttributeChanged(name, prev, curr, this.#self as any);
       }
     }

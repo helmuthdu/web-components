@@ -70,7 +70,6 @@ define<Props>('tw-button', {
     variant: 'blue'
   },
   onAttributeChanged: (name, prev, curr, { shadowRoot, update, ...props }) => {
-    if (prev === curr) return;
     const el = shadowRoot?.getElementById('button') as HTMLButtonElement;
     switch (name) {
       case 'append':
