@@ -7,33 +7,38 @@ export type Props = {
   variant?: Color;
 };
 
+const getClassNames = (props: Props) => classMap('alert', `alert-${props.variant}`, props.append);
+
 define<Props>('tw-alert', {
   props: {
     append: undefined,
     variant: 'neutral'
   },
-  onConnected: ({ event, fire, remove }) => {
-    event(
-      'close-button',
-      'click',
-      () => {
+  onAttributeChanged(name, prev, curr, { update }) {
+    update();
+  },
+  events: [
+    {
+      id: 'close-button',
+      event: 'click',
+      callback: (evt, { fire, remove }) => {
         fire('close');
         remove();
       },
-      { once: true }
-    );
-  },
+      options: { once: true }
+    }
+  ],
   styles: [styles],
-  template: host => {
+  template: ({ ...props }) => {
     const id = uuid();
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div id="${id}" class="${classMap('alert', `alert-${host.variant}`, host.append)}" role="alert">
+      <div id="${id}" class="${getClassNames(props)}" role="alert">
         <div class="text-sm"><slot></slot></div>
         <button 
           id="close-button"
           type="button" 
-          class="inline-flex items-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${host.variant}" 
+          class="inline-flex items-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${props.variant}" 
           data-collapse-toggle="${id}"
           aria-label="Close">
           <span class="sr-only">Close</span>

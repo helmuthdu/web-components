@@ -1,25 +1,27 @@
 type Props = Record<string, Primitive>;
 
-type CustomElement<T extends Props> = HTMLElement & {
-  update: () => void;
-  fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
-  event: (
-    id: string | HTMLElement | CustomElement<T>,
-    event: string | keyof HTMLElementEventMap,
-    callback: EventListener,
-    options?: boolean | AddEventListenerOptions
-  ) => void;
-} & {
-  [K in keyof T]: T[K];
+type CustomElementEvent<T extends Props> = {
+  id: string | HTMLElement | CustomElement<T>;
+  event: string | keyof HTMLElementEventMap;
+  callback: (event: Event, host: CustomElement<T>) => void;
+  options?: boolean | AddEventListenerOptions;
 };
 
-type CustomElementEvent<T extends Props> = {
+type CustomElementEventItem<T extends Props> = {
   el: HTMLElement | CustomElement<T>;
   event: string | keyof HTMLElementEventMap;
   callback: EventListener;
 };
 
+type CustomElement<T extends Props> = HTMLElement & {
+  update: () => void;
+  fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
+} & {
+  [K in keyof T]: T[K];
+};
+
 type CustomElementOptions<T extends Props> = {
+  events?: CustomElementEvent<T>[];
   onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => boolean | void;
   onConnected?: (host: CustomElement<T>) => void;
   onDisconnected?: (host: CustomElement<T>) => void;
@@ -29,15 +31,16 @@ type CustomElementOptions<T extends Props> = {
 };
 
 export const component = <T extends Props>({
-  props,
-  template,
-  styles,
+  events = [],
   onAttributeChanged,
   onConnected,
-  onDisconnected
+  onDisconnected,
+  props,
+  styles = [],
+  template
 }: CustomElementOptions<T>) =>
   class extends HTMLElement {
-    #events: Set<CustomElementEvent<T>> = new Set();
+    #registeredEvents: Set<CustomElementEventItem<T>> = new Set();
     #ready = false;
     #self = new Proxy(this, {
       get(target, key) {
@@ -65,9 +68,7 @@ export const component = <T extends Props>({
     }
 
     disconnectedCallback() {
-      this.#events.forEach(({ el, event, callback }) => {
-        el.addEventListener(event, callback);
-      });
+      this.unbindEvents();
 
       if (onDisconnected) {
         onDisconnected(this.#self as any);
@@ -75,31 +76,39 @@ export const component = <T extends Props>({
     }
 
     attributeChangedCallback(name: keyof T, prev: string, curr: string) {
-      if (this.#ready && prev === curr && onAttributeChanged) {
+      if (this.#ready && prev !== curr && onAttributeChanged) {
         onAttributeChanged(name, prev, curr, this.#self as any);
       }
     }
 
     update() {
+      this.unbindEvents();
       // @ts-ignore
       this.shadowRoot.innerHTML = template(this.#self as any);
+      this.bindEvents();
     }
 
     fire(event: string | keyof HTMLElementEventMap, options?: CustomEventInit) {
       this.dispatchEvent(new CustomEvent(event, options));
     }
 
-    event(
-      id: string | HTMLElement | CustomElement<T>,
-      event: string | keyof HTMLElementEventMap,
-      callback: EventListener,
-      options?: boolean | AddEventListenerOptions
-    ) {
+    bindEvents() {
+      events?.forEach(event => this.registerEvent(event));
+    }
+
+    unbindEvents() {
+      this.#registeredEvents.forEach(({ el, event, callback }) => {
+        el.removeEventListener(event, callback);
+      });
+    }
+
+    registerEvent({ id, event, callback, options }: CustomElementEvent<T>) {
       const el = typeof id === 'string' ? (this.shadowRoot?.getElementById(`${id}`) as HTMLElement) : id;
-      if (!(options as AddEventListenerOptions).once) {
-        this.#events.add({ el, event, callback });
-      }
-      el.addEventListener(event, callback, options);
+      const _callback = (evt: Event) => {
+        callback(evt, this.#self as any);
+      };
+      this.#registeredEvents.add({ el, event, callback: _callback });
+      el.addEventListener(event, _callback, options);
     }
   };
 
@@ -126,7 +135,7 @@ export const classMap = (...classes: unknown[]) =>
     .trim();
 
 const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
-  if (styles && styles.length > 0) {
+  if (styles.length > 0) {
     Promise.all(
       styles.map((style, idx) => {
         if (typeof style === 'string') {
