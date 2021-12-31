@@ -95,7 +95,7 @@ export const component = <T extends Props>({
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = typeof id === 'string' ? this.shadowRoot?.getElementById(`${id}`) as HTMLElement : id;
+      const el = typeof id === 'string' ? (this.shadowRoot?.getElementById(`${id}`) as HTMLElement) : id;
       if (!(options as AddEventListenerOptions).once) {
         this.#events.add({ el, event, callback });
       }
