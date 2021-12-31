@@ -14,7 +14,7 @@ define<Props>('tw-alert', {
   },
   onConnected: ({ event, fire, remove }) => {
     event(
-      'close',
+      'close-button',
       'click',
       () => {
         fire('close');
@@ -31,7 +31,7 @@ define<Props>('tw-alert', {
       <div id="${id}" class="${classMap('alert', `alert-${host.variant}`, host.append)}" role="alert">
         <div class="text-sm"><slot></slot></div>
         <button 
-          ref="close"
+          id="close-button"
           type="button" 
           class="inline-flex items-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${host.variant}" 
           data-collapse-toggle="${id}"

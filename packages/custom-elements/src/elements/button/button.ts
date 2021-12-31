@@ -69,9 +69,9 @@ define<Props>('tw-button', {
     type: 'button',
     variant: 'blue'
   },
-  onAttributeChanged: (name, prev, curr, { ref, update, ...props }) => {
-    const el = ref('button');
-
+  onAttributeChanged: (name, prev, curr, { shadowRoot, update, ...props }) => {
+    if (prev === curr) return;
+    const el = shadowRoot?.getElementById('button') as HTMLButtonElement;
     switch (name) {
       case 'append':
       case 'circle':
@@ -99,10 +99,9 @@ define<Props>('tw-button', {
     } else {
       classList.remove('w-full');
     }
-
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button ref="button" class="${getClassNames(props)}">
+      <button id="button" class="${getClassNames(props)}">
         ${props.loading ? renderLoading(props) : ''}
         <slot></slot>
       </button>

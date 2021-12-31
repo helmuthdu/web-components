@@ -2,10 +2,9 @@ type Props = Record<string, Primitive>;
 
 type CustomElement<T extends Props> = HTMLElement & {
   update: () => void;
-  ref: (selector: string) => HTMLElement | CustomElement<T>;
   fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
   event: (
-    selector: string | HTMLElement | CustomElement<T>,
+    id: string | HTMLElement | CustomElement<T>,
     event: string | keyof HTMLElementEventMap,
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
@@ -23,7 +22,7 @@ type CustomElementEvent<T extends Props> = {
 type CustomElementOptions<T extends Props> = {
   onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => boolean | void;
   onConnected?: (host: CustomElement<T>) => void;
-  onDisconnected?: () => void;
+  onDisconnected?: (host: CustomElement<T>) => void;
   props: T;
   styles?: unknown[];
   template: (host: CustomElement<T>) => string;
@@ -71,15 +70,13 @@ export const component = <T extends Props>({
       });
 
       if (onDisconnected) {
-        onDisconnected();
+        onDisconnected(this.#self as any);
       }
     }
 
     attributeChangedCallback(name: keyof T, prev: string, curr: string) {
-      if (this.#ready && prev !== curr) {
-        if (onAttributeChanged) {
-          onAttributeChanged(name, prev, curr, this.#self as any);
-        }
+      if (this.#ready && onAttributeChanged) {
+        onAttributeChanged(name, prev, curr, this.#self as any);
       }
     }
 
@@ -88,26 +85,18 @@ export const component = <T extends Props>({
       this.shadowRoot.innerHTML = template(this.#self as any);
     }
 
-    ref(selector: string) {
-      const el = this?.shadowRoot?.querySelector(`*[ref="${selector}"]`) as HTMLElement;
-      if (!el) {
-        throw new Error(`element with ref="${selector}" not found`);
-      }
-      return el;
-    }
-
     fire(event: string | keyof HTMLElementEventMap, options?: CustomEventInit) {
       this.dispatchEvent(new CustomEvent(event, options));
     }
 
     event(
-      selector: string | HTMLElement | CustomElement<T>,
+      id: string | HTMLElement | CustomElement<T>,
       event: string | keyof HTMLElementEventMap,
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = typeof selector === 'string' ? this.ref(selector) : selector;
-      if ((options as AddEventListenerOptions)?.once !== true) {
+      const el = typeof id === 'string' ? this.shadowRoot?.getElementById(`${id}`) as HTMLElement : id;
+      if (!(options as AddEventListenerOptions).once) {
         this.#events.add({ el, event, callback });
       }
       el.addEventListener(event, callback, options);
@@ -145,9 +134,8 @@ const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
           return sheet.replace(style);
         } else if (style instanceof CSSStyleSheet) {
           return Promise.resolve(style);
-        } else {
-          throw new Error(`invalid css in styles`);
         }
+        throw new Error(`invalid css in styles`);
       })
     ).then((sheets: CSSStyleSheet[]) => {
       // @ts-ignore
