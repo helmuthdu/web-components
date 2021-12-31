@@ -1,4 +1,4 @@
-import { classMap, define, uuid } from '../../lib/custom-element';
+import { classMap, CustomElement, define, uuid } from '../../lib/custom-element';
 import { Color } from '../../types';
 import styles from './alert.css';
 
@@ -9,25 +9,30 @@ export type Props = {
 
 const getClassNames = (props: Props) => classMap('alert', `alert-${props.variant}`, props.append);
 
+const addEvents = ({ event, fire, remove }: CustomElement<Props>) => {
+  event(
+    'close-button',
+    'click',
+    () => {
+      fire('close');
+      remove();
+    },
+    { once: true }
+  );
+};
+
 define<Props>('tw-alert', {
   props: {
     append: undefined,
     variant: 'neutral'
   },
-  onAttributeChanged(name, prev, curr, { update }) {
-    update();
+  onAttributeChanged(name, prev, curr, host) {
+    host.update();
+    addEvents(host);
   },
-  events: [
-    {
-      id: 'close-button',
-      event: 'click',
-      callback: (evt, { fire, remove }) => {
-        fire('close');
-        remove();
-      },
-      options: { once: true }
-    }
-  ],
+  onConnected: host => {
+    addEvents(host);
+  },
   styles: [styles],
   template: ({ ...props }) => {
     const id = uuid();

@@ -1,27 +1,19 @@
 type Props = Record<string, Primitive>;
 
-type CustomElementEvent<T extends Props> = {
-  id: string | HTMLElement | CustomElement<T>;
-  event: string | keyof HTMLElementEventMap;
-  callback: (event: Event, host: CustomElement<T>) => void;
-  options?: boolean | AddEventListenerOptions;
-};
-
-type CustomElementEventItem<T extends Props> = {
-  el: HTMLElement | CustomElement<T>;
-  event: string | keyof HTMLElementEventMap;
-  callback: EventListener;
-};
-
-type CustomElement<T extends Props> = HTMLElement & {
+export type CustomElement<T extends Props> = HTMLElement & {
   update: () => void;
   fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
+  event: (
+    id: string | HTMLElement | CustomElement<T>,
+    event: string | keyof HTMLElementEventMap,
+    callback: EventListener,
+    options?: boolean | AddEventListenerOptions
+  ) => void;
 } & {
   [K in keyof T]: T[K];
 };
 
 type CustomElementOptions<T extends Props> = {
-  events?: CustomElementEvent<T>[];
   onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => boolean | void;
   onConnected?: (host: CustomElement<T>) => void;
   onDisconnected?: (host: CustomElement<T>) => void;
@@ -31,7 +23,6 @@ type CustomElementOptions<T extends Props> = {
 };
 
 export const component = <T extends Props>({
-  events = [],
   onAttributeChanged,
   onConnected,
   onDisconnected,
@@ -40,7 +31,6 @@ export const component = <T extends Props>({
   template
 }: CustomElementOptions<T>) =>
   class extends HTMLElement {
-    #registeredEvents: Set<CustomElementEventItem<T>> = new Set();
     #ready = false;
     #self = new Proxy(this, {
       get(target, key) {
@@ -68,8 +58,6 @@ export const component = <T extends Props>({
     }
 
     disconnectedCallback() {
-      this.unbindEvents();
-
       if (onDisconnected) {
         onDisconnected(this.#self as any);
       }
@@ -82,33 +70,23 @@ export const component = <T extends Props>({
     }
 
     update() {
-      this.unbindEvents();
       // @ts-ignore
       this.shadowRoot.innerHTML = template(this.#self as any);
-      this.bindEvents();
     }
 
     fire(event: string | keyof HTMLElementEventMap, options?: CustomEventInit) {
       this.dispatchEvent(new CustomEvent(event, options));
     }
 
-    bindEvents() {
-      events?.forEach(event => this.registerEvent(event));
-    }
-
-    unbindEvents() {
-      this.#registeredEvents.forEach(({ el, event, callback }) => {
-        el.removeEventListener(event, callback);
-      });
-    }
-
-    registerEvent({ id, event, callback, options }: CustomElementEvent<T>) {
+    event(
+      id: string | HTMLElement | CustomElement<T>,
+      event: string | keyof HTMLElementEventMap,
+      callback: EventListener,
+      options?: boolean | AddEventListenerOptions
+    ) {
       const el = typeof id === 'string' ? (this.shadowRoot?.getElementById(`${id}`) as HTMLElement) : id;
-      const _callback = (evt: Event) => {
-        callback(evt, this.#self as any);
-      };
-      this.#registeredEvents.add({ el, event, callback: _callback });
-      el.addEventListener(event, _callback, options);
+      if (!el) throw new Error(`element with id="${id}" not found`);
+      el.addEventListener(event, callback, options);
     }
   };
 
