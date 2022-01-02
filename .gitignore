@@ -1,7 +1,8 @@
-node_modules
 .DS_Store
-dist
-build
-dist-ssr
+.history
 *.local
+build
+dist
+dist-ssr
+node_modules
 package-lock.json
