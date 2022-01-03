@@ -6,10 +6,12 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   assetsInclude: ['./tailwindcss.css'],
   build: {
-    lib: {
-      entry: './src/main.ts',
-      name: 'tailwind-components',
-      fileName: format => `tailwind.${format}.js`
+    rollupOptions: {
+      input: [
+        './src/components/alert/alert.ts',
+        './src/elements/button/button.ts',
+        './src/elements/button/button-group.ts'
+      ]
     }
   },
   css: false,
