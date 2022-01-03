@@ -5,13 +5,6 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "dev",
-        "type": "node-terminal",
-        "request": "launch",
-        "cwd": "${workspaceRoot}/packages/custom-elements",
-        "command": "nvm use 16;npm run dev"
-      },
-      {
         "name": "chrome:dev",
         "type": "pwa-chrome",
         "request": "launch",
