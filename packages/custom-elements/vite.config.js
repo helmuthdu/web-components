@@ -9,7 +9,7 @@ export default defineConfig({
     lib: {
       entry: './src/main.ts',
       name: 'tailwind-components',
-      fileName: format => `tailwind.${format}.js`
+      fileName: format => `tailwind-components.${format}.js`
     }
   },
   css: false,

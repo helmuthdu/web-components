@@ -2,6 +2,17 @@
   "name": "@windtail/components",
   "private": true,
   "version": "1.0.0",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/tailwind-components.umd.js",
+  "module": "./dist/tailwind-components.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/tailwind-components.es.js",
+      "require": "./dist/tailwind-components.umd.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,8 +22,7 @@
     "storybook:build": "build-storybook",
     "storybook:update-tailwind": "tailwindcss -i tailwind.css -o .storybook/public/tailwind.css -m"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@storybook/addon-actions": "^6.4.9",
