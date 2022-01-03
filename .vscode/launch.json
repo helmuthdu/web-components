@@ -6,15 +6,10 @@
     "configurations": [
       {
         "name": "dev",
-        "type": "pwa-node",
+        "type": "node-terminal",
         "request": "launch",
         "cwd": "${workspaceRoot}/packages/custom-elements",
-        "runtimeExecutable": "npm",
-        "runtimeVersion": "16.13.1",
-        "runtimeArgs": [
-          "run-script", "dev"
-        ],
-        // "command": "nvm use 16 && npm run dev"
+        "command": "nvm use 16;npm run dev"
       },
       {
         "name": "chrome:dev",
@@ -50,6 +45,13 @@
           "program": "${workspaceFolder}/node_modules/jest/bin/jest"
         },
         "runtimeVersion": "16.13.1"
-      }
+      },
+      {
+        "name": "setup",
+        "type": "node-terminal",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "command": "rm -fr node_mdules package-lock.json;nvm use 16;ncu -u;npm i;exit"
+      },
     ]
 }
