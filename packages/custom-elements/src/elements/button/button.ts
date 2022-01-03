@@ -1,5 +1,5 @@
-import type { Color, Sizes } from '../../types';
 import { classMap, define } from '../../lib/custom-element';
+import type { Color, Sizes } from '../../types';
 import styles from './button.css';
 
 export type Props = {
