@@ -2,7 +2,7 @@ import { classMap, define } from '../../lib/custom-element';
 import type { Color, Sizes } from '../../types';
 import styles from './button.css';
 
-export type Props = {
+export type DataSet = {
   append?: string;
   block?: boolean;
   circle?: boolean;
@@ -16,16 +16,15 @@ export type Props = {
   variant?: Color | 'link';
 };
 
-const renderLoading = (props: Props) => {
-  return /*html*/ `
+const renderLoading = (data: DataSet) => /*html*/ `
     <svg
       id="loading"
       class="${classMap('absolute animate-spin', {
-        'h-3 w-3': props.size === 'xs',
-        'h-4 w-4': props.size === 'sm',
-        'h-5 w-5': props.size === 'md',
-        'h-6 w-6': props.size === 'lg',
-        'h-7 w-7': props.size === 'xl'
+      'h-3 w-3': data.size === 'xs',
+      'h-4 w-4': data.size === 'sm',
+      'h-5 w-5': data.size === 'md' || !data.size,
+      'h-6 w-6': data.size === 'lg',
+      'h-7 w-7': data.size === 'xl'
       })}"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -38,25 +37,25 @@ const renderLoading = (props: Props) => {
         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
     </svg>
   `;
+
+const getClassNames = (data: DataSet) => {
+  return classMap(data.append, 'btn', {
+    'btn-block': data.block,
+    'btn-circle': data.circle,
+    'btn-disabled': data.disabled,
+    'btn-group': data.group,
+    'btn-group-first': data.group === 'first',
+    'btn-group-last': data.group === 'last',
+    'btn-outline': data.outline,
+    'btn-loading': data.loading,
+    'btn-rounded': data.rounded,
+    [`btn-${data.size}`]: data.size,
+    [`btn-${data.variant}`]: data.variant
+  });
 };
 
-const getClassNames = (props: Props) =>
-  classMap(props.append, 'btn', {
-    'btn-block': props.block,
-    'btn-circle': props.circle,
-    'btn-disabled': props.disabled,
-    'btn-group': props.group,
-    'btn-group-first': props.group === 'first',
-    'btn-group-last': props.group === 'last',
-    'btn-outline': props.outline,
-    'btn-loading': props.loading,
-    'btn-rounded': props.rounded,
-    [`btn-${props.size}`]: props.size,
-    [`btn-${props.variant}`]: props.variant
-  });
-
-define<Props>('tw-button', {
-  props: {
+define<DataSet>('tw-button', {
+  data: {
     append: undefined,
     block: undefined,
     circle: undefined,
@@ -69,7 +68,7 @@ define<Props>('tw-button', {
     type: 'button',
     variant: 'blue'
   },
-  onAttributeChanged: (name, prev, curr, { shadowRoot, update, ...props }) => {
+  onAttributeChanged: (name, prev, curr, { shadowRoot, update, dataset }) => {
     const el = shadowRoot?.getElementById('button') as HTMLButtonElement;
     switch (name) {
       case 'append':
@@ -80,11 +79,11 @@ define<Props>('tw-button', {
       case 'rounded':
       case 'size':
       case 'variant':
-        el.className = getClassNames(props);
+        el.className = getClassNames(dataset);
         break;
       case 'block':
       case 'loading':
-        el.className = getClassNames(props);
+        el.className = getClassNames(dataset);
         update();
         break;
       default:
@@ -92,16 +91,17 @@ define<Props>('tw-button', {
     }
   },
   styles: [styles],
-  template: ({ classList, ...props }) => {
-    if (props.block) {
+  template: ({ classList, dataset }) => {
+    console.log(dataset);
+    if (dataset.block) {
       classList.add('w-full');
     } else {
       classList.remove('w-full');
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button id="button" class="${getClassNames(props)}">
-        ${props.loading ? renderLoading(props) : ''}
+      <button type="${dataset.type}" id="button" class="${getClassNames(dataset)}">
+        ${dataset.loading ? renderLoading(dataset) : ''}
         <slot></slot>
       </button>
     `;

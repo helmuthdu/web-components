@@ -1,22 +1,22 @@
 import { classMap, define } from '../../lib/custom-element';
 import styles from './button-group.css';
 
-export type Props = {
+export type DataSet = {
   append?: string;
 };
 
-export const props: Props = {
+export const data: DataSet = {
   append: undefined
 };
 
-const getClassNames = (attrs: Props) => {
+const getClassNames = (attrs: DataSet) => {
   return classMap(attrs.append, 'inline-flex rounded-md shadow-sm');
 };
 
-define<Props>('tw-button-group', {
-  props,
+define<DataSet>('tw-button-group', {
+  data: data,
   styles: [styles],
-  template: (props, { children }) => {
+  template: ({dataset, children}) => {
     for (let idx = 0; idx < children.length; idx++) {
       switch (idx) {
         case 0:
@@ -31,7 +31,7 @@ define<Props>('tw-button-group', {
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div ref="button-group" class="${getClassNames(props)}">
+      <div ref="button-group" class="${getClassNames(dataset)}">
         <slot></slot>
       </div>
     `;

@@ -1,15 +1,15 @@
 import { Meta, Story } from '@storybook/html';
-import type { Props } from './alert';
 import './alert';
+import type { DataSet } from './alert';
 
 export default {
   title: 'Components/Alert',
   args: {
     variant: 'blue'
   }
-} as Meta<Props>;
+} as Meta<DataSet>;
 
-const Template: Story<Partial<Props>> = (_attrs: Partial<Props>) => {
+const Template: Story<Partial<DataSet>> = (_attrs: Partial<DataSet>) => {
   return /*html*/ `
     <tw-alert append="mb-4" variant="blue">
       <span class="font-medium">Info alert!</span> Change a few things up and try submitting again.

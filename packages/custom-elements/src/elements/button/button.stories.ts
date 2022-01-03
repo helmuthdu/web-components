@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/html';
-import type { Props } from './button';
 import './button';
+import type { DataSet } from './button';
 
 export default {
   title: 'Elements/Button',
@@ -58,13 +58,13 @@ export default {
       defaultValue: false
     }
   }
-} as Meta<Props>;
+} as Meta<DataSet>;
 
-const Template: Story<Props & { text: any }> = ({ text, ...props }) =>
+const Template: Story<DataSet & { text: any }> = ({ text, ...props }) =>
   `
-    <tw-button 
-      variant="${props.variant}" 
-      size="${props.size}" 
+    <tw-button
+      variant="${props.variant}"
+      size="${props.size}"
       ${props.loading ? 'loading' : ''}
       ${props.outline ? 'outline' : ''}
       ${props.disabled ? 'disabled' : ''}

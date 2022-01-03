@@ -1,6 +1,6 @@
-type Props = Record<string, Primitive>;
+type CustomElementDataSet = {[name: string]: any | undefined};
 
-export type CustomElement<T extends Props> = HTMLElement & {
+export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'dataset'> & {
   update: () => void;
   fire: (event: string | keyof HTMLElementEventMap, { detail }?: CustomEventInit) => void;
   event: (
@@ -9,24 +9,23 @@ export type CustomElement<T extends Props> = HTMLElement & {
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
   ) => void;
-} & {
-  [K in keyof T]: T[K];
+  dataset: T
 };
 
-type CustomElementOptions<T extends Props> = {
-  onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => boolean | void;
+type CustomElementOptions<T extends CustomElementDataSet> = {
+  onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => void;
   onConnected?: (host: CustomElement<T>) => void;
   onDisconnected?: (host: CustomElement<T>) => void;
-  props: T;
+  data: T;
   styles?: unknown[];
   template: (host: CustomElement<T>) => string;
 };
 
-export const component = <T extends Props>({
+export const component = <T extends CustomElementDataSet>({
   onAttributeChanged,
   onConnected,
   onDisconnected,
-  props,
+  data,
   styles = [],
   template
 }: CustomElementOptions<T>) =>
@@ -35,19 +34,24 @@ export const component = <T extends Props>({
     #self = new Proxy(this, {
       get(target, key) {
         const value = Reflect.get(target, key);
-        return typeof value === 'function' ? value.bind(target) : value;
+        return typeof value === 'function' ? value.bind(target) : key === 'dataset' ? Object.entries(value).reduce(
+          (acc, [key, val]) => ({ ...acc, [key]: val === '' ? true : val }),
+          {} as typeof value
+        ): value;
       }
     });
 
     constructor() {
       super();
-      defineProperties(this as any, props);
       applyStyles(this.attachShadow({ mode: 'open' }), styles);
+      Object.entries(data).filter(([key, value]) => value).forEach(([key, value]) => {
+        this.dataset[key] ??= value as string;
+      })
       this.update();
     }
 
     static get observedAttributes() {
-      return [...Object.keys(props).map(prop => getAttrName(prop))];
+      return [...Object.keys(data).map(prop => `data-${getAttrName(prop)}`)];
     }
 
     connectedCallback() {
@@ -90,7 +94,7 @@ export const component = <T extends Props>({
     }
   };
 
-export const define = <T extends Props>(name: string, options: CustomElementOptions<T>) => {
+export const define = <T extends CustomElementDataSet>(name: string, options: CustomElementOptions<T>) => {
   customElements.define(name, component(options));
 };
 
@@ -129,30 +133,6 @@ const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
       shadowRoot.adoptedStyleSheets = sheets;
     });
   }
-};
-
-const defineProperties = <T extends Props>(target: CustomElement<T>, props: T) => {
-  Object.defineProperties(
-    target,
-    Object.keys(props).reduce((acc, key) => {
-      acc[key] = {
-        enumerable: true,
-        configurable: true,
-        get: () => {
-          const attr = target.getAttribute(getAttrName(key));
-          return (attr === '' ? true : attr) ?? props[key];
-        },
-        set: (val?: any) => {
-          if (val === '' || val) {
-            target.setAttribute(getAttrName(key), val === true ? '' : val);
-          } else {
-            target.removeAttribute(key);
-          }
-        }
-      };
-      return acc;
-    }, {} as PropertyDescriptorMap)
-  );
 };
 
 const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
