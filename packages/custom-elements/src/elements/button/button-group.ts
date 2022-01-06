@@ -1,5 +1,4 @@
 import { classMap, define } from '../../lib/custom-element';
-import styles from './button-group.css';
 
 export type DataSet = {
   append?: string;
@@ -15,18 +14,17 @@ const getClassNames = (attrs: DataSet) => {
 
 define<DataSet>('tw-button-group', {
   data: data,
-  styles: [styles],
   template: ({ dataset, children }) => {
     for (let idx = 0; idx < (children ?? []).length; idx++) {
       switch (idx) {
         case 0:
-          children[idx]?.setAttribute('group', 'first');
+          children[idx]?.setAttribute('data-group', 'first');
           break;
         case children.length - 1:
-          children[idx]?.setAttribute('group', 'last');
+          children[idx]?.setAttribute('data-group', 'last');
           break;
         default:
-          children[idx]?.setAttribute('group', '');
+          children[idx]?.setAttribute('data-group', '');
       }
     }
     return /*html*/ `

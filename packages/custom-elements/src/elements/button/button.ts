@@ -1,6 +1,5 @@
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
-import styles from './button.css';
 
 export type DataSet = {
   append?: string;
@@ -39,19 +38,23 @@ const renderLoading = (data: DataSet) => /*html*/ `
   `;
 
 const getClassNames = (data: DataSet) => {
-  return classMap(data.append, 'btn', {
-    'btn-block': data.block,
-    'btn-circle': data.circle,
-    'btn-disabled': data.disabled,
-    'btn-group': data.group,
-    'btn-group-first': data.group === 'first',
-    'btn-group-last': data.group === 'last',
-    'btn-outline': data.outline,
-    'btn-loading': data.loading,
-    'btn-rounded': data.rounded,
-    [`btn-${data.size}`]: data.size,
-    [`btn-${data.variant}`]: data.variant
-  });
+  return classMap(
+    'btn',
+    {
+      'btn-block': data.block,
+      'btn-circle': data.circle,
+      'btn-disabled': data.disabled,
+      'btn-group': data.group,
+      'btn-group-first': data.group === 'first',
+      'btn-group-last': data.group === 'last',
+      'btn-outline': data.outline,
+      'btn-loading': data.loading,
+      'btn-rounded': data.rounded,
+      [`btn-${data.size}`]: data.size,
+      [`btn-${data.variant}`]: data.variant
+    },
+    data.append
+  );
 };
 
 define<DataSet>('tw-button', {
@@ -90,7 +93,6 @@ define<DataSet>('tw-button', {
         update();
     }
   },
-  styles: [styles],
   template: ({ classList, dataset }) => {
     if (dataset.block) {
       classList.add('w-full');

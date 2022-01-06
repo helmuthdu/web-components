@@ -63,14 +63,14 @@ export default {
 const Template: Story<DataSet & { text: any }> = ({ text, ...props }) =>
   `
     <tw-button
-      variant="${props.variant}"
-      size="${props.size}"
-      ${props.loading ? 'loading' : ''}
-      ${props.outline ? 'outline' : ''}
-      ${props.disabled ? 'disabled' : ''}
-      ${props.circle ? 'circle' : ''}
-      ${props.rounded ? 'rounded' : ''}
-      ${props.block ? 'block' : ''}
+      data-variant="${props.variant}"
+      data-size="${props.size}"
+      ${props.loading ? 'data-loading' : ''}
+      ${props.outline ? 'data-outline' : ''}
+      ${props.disabled ? 'data-disabled' : ''}
+      ${props.circle ? 'data-circle' : ''}
+      ${props.rounded ? 'data-rounded' : ''}
+      ${props.block ? 'data-block' : ''}
     >
       ${text}
     </tw-button>

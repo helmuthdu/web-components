@@ -1,5 +1,4 @@
 import { classMap, define } from '../../lib/custom-element';
-import styles from './alert.css';
 
 export type DataSet = {
   append?: string;
@@ -42,7 +41,6 @@ define<DataSet>('tw-alert', {
       { once: true }
     );
   },
-  styles: [styles],
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
     <div id="alert" class="${classMap('alert', `alert-${dataset.variant}`, dataset.append)}" role="alert">
@@ -50,7 +48,7 @@ define<DataSet>('tw-alert', {
       <button
         id="close-button"
         type="button"
-        class="inline-flex items-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${dataset.variant}"
+        class="inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${dataset.variant}"
         data-collapse-toggle="alert"
         aria-label="Close">
         <span class="sr-only">Close</span>

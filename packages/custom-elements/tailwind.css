@@ -2,8 +2,214 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .alert {
+    @apply flex justify-between items-center py-2 px-4 text-sm border rounded-xl shadow-sm;
+
+    &.alert {
+      @apply text-gray-700 bg-gray-200/80 border-gray-200 dark:text-gray-800;
+    }
+
+    &.alert-error {
+      @apply text-red-700 bg-red-200/80 border-red-200 dark:text-red-800;
+    }
+
+    &.alert-success {
+      @apply text-green-700 bg-green-200/80 border-green-200 dark:text-green-800;
+    }
+
+    &.alert-warning {
+      @apply text-amber-700 bg-amber-200/80 border-amber-200 dark:text-amber-800;
+    }
+
+    &.alert-info {
+      @apply text-blue-700 bg-blue-200/80 border-blue-200 dark:text-blue-800;
+    }
+  }
+
+  .btn {
+    @apply inline-flex flex-wrap items-center justify-center text-center font-semibold border-transparent shadow-sm rounded-lg;
+
+    &.btn-rounded {
+      @apply rounded-full;
+    }
+
+    &.btn-block {
+      @apply w-full;
+    }
+
+    &.btn-group {
+      @apply rounded-none;
+
+      &.btn-group-first {
+        @apply rounded-l-lg;
+      }
+
+      &.btn-group-last {
+        @apply rounded-r-lg mr-0;
+      }
+    }
+
+    &.btn-xs {
+      @apply text-xs px-4 py-1;
+    }
+
+    &.btn-sm {
+      @apply text-sm px-4 py-2;
+    }
+
+    &.btn-md {
+      @apply text-base px-5 py-3;
+    }
+
+    &.btn-lg {
+      @apply text-lg px-5 py-4;
+    }
+
+    &.btn-xl {
+      @apply text-xl px-6 py-4;
+    }
+
+    &.btn-circle {
+      @apply rounded-full p-0;
+
+      &.btn-xs {
+        @apply h-8 w-8;
+      }
+
+      &.btn-sm {
+        @apply h-10 w-10;
+      }
+
+      &.btn-md {
+        @apply h-12 w-12;
+      }
+
+      &.btn-lg {
+        @apply h-14 w-14;
+      }
+
+      &.btn-xl {
+        @apply h-16 w-16;
+      }
+    }
+
+    &.btn-outline:not(.btn-disabled) {
+      @apply bg-transparent border-2;
+
+      &.btn-primary,
+      &.btn-primary > svg {
+        /* @apply text-blue-500 hover:text-blue-600 border-blue-500 hover:border-blue-600; */
+        @apply text-primary border-primary hover:ring-4 focus:ring-4 ring-primary-focus;
+      }
+
+      &.btn-error,
+      &.btn-error > svg {
+        /* @apply text-rose-500 hover:text-rose-600 border-rose-500 hover:border-rose-600; */
+        @apply text-error border-error hover:ring-4 focus:ring-4 ring-error-focus;
+      }
+
+      &.btn-success,
+      &.btn-success > svg {
+        /* @apply text-green-500 hover:text-green-600 border-green-500 hover:border-green-600; */
+        @apply text-success border-success hover:ring-4 focus:ring-4 ring-success-focus;
+      }
+
+      &.btn-xs {
+        @apply text-xs mt-0.5;
+
+        &:not(.btn-circle) {
+          @apply px-4 py-0.5;
+        }
+      }
+
+      &.btn-sm {
+        @apply text-sm;
+
+        &:not(.btn-circle) {
+          @apply px-4 py-1.5;
+        }
+      }
+
+      &.btn-md {
+        @apply text-base;
+
+        &:not(.btn-circle) {
+          @apply px-5 py-2.5;
+        }
+      }
+
+      &.btn-lg {
+        @apply text-lg;
+
+        &:not(.btn-circle) {
+          @apply px-5 py-3.5;
+        }
+      }
+
+      &.btn-xl {
+        @apply text-xl;
+
+        &:not(.btn-circle) {
+          @apply px-6 py-3.5;
+        }
+      }
+
+      &.btn-loading {
+        @apply text-transparent hover:text-transparent;
+      }
+    }
+
+    &.btn-loading {
+      @apply text-transparent hover:text-transparent;
+
+      & > svg {
+        @apply text-white;
+      }
+    }
+
+    &:not(.btn-outline):not(.btn-disabled) {
+      &.btn-primary {
+        /* @apply border-none text-white bg-blue-500 hover:bg-blue-600; */
+        @apply border-none text-primary-contrast bg-primary hover:ring-4 focus:ring-4 ring-primary-focus;
+      }
+
+      &.btn-error {
+        /* @apply border-none text-white bg-rose-500 hover:bg-rose-600; */
+        @apply border-none text-error-contrast bg-error hover:ring-4 focus:ring-4 ring-error-focus;
+      }
+
+      &.btn-success {
+        /* @apply border-none text-white bg-green-500 hover:bg-green-600; */
+        @apply border-none text-success-contrast bg-success hover:ring-4 focus:ring-4 ring-success-focus;
+      }
+
+      &.btn-loading {
+        @apply text-transparent;
+      }
+    }
+
+    &.btn-disabled {
+      @apply bg-neutral-500 border-opacity-0 bg-opacity-20 text-neutral-600/25;
+
+      &.btn-loading {
+        @apply text-transparent;
+
+        & > svg {
+          @apply text-neutral-600/25;
+        }
+      }
+    }
+  }
+
+  .box {
+    /* @apply block bg-white border border-gray-300 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white shadow-md rounded-lg p-5; */
+    @apply text-content block bg-backdrop border border-backdrop-200 shadow-md rounded-lg p-5;
+  }
+}
+
 :root {
-  --color-backdrop: #f1f1f1;
+  --color-backdrop: #fff;
   --color-backdrop-50: hsla(214, 61%, 25%, 0.05);
   --color-backdrop-100: hsla(214, 57%, 24%, 0.1);
   --color-backdrop-200: hsla(214, 53%, 23%, 0.16);
@@ -40,40 +246,42 @@
   --color-content-disabled: hsla(214, 50%, 22%, 0.26);
 }
 
-html[data-theme='dark'] {
-  --color-backdrop: hsl(214, 35%, 21%);
-  --color-backdrop-50: hsla(214, 65%, 85%, 0.06);
-  --color-backdrop-100: hsla(214, 60%, 80%, 0.14);
-  --color-backdrop-200: hsla(214, 64%, 82%, 0.23);
-  --color-backdrop-300: hsla(214, 69%, 84%, 0.32);
-  --color-backdrop-400: hsla(214, 73%, 86%, 0.41);
-  --color-backdrop-500: hsla(214, 78%, 88%, 0.5);
-  --color-backdrop-600: hsla(214, 82%, 90%, 0.6);
-  --color-backdrop-700: hsla(214, 87%, 92%, 0.7);
-  --color-backdrop-800: hsla(214, 91%, 94%, 0.8);
-  --color-backdrop-900: hsla(214, 96%, 96%, 0.9);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-backdrop: hsl(214, 35%, 21%);
+    --color-backdrop-50: hsla(214, 65%, 85%, 0.06);
+    --color-backdrop-100: hsla(214, 60%, 80%, 0.14);
+    --color-backdrop-200: hsla(214, 64%, 82%, 0.23);
+    --color-backdrop-300: hsla(214, 69%, 84%, 0.32);
+    --color-backdrop-400: hsla(214, 73%, 86%, 0.41);
+    --color-backdrop-500: hsla(214, 78%, 88%, 0.5);
+    --color-backdrop-600: hsla(214, 82%, 90%, 0.6);
+    --color-backdrop-700: hsla(214, 87%, 92%, 0.7);
+    --color-backdrop-800: hsla(214, 91%, 94%, 0.8);
+    --color-backdrop-900: hsla(214, 96%, 96%, 0.9);
 
-  --color-primary-backdrop: hsla(214, 90%, 63%, 0.1);
-  --color-primary-focus: hsla(214, 86%, 55%, 0.5);
-  --color-primary: hsl(214, 86%, 55%);
-  --color-primary-content: hsl(214, 100%, 70%);
-  --color-primary-contrast: #fff;
+    --color-primary-backdrop: hsla(214, 90%, 63%, 0.1);
+    --color-primary-focus: hsla(214, 86%, 55%, 0.5);
+    --color-primary: hsl(214, 86%, 55%);
+    --color-primary-content: hsl(214, 100%, 70%);
+    --color-primary-contrast: #fff;
 
-  --color-error-backdrop: hsla(3, 90%, 63%, 0.1);
-  --color-error-focus: hsla(3, 90%, 63%, 0.5);
-  --color-error: hsl(3, 90%, 63%);
-  --color-error-content: hsl(3, 100%, 67%);
-  --color-error-contrast: #fff;
+    --color-error-backdrop: hsla(3, 90%, 63%, 0.1);
+    --color-error-focus: hsla(3, 90%, 63%, 0.5);
+    --color-error: hsl(3, 90%, 63%);
+    --color-error-content: hsl(3, 100%, 67%);
+    --color-error-contrast: #fff;
 
-  --color-success-backdrop: hsla(145, 65%, 42%, 0.1);
-  --color-success-focus: hsla(145, 65%, 42%, 0.5);
-  --color-success: hsl(145, 65%, 42%);
-  --color-success-content: hsl(145, 85%, 47%);
-  --color-success-contrast: #fff;
+    --color-success-backdrop: hsla(145, 65%, 42%, 0.1);
+    --color-success-focus: hsla(145, 65%, 42%, 0.5);
+    --color-success: hsl(145, 65%, 42%);
+    --color-success-content: hsl(145, 85%, 47%);
+    --color-success-contrast: #fff;
 
-  --color-content-heading: hsl(214, 100%, 98%);
-  --color-content-body: hsla(214, 96%, 96%, 0.9);
-  --color-content-secondary: hsla(214, 87%, 92%, 0.7);
-  --color-content-tertiary: hsla(214, 78%, 88%, 0.5);
-  --color-content-disabled: hsla(214, 69%, 84%, 0.32);
+    --color-content-heading: hsl(214, 100%, 98%);
+    --color-content-body: hsla(214, 96%, 96%, 0.9);
+    --color-content-secondary: hsla(214, 87%, 92%, 0.7);
+    --color-content-tertiary: hsla(214, 78%, 88%, 0.5);
+    --color-content-disabled: hsla(214, 69%, 84%, 0.32);
+  }
 }
