@@ -2,14 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  .bg-grid-gray-100 {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
-  }
-  .bg-stripes-fuchsia {
-    background-color: #e879f91a;
-    background-image: linear-gradient(
-            135deg,#d946ef80 10%,transparent 0,transparent 50%,#d946ef80 0,#d946ef80 60%,transparent 0,transparent);
-    background-size: 7.07px 7.07px;
-  }
+:root {
+  --color-backdrop: #f1f1f1;
+  --color-backdrop-50: hsla(214, 61%, 25%, 0.05);
+  --color-backdrop-100: hsla(214, 57%, 24%, 0.1);
+  --color-backdrop-200: hsla(214, 53%, 23%, 0.16);
+  --color-backdrop-300: hsla(214, 50%, 22%, 0.26);
+  --color-backdrop-400: hsla(214, 47%, 21%, 0.38);
+  --color-backdrop-500: hsla(214, 45%, 20%, 0.5);
+  --color-backdrop-600: hsla(214, 43%, 19%, 0.61);
+  --color-backdrop-700: hsla(214, 42%, 18%, 0.72);
+  --color-backdrop-800: hsla(214, 41%, 17%, 0.83);
+  --color-backdrop-900: hsla(214, 40%, 16%, 0.94);
+
+  --color-primary-backdrop: hsla(214, 90%, 52%, 0.1);
+  --color-primary-focus: hsla(214, 90%, 52%, 0.5);
+  --color-primary: hsl(214, 90%, 52%);
+  --color-primary-content: hsl(214, 90%, 52%);
+  --color-primary-contrast: #fff;
+
+  --color-error-backdrop: hsla(3, 100%, 60%, 0.1);
+  --color-error-focus: hsla(3, 100%, 60%, 0.5);
+  --color-error: hsl(3, 100%, 61%);
+  --color-error-content: hsl(3, 92%, 53%);
+  --color-error-contrast: #fff;
+
+  --color-success-backdrop: hsla(145, 76%, 44%, 0.12);
+  --color-success-focus: hsla(145, 76%, 44%, 0.55);
+  --color-success: hsl(145, 80%, 42%);
+  --color-success-content: hsl(145, 100%, 32%);
+  --color-success-contrast: #fff;
+
+  --color-content-heading: hsl(214, 35%, 15%);
+  --color-content-body: hsla(214, 40%, 16%, 0.94);
+  --color-content-secondary: hsla(214, 42%, 18%, 0.72);
+  --color-content-tertiary: hsla(214, 45%, 20%, 0.5);
+  --color-content-disabled: hsla(214, 50%, 22%, 0.26);
+}
+
+html[data-theme='dark'] {
+  --color-backdrop: hsl(214, 35%, 21%);
+  --color-backdrop-50: hsla(214, 65%, 85%, 0.06);
+  --color-backdrop-100: hsla(214, 60%, 80%, 0.14);
+  --color-backdrop-200: hsla(214, 64%, 82%, 0.23);
+  --color-backdrop-300: hsla(214, 69%, 84%, 0.32);
+  --color-backdrop-400: hsla(214, 73%, 86%, 0.41);
+  --color-backdrop-500: hsla(214, 78%, 88%, 0.5);
+  --color-backdrop-600: hsla(214, 82%, 90%, 0.6);
+  --color-backdrop-700: hsla(214, 87%, 92%, 0.7);
+  --color-backdrop-800: hsla(214, 91%, 94%, 0.8);
+  --color-backdrop-900: hsla(214, 96%, 96%, 0.9);
+
+  --color-primary-backdrop: hsla(214, 90%, 63%, 0.1);
+  --color-primary-focus: hsla(214, 86%, 55%, 0.5);
+  --color-primary: hsl(214, 86%, 55%);
+  --color-primary-content: hsl(214, 100%, 70%);
+  --color-primary-contrast: #fff;
+
+  --color-error-backdrop: hsla(3, 90%, 63%, 0.1);
+  --color-error-focus: hsla(3, 90%, 63%, 0.5);
+  --color-error: hsl(3, 90%, 63%);
+  --color-error-content: hsl(3, 100%, 67%);
+  --color-error-contrast: #fff;
+
+  --color-success-backdrop: hsla(145, 65%, 42%, 0.1);
+  --color-success-focus: hsla(145, 65%, 42%, 0.5);
+  --color-success: hsl(145, 65%, 42%);
+  --color-success-content: hsl(145, 85%, 47%);
+  --color-success-contrast: #fff;
+
+  --color-content-heading: hsl(214, 100%, 98%);
+  --color-content-body: hsla(214, 96%, 96%, 0.9);
+  --color-content-secondary: hsla(214, 87%, 92%, 0.7);
+  --color-content-tertiary: hsla(214, 78%, 88%, 0.5);
+  --color-content-disabled: hsla(214, 69%, 84%, 0.32);
 }

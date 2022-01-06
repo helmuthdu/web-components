@@ -1,0 +1,34 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "packages/custom-elements/",
+			"problemMatcher": [],
+			"label": "npm:dev",
+			"detail": "vite",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "npm",
+			"script": "storybook",
+			"path": "packages/custom-elements/",
+			"problemMatcher": [],
+			"label": "npm:storybook",
+			"detail": "npm run storybook:update-tailwind && start-storybook -p 6006"
+		},
+		{
+			"label": "Client Build",
+			"command": "gulp",
+			"args": ["build"],
+			"options": {
+			  "cwd": "${workspaceFolder}/client",
+			  "runtimeVersion": "16.13.1"
+			}
+		}
+	]
+}

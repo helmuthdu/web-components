@@ -1,16 +1,15 @@
 import { classMap, define } from '../../lib/custom-element';
-import { Color } from '../../types';
 import styles from './alert.css';
 
 export type DataSet = {
   append?: string;
-  variant?: Color;
+  variant?: 'error' | 'success' | 'warning' | 'info' | undefined;
 };
 
 define<DataSet>('tw-alert', {
   data: {
     append: undefined,
-    variant: 'neutral'
+    variant: undefined
   },
   onAttributeChanged(name, prev, curr, { shadowRoot }) {
     switch (name) {

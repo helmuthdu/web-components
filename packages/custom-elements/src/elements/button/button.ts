@@ -1,5 +1,5 @@
 import { classMap, define } from '../../lib/custom-element';
-import type { Color, Sizes } from '../../types';
+import type { Sizes } from '../../types';
 import styles from './button.css';
 
 export type DataSet = {
@@ -13,18 +13,18 @@ export type DataSet = {
   rounded?: boolean;
   size?: Sizes;
   type?: 'button' | 'reset' | 'submit';
-  variant?: Color | 'link';
+  variant?: 'primary' | 'error' | 'success';
 };
 
 const renderLoading = (data: DataSet) => /*html*/ `
     <svg
       id="loading"
       class="${classMap('absolute animate-spin', {
-      'h-3 w-3': data.size === 'xs',
-      'h-4 w-4': data.size === 'sm',
-      'h-5 w-5': data.size === 'md' || !data.size,
-      'h-6 w-6': data.size === 'lg',
-      'h-7 w-7': data.size === 'xl'
+        'h-3 w-3': data.size === 'xs',
+        'h-4 w-4': data.size === 'sm',
+        'h-5 w-5': data.size === 'md' || !data.size,
+        'h-6 w-6': data.size === 'lg',
+        'h-7 w-7': data.size === 'xl'
       })}"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -66,7 +66,7 @@ define<DataSet>('tw-button', {
     rounded: undefined,
     size: 'md',
     type: 'button',
-    variant: 'blue'
+    variant: 'primary'
   },
   onAttributeChanged: (name, prev, curr, { shadowRoot, update, dataset }) => {
     const el = shadowRoot?.getElementById('button') as HTMLButtonElement;
@@ -92,7 +92,6 @@ define<DataSet>('tw-button', {
   },
   styles: [styles],
   template: ({ classList, dataset }) => {
-    console.log(dataset);
     if (dataset.block) {
       classList.add('w-full');
     } else {

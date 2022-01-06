@@ -7,6 +7,25 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://unpkg.com/construct-style-sheets-polyfill"></script>
     <title>Vite App</title>
+    <style>
+      .bg-grid-gray-100 {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+      }
+      .bg-stripes-fuchsia {
+        background-color: #e879f91a;
+        background-image: linear-gradient(
+          135deg,
+          #d946ef80 10%,
+          transparent 0,
+          transparent 50%,
+          #d946ef80 0,
+          #d946ef80 60%,
+          transparent 0,
+          transparent
+        );
+        background-size: 7.07px 7.07px;
+      }
+    </style>
   </head>
   <body>
     <script src="/src/main.ts" type="module"></script>
@@ -18,28 +37,24 @@
         <div class="flex flex-col gap-3 items-center h-screen justify-center">
           <tw-box>this is a box!</tw-box>
 
-          <tw-button data-variant="rose">Get Started</tw-button>
-          <tw-button data-outline data-rounded data-variant="rose">Get Started</tw-button>
-          <tw-button data-disabled data-loading data-variant="rose">Get Started</tw-button>
+          <tw-button data-variant="primary">Get Started</tw-button>
+          <tw-button data-outline data-rounded data-variant="primary">Get Started</tw-button>
+          <tw-button data-disabled data-loading data-variant="primary">Get Started</tw-button>
 
-          <tw-alert data-variant="blue" data-append="mt-3 mb-2">
+          <tw-alert data-variant="info" data-append="mt-3 mb-2">
             <span class="font-medium">Info alert!</span>
             Change a few things up and try submitting again.
           </tw-alert>
-          <tw-alert data-variant="red">
+          <tw-alert data-variant="error">
             <span class="font-medium">Danger alert!</span>
             Change a few things up and try submitting again.
           </tw-alert>
-          <tw-alert data-variant="green">
+          <tw-alert data-variant="success">
             <span class="font-medium">Success alert!</span>
             Change a few things up and try submitting again.
           </tw-alert>
-          <tw-alert data-variant="amber">
+          <tw-alert data-variant="warning">
             <span class="font-medium">Warning alert!</span>
-            Change a few things up and try submitting again.
-          </tw-alert>
-          <tw-alert data-variant="gray">
-            <span class="font-medium">Dark alert!</span>
             Change a few things up and try submitting again.
           </tw-alert>
         </div>

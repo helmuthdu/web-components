@@ -16,8 +16,8 @@ const getClassNames = (attrs: DataSet) => {
 define<DataSet>('tw-button-group', {
   data: data,
   styles: [styles],
-  template: ({dataset, children}) => {
-    for (let idx = 0; idx < children.length; idx++) {
+  template: ({ dataset, children }) => {
+    for (let idx = 0; idx < (children ?? []).length; idx++) {
       switch (idx) {
         case 0:
           children[idx]?.setAttribute('group', 'first');

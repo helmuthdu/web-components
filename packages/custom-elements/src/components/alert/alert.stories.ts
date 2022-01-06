@@ -5,7 +5,7 @@ import type { DataSet } from './alert';
 export default {
   title: 'Components/Alert',
   args: {
-    variant: 'blue'
+    variant: 'info'
   }
 } as Meta<DataSet>;
 

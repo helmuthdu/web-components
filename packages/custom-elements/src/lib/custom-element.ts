@@ -1,4 +1,4 @@
-type CustomElementDataSet = {[name: string]: any | undefined};
+type CustomElementDataSet = { [name: string]: any | undefined };
 
 export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'dataset'> & {
   update: () => void;
@@ -9,7 +9,7 @@ export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'd
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
   ) => void;
-  dataset: T
+  dataset: T;
 };
 
 type CustomElementOptions<T extends CustomElementDataSet> = {
@@ -34,19 +34,25 @@ export const component = <T extends CustomElementDataSet>({
     #self = new Proxy(this, {
       get(target, key) {
         const value = Reflect.get(target, key);
-        return typeof value === 'function' ? value.bind(target) : key === 'dataset' ? Object.entries(value).reduce(
-          (acc, [key, val]) => ({ ...acc, [key]: val === '' ? true : val }),
-          {} as typeof value
-        ): value;
+        return typeof value === 'function'
+          ? value.bind(target)
+          : key === 'dataset'
+          ? Object.entries(value).reduce(
+              (acc, [key, val]) => ({ ...acc, [key]: val === '' ? true : val }),
+              {} as typeof value
+            )
+          : value;
       }
     });
 
     constructor() {
       super();
       applyStyles(this.attachShadow({ mode: 'open' }), styles);
-      Object.entries(data).filter(([key, value]) => value).forEach(([key, value]) => {
-        this.dataset[key] ??= value as string;
-      })
+      Object.entries(data)
+        .filter(([key, value]) => value)
+        .forEach(([key, value]) => {
+          this.dataset[key] ??= value as string;
+        });
       this.update();
     }
 
@@ -117,7 +123,7 @@ export const classMap = (...classes: unknown[]) =>
     .trim();
 
 const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
-  if (styles.length > 0) {
+  if ((styles ?? []).length > 0) {
     Promise.all(
       styles.map((style, idx) => {
         if (typeof style === 'string') {
