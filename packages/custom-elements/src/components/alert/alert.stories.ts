@@ -11,20 +11,20 @@ export default {
 
 const Template: Story<Partial<DataSet>> = (_attrs: Partial<DataSet>) => {
   return /*html*/ `
-    <tw-alert append="mb-4" variant="blue">
+    <tw-alert data-append="mb-4">
+      <span class="font-medium">Default alert!</span> Change a few things up and try submitting again.
+    </tw-alert>
+    <tw-alert data-append="mb-4" data-variant="info">
       <span class="font-medium">Info alert!</span> Change a few things up and try submitting again.
     </tw-alert>
-    <tw-alert append="mb-4" variant="red">
+    <tw-alert data-append="mb-4" data-variant="error">
       <span class="font-medium">Danger alert!</span> Change a few things up and try submitting again.
     </tw-alert>
-    <tw-alert append="mb-4" variant="green">
+    <tw-alert data-append="mb-4" data-variant="success">
       <span class="font-medium">Success alert!</span> Change a few things up and try submitting again.
     </tw-alert>
-    <tw-alert append="mb-4" variant="amber">
-      <span class="font-medium">Warning alert!</span> Change a few things up and try submitting again.
-    </tw-alert>
-    <tw-alert append="mb-4" variant="gray">
-      <span class="font-medium">Dark alert!</span> Change a few things up and try submitting again.
+    <tw-alert data-append="mb-4" data-variant="contrast">
+      <span class="font-medium">Contrast alert!</span> Change a few things up and try submitting again.
     </tw-alert>
   `;
 };

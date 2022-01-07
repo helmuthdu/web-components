@@ -8,32 +8,9 @@ export default {
     variant: {
       name: 'variant',
       type: { name: 'string', required: true },
-      defaultValue: 'blue',
+      defaultValue: 'primary',
       control: { type: 'select' },
-      options: [
-        'slate',
-        'gray',
-        'zinc',
-        'neutral',
-        'stone',
-        'red',
-        'orange',
-        'amber',
-        'yellow',
-        'lime',
-        'green',
-        'emerald',
-        'teal',
-        'cyan',
-        'sky',
-        'blue',
-        'indigo',
-        'violet',
-        'purple',
-        'fuchsia',
-        'pink',
-        'rose'
-      ]
+      options: ['primary', 'error', 'success']
     },
     size: {
       name: 'size',
