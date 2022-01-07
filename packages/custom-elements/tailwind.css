@@ -7,7 +7,7 @@
     @apply flex justify-between items-center py-2 px-4 text-sm border rounded-xl shadow-sm;
 
     &.alert {
-      @apply text-content bg-contrast-50 border-contrast-200;
+      @apply text-content bg-contrast-50 border-contrast-300;
     }
 
     &.alert-error {
@@ -23,7 +23,7 @@
     }
 
     &.alert-contrast {
-      @apply text-contrast-50 bg-contrast-800 border-contrast-900;
+      @apply text-contrast-50 bg-contrast-800 border-contrast-700;
     }
   }
 

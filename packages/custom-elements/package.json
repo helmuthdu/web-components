@@ -22,9 +22,9 @@
     "build": "tsc && vite build",
     "build:split": "tsc && vite build -c=vite.split.config.js",
     "preview": "vite preview",
-    "storybook": "npm run storybook:update-tailwind && start-storybook -p 6006",
+    "storybook": "npm run tailwind:storybook && start-storybook -p 6006",
     "storybook:build": "build-storybook",
-    "storybook:update-tailwind": "tailwindcss -i tailwind.css -o .storybook/public/tailwind.css -m"
+    "tailwind:storybook": "tailwindcss --postcss -i tailwind.css -o .storybook/public/tailwind.css -m"
   },
   "dependencies": {},
   "devDependencies": {
