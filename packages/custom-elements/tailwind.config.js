@@ -3,20 +3,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        transparent: 'transparent',
-        current: 'currentColor',
-        backdrop: {
-          DEFAULT: 'var(--color-backdrop)',
-          50: 'var(--color-backdrop-50)',
-          100: 'var(--color-backdrop-100)',
-          200: 'var(--color-backdrop-200)',
-          300: 'var(--color-backdrop-300)',
-          400: 'var(--color-backdrop-400)',
-          500: 'var(--color-backdrop-500)',
-          600: 'var(--color-backdrop-600)',
-          700: 'var(--color-backdrop-700)',
-          800: 'var(--color-backdrop-800)',
-          900: 'var(--color-backdrop-900)'
+        canvas: 'var(--color-canvas)',
+        contrast: {
+          50: 'var(--color-contrast-50)',
+          100: 'var(--color-contrast-100)',
+          200: 'var(--color-contrast-200)',
+          300: 'var(--color-contrast-300)',
+          400: 'var(--color-contrast-400)',
+          500: 'var(--color-contrast-500)',
+          600: 'var(--color-contrast-600)',
+          700: 'var(--color-contrast-700)',
+          800: 'var(--color-contrast-800)',
+          900: 'var(--color-contrast-900)'
         },
         primary: {
           DEFAULT: 'var(--color-primary)',

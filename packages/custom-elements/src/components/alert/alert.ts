@@ -2,7 +2,7 @@ import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
-  variant?: 'error' | 'success' | 'warning' | 'info' | undefined;
+  variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
 define<DataSet>('tw-alert', {
