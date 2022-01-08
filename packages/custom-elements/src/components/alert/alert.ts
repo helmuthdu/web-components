@@ -5,29 +5,21 @@ export type DataSet = {
   variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
-define<DataSet>('tw-alert', {
+define<DataSet>('ce-alert', {
   data: {
     append: undefined,
     variant: undefined
   },
-  onAttributeChanged(name, prev, curr, { shadowRoot }) {
+  onAttributeChanged(name, prev, curr, { widget }) {
     switch (name) {
-      case 'variant': {
-        const toggleVariantClasses = (id: string) => {
-          const el = shadowRoot?.getElementById(id) as HTMLElement;
-          el.classList.remove(`alert-${prev}`);
-          el.classList.add(`alert-${curr}`);
-        };
-        toggleVariantClasses('widget');
-        toggleVariantClasses('button');
+      case 'data-variant':
+        if (prev) widget.classList.remove(`alert-${prev}`);
+        if (curr) widget.classList.add(`alert-${curr}`);
         break;
-      }
-      case 'append': {
-        const el = shadowRoot?.getElementById('widget') as HTMLElement;
-        if (prev) el.classList.remove(...prev.split(' '));
-        if (curr) el.classList.add(...curr.split(' '));
+      case 'data-append':
+        if (prev) widget.classList.remove(...prev.split(' '));
+        if (curr) widget.classList.add(...curr.split(' '));
         break;
-      }
     }
   },
   onConnected: ({ event, fire, remove }) => {
@@ -48,7 +40,7 @@ define<DataSet>('tw-alert', {
       <button
         id="button"
         type="button"
-        class="inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${dataset.variant}"
+        class="inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 text-current"
         data-collapse-toggle="alert"
         aria-label="Close">
         <span class="sr-only">Close</span>

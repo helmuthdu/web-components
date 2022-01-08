@@ -1,4 +1,4 @@
-type CustomElementDataSet = { [name: string]: any | undefined };
+type CustomElementDataSet = Record<string, any | undefined>;
 
 export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'dataset'> & {
   update: () => void;
@@ -14,7 +14,7 @@ export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'd
 };
 
 type CustomElementOptions<T extends CustomElementDataSet> = {
-  onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => void;
+  onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<T>) => void;
   onConnected?: (host: CustomElement<T>) => void;
   onDisconnected?: (host: CustomElement<T>) => void;
   data: T;
@@ -74,7 +74,7 @@ export const component = <T extends CustomElementDataSet>({
       }
     }
 
-    attributeChangedCallback(name: keyof T, prev: string, curr: string) {
+    attributeChangedCallback(name: string, prev: string, curr: string) {
       if (this.#ready && prev !== curr && onAttributeChanged) {
         onAttributeChanged(name, prev, curr, this.#self as any);
       }
@@ -101,9 +101,7 @@ export const component = <T extends CustomElementDataSet>({
     }
 
     get widget() {
-      const el = this.shadowRoot?.getElementById(`widget`);
-      if (!el) throw new Error(`element with id="widget" not found`);
-      return el;
+      return this.shadowRoot?.getElementById(`widget`);
     }
   };
 

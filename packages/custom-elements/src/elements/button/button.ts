@@ -57,7 +57,7 @@ const getClassNames = (data: DataSet) => {
   );
 };
 
-define<DataSet>('tw-button', {
+define<DataSet>('ce-button', {
   data: {
     append: undefined,
     block: undefined,

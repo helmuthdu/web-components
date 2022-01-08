@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/html';
+import './accordion-group';
+import type { DataSet } from './accordion-group';
 import './accordion';
-import type { DataSet } from './accordion';
-import './accordion-item';
 
 export default {
   title: 'Components/Accordion',
@@ -18,17 +18,17 @@ export default {
 
 const Template: Story<Partial<DataSet>> = ({ variant }) => {
   return /*html*/ `
-  <tw-accordion style="width: 300px" data-variant="${variant}">
-    <tw-accordion-item data-header="1 item">
+  <ce-accordion-group style="width: 300px" data-variant="${variant}">
+    <ce-accordion data-header="1 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-    </tw-accordion-item>
-    <tw-accordion-item data-header="2 item">
+    </ce-accordion>
+    <ce-accordion data-header="2 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-    </tw-accordion-item>
-    <tw-accordion-item data-header="3 item">
+    </ce-accordion>
+    <ce-accordion data-header="3 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-    </tw-accordion-item>
-  </tw-accordion>
+    </ce-accordion>
+  </ce-accordion-group>
   `;
 };
 

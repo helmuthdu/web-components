@@ -8,7 +8,7 @@ export const data: DataSet = {
   append: undefined
 };
 
-define<DataSet>('tw-box', {
+define<DataSet>('ce-box', {
   data,
   onAttributeChanged(name, prev, curr, { widget }) {
     switch (name) {
@@ -22,7 +22,7 @@ define<DataSet>('tw-box', {
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
     <div id="widget" class="${classMap(
-      'block text-content bg-canvas border border-contrast-200 shadow-md rounded-lg p-5',
+      'block text-content bg-canvas border border-contrast-300 rounded-lg p-5',
       dataset.append
     )}">
       <slot></slot>

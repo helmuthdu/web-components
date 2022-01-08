@@ -12,7 +12,7 @@ const getClassNames = (attrs: DataSet) => {
   return classMap(attrs.append, 'inline-flex rounded-md shadow-sm');
 };
 
-define<DataSet>('tw-button-group', {
+define<DataSet>('ce-button-group', {
   data: data,
   template: ({ dataset, children }) => {
     for (let idx = 0; idx < (children ?? []).length; idx++) {
@@ -29,7 +29,7 @@ define<DataSet>('tw-button-group', {
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div ref="button-group" class="${getClassNames(dataset)}">
+      <div id="widget" class="${getClassNames(dataset)}">
         <slot></slot>
       </div>
     `;

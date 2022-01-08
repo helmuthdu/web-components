@@ -39,7 +39,7 @@ export default {
 
 const Template: Story<DataSet & { text: any }> = ({ text, ...props }) =>
   `
-    <tw-button
+    <ce-button
       data-variant="${props.variant}"
       data-size="${props.size}"
       ${props.loading ? 'data-loading' : ''}
@@ -50,7 +50,7 @@ const Template: Story<DataSet & { text: any }> = ({ text, ...props }) =>
       ${props.block ? 'data-block' : ''}
     >
       ${text}
-    </tw-button>
+    </ce-button>
   `;
 
 export const Basic = Template.bind({});

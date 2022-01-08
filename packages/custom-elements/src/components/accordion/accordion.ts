@@ -1,21 +1,16 @@
-import { classMap, define } from '../../lib/custom-element';
+import { define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
-  variant?: 'transparent' | 'solid' | 'filled' | undefined;
+  header: string;
+  variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
-const getClassNames = (data: DataSet) => {
-  return classMap('block rounded-lg px-2 py-1', {
-    ['bg-canvas border border-contrast-300']: data.variant === 'solid',
-    ['bg-transparent']: data.variant === 'transparent' || data.variant === 'filled'
-  });
-};
-
-define<DataSet>('tw-accordion', {
+define<DataSet>('ce-accordion', {
   data: {
     append: undefined,
-    variant: 'solid'
+    header: '',
+    variant: undefined
   },
   onAttributeChanged(name, prev, curr, { widget }) {
     switch (name) {
@@ -26,21 +21,33 @@ define<DataSet>('tw-accordion', {
       }
     }
   },
-  onConnected: ({ dataset, children }) => {
-    [...children].forEach((el, idx) => {
-      if (dataset.variant === 'solid' && idx < children.length - 1) {
-        el.classList.add('block', 'border-b', 'border-contrast-300');
-      } else if (dataset.variant === 'transparent') {
-        el.classList.add('block');
-      } else if (dataset.variant === 'filled') {
-        el.classList.add('block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-300');
-      }
-    });
-  },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
-    <div id="widget" class="${getClassNames(dataset)}">
-      <slot></slot>
-    </div>
+    <style>
+      details[open] summary ~ * {
+        animation: open .5s ease-in-out;
+      }
+      details svg {
+        transition: transform .3s ease-in-out;
+      }
+      details[open] svg {
+        transform: rotate(90deg);
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      @keyframes open {
+        0% { opacity: 0; display: none; }
+        1% { opacity: 0; display: block; }
+        100% { opacity: 1; display: block; }
+      }
+    </style>
+    <details id="widget" class="block text-content py-2 px-4">
+      <summary class="block py-1 cursor-pointer">
+        <svg class="w-4 h-4 float-left mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        ${dataset.header}
+      </summary>
+      <div><slot></slot></article>
+    </details>
   `
 });

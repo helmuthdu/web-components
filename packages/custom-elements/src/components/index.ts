@@ -1,3 +1,4 @@
+import './accordion/accordion-group';
 import './accordion/accordion';
-import './accordion/accordion-item';
 import './alert/alert';
+import './avatar/avatar';
