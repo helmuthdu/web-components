@@ -9,6 +9,7 @@ export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'd
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
   ) => void;
+  widget: HTMLElement;
   dataset: T;
 };
 
@@ -97,6 +98,12 @@ export const component = <T extends CustomElementDataSet>({
       const el = typeof id === 'string' ? (this.shadowRoot?.getElementById(`${id}`) as HTMLElement) : id;
       if (!el) throw new Error(`element with id="${id}" not found`);
       el.addEventListener(event, callback, options);
+    }
+
+    get widget() {
+      const el = this.shadowRoot?.getElementById(`widget`);
+      if (!el) throw new Error(`element with id="widget" not found`);
+      return el;
     }
   };
 

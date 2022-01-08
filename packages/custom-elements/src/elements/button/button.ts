@@ -71,8 +71,7 @@ define<DataSet>('tw-button', {
     type: 'button',
     variant: 'primary'
   },
-  onAttributeChanged: (name, prev, curr, { shadowRoot, update, dataset }) => {
-    const el = shadowRoot?.getElementById('button') as HTMLButtonElement;
+  onAttributeChanged: (name, prev, curr, { widget, update, dataset }) => {
     switch (name) {
       case 'append':
       case 'circle':
@@ -82,11 +81,11 @@ define<DataSet>('tw-button', {
       case 'rounded':
       case 'size':
       case 'variant':
-        el.className = getClassNames(dataset);
+        widget.className = getClassNames(dataset);
         break;
       case 'block':
       case 'loading':
-        el.className = getClassNames(dataset);
+        widget.className = getClassNames(dataset);
         update();
         break;
       default:
@@ -101,7 +100,7 @@ define<DataSet>('tw-button', {
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button type="${dataset.type}" id="button" class="${getClassNames(dataset)}">
+      <button id="widget" type="${dataset.type}" class="${getClassNames(dataset)}">
         ${dataset.loading ? renderLoading(dataset) : ''}
         <slot></slot>
       </button>

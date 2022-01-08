@@ -18,12 +18,12 @@ define<DataSet>('tw-alert', {
           el.classList.remove(`alert-${prev}`);
           el.classList.add(`alert-${curr}`);
         };
-        toggleVariantClasses('alert');
-        toggleVariantClasses('close-button');
+        toggleVariantClasses('widget');
+        toggleVariantClasses('button');
         break;
       }
       case 'append': {
-        const el = shadowRoot?.getElementById('alert') as HTMLElement;
+        const el = shadowRoot?.getElementById('widget') as HTMLElement;
         if (prev) el.classList.remove(...prev.split(' '));
         if (curr) el.classList.add(...curr.split(' '));
         break;
@@ -32,7 +32,7 @@ define<DataSet>('tw-alert', {
   },
   onConnected: ({ event, fire, remove }) => {
     event(
-      'close-button',
+      'button',
       'click',
       () => {
         fire('close');
@@ -43,10 +43,10 @@ define<DataSet>('tw-alert', {
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
-    <div id="alert" class="${classMap('alert', `alert-${dataset.variant}`, dataset.append)}" role="alert">
+    <div id="widget" class="${classMap('alert', `alert-${dataset.variant}`, dataset.append)}" role="alert">
       <div class="text-sm"><slot></slot></div>
       <button
-        id="close-button"
+        id="button"
         type="button"
         class="inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 alert-${dataset.variant}"
         data-collapse-toggle="alert"
