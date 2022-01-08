@@ -5,12 +5,11 @@ export type DataSet = {
   variant?: 'transparent' | 'solid' | 'filled' | undefined;
 };
 
-const getClassNames = (data: DataSet) => {
-  return classMap('block rounded-lg px-2 py-1', {
+const getClassNames = (data: DataSet) =>
+  classMap('block rounded-lg px-2 py-1', {
     ['bg-canvas border border-contrast-300']: data.variant === 'solid',
     ['bg-transparent']: data.variant === 'transparent' || data.variant === 'filled'
   });
-};
 
 define<DataSet>('ce-accordion-group', {
   data: {

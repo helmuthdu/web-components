@@ -8,9 +8,7 @@ export const data: DataSet = {
   append: undefined
 };
 
-const getClassNames = (attrs: DataSet) => {
-  return classMap(attrs.append, 'inline-flex rounded-md shadow-sm');
-};
+const getClassNames = (data: DataSet) => classMap('inline-flex rounded-md shadow-sm', data.append);
 
 define<DataSet>('ce-button-group', {
   data: data,

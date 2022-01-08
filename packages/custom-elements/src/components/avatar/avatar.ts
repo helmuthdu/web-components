@@ -5,12 +5,11 @@ export type DataSet = {
   style?: 'full' | 'rounded';
 };
 
-const getClassNames = (data: DataSet) => {
-  return classMap('overflow-hidden border border-white/30', {
+const getClassNames = (data: DataSet) =>
+  classMap('overflow-hidden border border-white/30', {
     ['rounded-full']: data.style === 'full',
     ['rounded-lg']: data.style === 'rounded'
   });
-};
 
 define<DataSet>('ce-avatar', {
   data: {
