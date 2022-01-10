@@ -17,7 +17,6 @@ export type DataSet = {
 
 const renderLoading = (data: DataSet) => /*html*/ `
   <svg
-    id="loading"
     class="${classMap(
       'absolute animate-spin',
       {

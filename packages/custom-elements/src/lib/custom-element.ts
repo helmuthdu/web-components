@@ -109,8 +109,6 @@ export const define = <T extends CustomElementDataSet>(name: string, options: Cu
   customElements.define(name, component(options));
 };
 
-export const uuid = () => window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-
 export const classMap = (...classes: unknown[]) =>
   classes
     .reduce((acc: string, arg: unknown) => {
