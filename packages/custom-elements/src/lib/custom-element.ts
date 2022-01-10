@@ -9,7 +9,7 @@ export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'd
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
   ) => void;
-  widget: HTMLElement;
+  root: HTMLElement;
   dataset: T;
 };
 
@@ -100,8 +100,8 @@ export const component = <T extends CustomElementDataSet>({
       el.addEventListener(event, callback, options);
     }
 
-    get widget() {
-      return this.shadowRoot?.getElementById(`widget`);
+    get root() {
+      return this.shadowRoot?.getElementById(`root`);
     }
   };
 

@@ -20,14 +20,8 @@ define<DataSet>('ce-avatar', {
     append: undefined,
     style: 'circle'
   },
-  onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name.replace('data-', '')) {
-      case 'append': {
-        if (prev) widget.classList.remove(...prev.split(' '));
-        if (curr) widget.classList.add(...curr.split(' '));
-        break;
-      }
-    }
+  onAttributeChanged(name, prev, curr, { dataset, root }) {
+    root.className = getClassNames(dataset);
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
@@ -38,7 +32,7 @@ define<DataSet>('ce-avatar', {
         align-items: center;
       }
     </style>
-    <div id="widget" class="${getClassNames(dataset)}">
+    <div id="root" class="${getClassNames(dataset)}">
       <slot></slot>
     </div>
   `

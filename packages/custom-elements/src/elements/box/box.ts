@@ -8,23 +8,17 @@ export const data: DataSet = {
   append: undefined
 };
 
+const getClassNames = (data: DataSet) =>
+  classMap('block text-content bg-canvas border border-contrast-300 rounded-lg p-5', data.append);
+
 define<DataSet>('ce-box', {
   data,
-  onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name.replace('data-', '')) {
-      case 'append': {
-        if (prev) widget.classList.remove(...prev.split(' '));
-        if (curr) widget.classList.add(...curr.split(' '));
-        break;
-      }
-    }
+  onAttributeChanged(name, prev, curr, { dataset, root }) {
+    root.className = getClassNames(dataset);
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
-    <div id="widget" class="${classMap(
-      'block text-content bg-canvas border border-contrast-300 rounded-lg p-5',
-      dataset.append
-    )}">
+    <div id="root" class="${getClassNames(dataset)}">
       <slot></slot>
     </div>
   `

@@ -16,11 +16,11 @@ define<DataSet>('ce-accordion-group', {
     append: undefined,
     variant: 'secondary'
   },
-  onAttributeChanged(name, prev, curr, { widget }) {
+  onAttributeChanged(name, prev, curr, { root }) {
     switch (name.replace('data-', '')) {
       case 'append': {
-        if (prev) widget.classList.remove(...prev.split(' '));
-        if (curr) widget.classList.add(...curr.split(' '));
+        if (prev) root.classList.remove(...prev.split(' '));
+        if (curr) root.classList.add(...curr.split(' '));
         break;
       }
     }
@@ -36,7 +36,7 @@ define<DataSet>('ce-accordion-group', {
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
-    <div id="widget" class="${getClassNames(dataset)}">
+    <div id="root" class="${getClassNames(dataset)}">
       <slot></slot>
     </div>
   `

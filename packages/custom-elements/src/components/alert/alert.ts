@@ -24,16 +24,8 @@ define<DataSet>('ce-alert', {
     append: undefined,
     variant: undefined
   },
-  onAttributeChanged(name, prev, curr, { dataset, widget }) {
-    switch (name.replace('data-', '')) {
-      case 'variant':
-        widget.className = getClassNames(dataset);
-        break;
-      case 'append':
-        if (prev) widget.classList.remove(...prev.split(' '));
-        if (curr) widget.classList.add(...curr.split(' '));
-        break;
-    }
+  onAttributeChanged(name, prev, curr, { dataset, root }) {
+    root.className = getClassNames(dataset);
   },
   onConnected: ({ event, fire, remove }) => {
     event(
@@ -48,7 +40,7 @@ define<DataSet>('ce-alert', {
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
-    <div id="widget" class="${getClassNames(dataset)}" role="alert">
+    <div id="root" class="${getClassNames(dataset)}" role="alert">
       <div class="text-sm"><slot></slot></div>
       <button
         id="button"

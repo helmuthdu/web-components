@@ -117,7 +117,7 @@ define<DataSet>('ce-button', {
     type: 'button',
     variant: 'primary'
   },
-  onAttributeChanged: (name, prev, curr, { widget, update, dataset }) => {
+  onAttributeChanged: (name, prev, curr, { root, update, dataset }) => {
     switch (name.replace('data-', '')) {
       case 'append':
       case 'circle':
@@ -127,12 +127,7 @@ define<DataSet>('ce-button', {
       case 'rounded':
       case 'size':
       case 'variant':
-        widget.className = getClassNames(dataset);
-        break;
-      case 'block':
-      case 'loading':
-        widget.className = getClassNames(dataset);
-        update();
+        root.className = getClassNames(dataset);
         break;
       default:
         update();
@@ -146,7 +141,7 @@ define<DataSet>('ce-button', {
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <button id="widget" type="${dataset.type}" class="${getClassNames(dataset)}">
+      <button id="root" type="${dataset.type}" class="${getClassNames(dataset)}">
         ${dataset.loading ? renderLoading(dataset) : ''}
         <slot></slot>
       </button>

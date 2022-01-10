@@ -12,6 +12,9 @@ const getClassNames = (data: DataSet) => classMap('inline-flex rounded-md shadow
 
 define<DataSet>('ce-button-group', {
   data: data,
+  onAttributeChanged(name, prev, curr, { dataset, root }) {
+    root.className = getClassNames(dataset);
+  },
   template: ({ dataset, children }) => {
     for (let idx = 0; idx < (children ?? []).length; idx++) {
       switch (idx) {
@@ -27,7 +30,7 @@ define<DataSet>('ce-button-group', {
     }
     return /*html*/ `
       <link rel="stylesheet" href="/tailwind.css" />
-      <div id="widget" class="${getClassNames(dataset)}">
+      <div id="root" class="${getClassNames(dataset)}">
         <slot></slot>
       </div>
     `;
