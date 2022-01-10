@@ -5,18 +5,31 @@ export type DataSet = {
   variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
+const getClassNames = (data: DataSet) =>
+  classMap(
+    'flex justify-between items-center py-2 px-4 text-sm border rounded-xl shadow-sm',
+    !data.variant
+      ? 'text-content bg-contrast-50 border-contrast-300'
+      : {
+          'text-primary-content bg-primary-backdrop border-primary-focus': data.variant === 'info',
+          'text-error-content bg-error-backdrop border-error-focus': data.variant === 'error',
+          'text-success-content bg-success-backdrop border-success-focus': data.variant === 'success',
+          'text-contrast-50 bg-contrast-800 border-contrast-700': data.variant === 'contrast'
+        },
+    data.append
+  );
+
 define<DataSet>('ce-alert', {
   data: {
     append: undefined,
     variant: undefined
   },
-  onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name) {
-      case 'data-variant':
-        if (prev) widget.classList.remove(`alert-${prev}`);
-        if (curr) widget.classList.add(`alert-${curr}`);
+  onAttributeChanged(name, prev, curr, { dataset, widget }) {
+    switch (name.replace('data-', '')) {
+      case 'variant':
+        widget.className = getClassNames(dataset);
         break;
-      case 'data-append':
+      case 'append':
         if (prev) widget.classList.remove(...prev.split(' '));
         if (curr) widget.classList.add(...curr.split(' '));
         break;
@@ -35,7 +48,7 @@ define<DataSet>('ce-alert', {
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />
-    <div id="widget" class="${classMap('alert', `alert-${dataset.variant}`, dataset.append)}" role="alert">
+    <div id="widget" class="${getClassNames(dataset)}" role="alert">
       <div class="text-sm"><slot></slot></div>
       <button
         id="button"

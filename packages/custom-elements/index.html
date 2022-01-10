@@ -41,7 +41,7 @@
           <ce-button data-disabled data-loading data-variant="primary">Get Started</ce-button>
           <ce-button data-outline data-rounded data-variant="primary">Get Started</ce-button>
 
-          <ce-accordion-group style="width: 300px" data-variant="solid">
+          <ce-accordion-group style="width: 300px" data-style="solid">
             <ce-accordion data-header="1 item">
               <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
             </ce-accordion>
@@ -53,16 +53,33 @@
             </ce-accordion>
           </ce-accordion-group>
 
-          <div class="inline-flex gap-3">
-            <ce-avatar data-style="rounded">
-              <img class="w-20" src="http://daisyui.com/tailwind-css-component-profile-1@94w.png" />
-            </ce-avatar>
-            <ce-avatar data-style="full">
-              <div class="bg-amber-300 w-20 h-20">
-                <span class="text-white font-semibold text-3xl">HS</span>
+          <ce-avatar-group>
+            <ce-avatar data-append="border-4 border-canvas -mr-4">
+              <div class="bg-blue-300 w-10 h-10">
+                <span class="text-white font-semibold text-md">PS</span>
               </div>
             </ce-avatar>
-          </div>
+            <ce-avatar data-append="border-4 border-canvas -mr-4">
+              <div class="bg-amber-300 w-10 h-10">
+                <span class="text-white font-semibold text-md">HS</span>
+              </div>
+            </ce-avatar>
+            <ce-avatar data-append="border-4 border-canvas -mr-4">
+              <div class="bg-red-300 w-10 h-10">
+                <span class="text-white font-semibold text-md">HP</span>
+              </div>
+            </ce-avatar>
+            <ce-avatar data-append="border-4 border-canvas -mr-4">
+              <div class="bg-sky-300 w-10 h-10">
+                <span class="text-white font-semibold text-md">HP</span>
+              </div>
+            </ce-avatar>
+            <ce-avatar data-append="border-4 border-canvas -mr-4">
+              <div class="bg-gray-900 w-10 h-10">
+                <span class="text-white font-semibold text-md">+99</span>
+              </div>
+            </ce-avatar>
+          </ce-avatar-group>
 
           <ce-alert data-variant="info">
             <span class="font-medium">Info alert!</span>

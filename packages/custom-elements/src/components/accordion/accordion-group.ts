@@ -2,22 +2,22 @@ import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
-  variant?: 'transparent' | 'solid' | 'filled' | undefined;
+  variant?: 'primary' | 'secondary' | 'tertiary';
 };
 
 const getClassNames = (data: DataSet) =>
   classMap('block rounded-lg px-2 py-1', {
-    ['bg-canvas border border-contrast-300']: data.variant === 'solid',
-    ['bg-transparent']: data.variant === 'transparent' || data.variant === 'filled'
+    'bg-canvas border border-contrast-300': data.variant === 'secondary',
+    'bg-transparent': data.variant === 'primary' || data.variant === 'tertiary'
   });
 
 define<DataSet>('ce-accordion-group', {
   data: {
     append: undefined,
-    variant: 'solid'
+    variant: 'secondary'
   },
   onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name) {
+    switch (name.replace('data-', '')) {
       case 'append': {
         if (prev) widget.classList.remove(...prev.split(' '));
         if (curr) widget.classList.add(...curr.split(' '));
@@ -27,11 +27,9 @@ define<DataSet>('ce-accordion-group', {
   },
   onConnected: ({ dataset, children }) => {
     [...children].forEach((el, idx) => {
-      if (dataset.variant === 'solid' && idx < children.length - 1) {
+      if ((dataset.variant === 'secondary' || dataset.variant === 'tertiary') && idx < children.length - 1) {
         el.classList.add('block', 'border-b', 'border-contrast-300');
-      } else if (dataset.variant === 'transparent') {
-        el.classList.add('block');
-      } else if (dataset.variant === 'filled') {
+      } else if (dataset.variant === 'primary') {
         el.classList.add('block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-300');
       }
     });

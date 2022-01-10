@@ -3,17 +3,15 @@ import { define } from '../../lib/custom-element';
 export type DataSet = {
   append?: string;
   header: string;
-  variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
 define<DataSet>('ce-accordion', {
   data: {
     append: undefined,
-    header: '',
-    variant: undefined
+    header: ''
   },
   onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name) {
+    switch (name.replace('data-', '')) {
       case 'append': {
         if (prev) widget.classList.remove(...prev.split(' '));
         if (curr) widget.classList.add(...curr.split(' '));
@@ -47,7 +45,7 @@ define<DataSet>('ce-accordion', {
         <svg class="w-4 h-4 float-left mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         ${dataset.header}
       </summary>
-      <div><slot></slot></article>
+      <div><slot></slot></div>
     </details>
   `
 });

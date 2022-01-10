@@ -2,22 +2,26 @@ import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
-  style?: 'full' | 'rounded';
+  style?: 'circle' | 'rounded';
 };
 
 const getClassNames = (data: DataSet) =>
-  classMap('overflow-hidden border border-white/30', {
-    ['rounded-full']: data.style === 'full',
-    ['rounded-lg']: data.style === 'rounded'
-  });
+  classMap(
+    'overflow-hidden border border-white/30',
+    {
+      'rounded-full': data.style === 'circle',
+      'rounded-lg': data.style === 'rounded'
+    },
+    data.append
+  );
 
 define<DataSet>('ce-avatar', {
   data: {
     append: undefined,
-    style: 'full'
+    style: 'circle'
   },
   onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name) {
+    switch (name.replace('data-', '')) {
       case 'append': {
         if (prev) widget.classList.remove(...prev.split(' '));
         if (curr) widget.classList.add(...curr.split(' '));

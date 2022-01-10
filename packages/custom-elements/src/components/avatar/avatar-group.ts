@@ -2,20 +2,16 @@ import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
-  variant?: 'transparent' | 'solid' | 'filled' | undefined;
 };
 
-const getClassNames = (data: DataSet) => {
-  return classMap('block rounded-full w-24 h-24 overflow-hidden');
-};
+const getClassNames = (data: DataSet) => classMap('inline-flex items-center flex-wrap', data.append);
 
 define<DataSet>('ce-avatar-group', {
   data: {
-    append: undefined,
-    variant: 'solid'
+    append: undefined
   },
   onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name) {
+    switch (name.replace('data-', '')) {
       case 'append': {
         if (prev) widget.classList.remove(...prev.split(' '));
         if (curr) widget.classList.add(...curr.split(' '));

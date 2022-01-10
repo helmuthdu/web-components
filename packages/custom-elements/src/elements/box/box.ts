@@ -11,7 +11,7 @@ export const data: DataSet = {
 define<DataSet>('ce-box', {
   data,
   onAttributeChanged(name, prev, curr, { widget }) {
-    switch (name) {
+    switch (name.replace('data-', '')) {
       case 'append': {
         if (prev) widget.classList.remove(...prev.split(' '));
         if (curr) widget.classList.add(...curr.split(' '));
