@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:split": "tsc && vite build -c=vite.split.config.js",
+    "build:lib": "tsc && vite build -c=vite.lib.config.js",
     "preview": "vite preview",
     "storybook": "npm run tailwind:storybook && start-storybook -p 6006",
     "storybook:build": "build-storybook",
