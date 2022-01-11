@@ -37,21 +37,20 @@ export default {
   }
 } as Meta<DataSet>;
 
-const Template: Story<DataSet & { text: any }> = ({ text, ...props }) =>
-  `
-    <ce-button
-      data-variant="${props.variant}"
-      data-size="${props.size}"
-      ${props.loading ? 'data-loading' : ''}
-      ${props.outline ? 'data-outline' : ''}
-      ${props.disabled ? 'data-disabled' : ''}
-      ${props.circle ? 'data-circle' : ''}
-      ${props.rounded ? 'data-rounded' : ''}
-      ${props.block ? 'data-block' : ''}
-    >
-      ${text}
-    </ce-button>
-  `;
+const Template: Story<DataSet & { text: any }> = ({ text, ...props }) => /*html*/ `
+  <ce-button
+    data-variant="${props.variant}"
+    data-size="${props.size}"
+    ${props.loading ? 'data-loading' : ''}
+    ${props.outline ? 'data-outline' : ''}
+    ${props.disabled ? 'data-disabled' : ''}
+    ${props.circle ? 'data-circle' : ''}
+    ${props.rounded ? 'data-rounded' : ''}
+    ${props.block ? 'data-block' : ''}
+  >
+    ${text}
+  </ce-button>
+`;
 
 export const Basic = Template.bind({});
 Basic.args = {

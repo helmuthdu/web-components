@@ -46,7 +46,7 @@ const renderLoading = (data: DataSet) => /*html*/ `
 
 const getClassNames = (data: DataSet) =>
   classMap(
-    'inline-flex flex-wrap items-center justify-center text-center font-semibold border-transparent',
+    'inline-flex flex-wrap items-center justify-center text-center font-semibold border-transparent gap-2',
     !data.group && 'shadow-sm',
     data.group && !data.circle
       ? {
