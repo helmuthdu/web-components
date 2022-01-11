@@ -37,9 +37,20 @@
         <div class="flex flex-col gap-3 items-center h-screen justify-center">
           <ce-box>this is a box!</ce-box>
 
-          <ce-button data-variant="primary">Get Started</ce-button>
+          <ce-button data-variant="primary">
+            Get Started
+            <ce-badge data-variant="error" data-size="xs" data-pill data-append="-mr-1.5">+99</ce-badge>
+          </ce-button>
           <ce-button data-disabled data-loading data-variant="primary">Get Started</ce-button>
           <ce-button data-outline data-rounded data-variant="primary">Get Started</ce-button>
+
+          <div class="inline-block">
+            <ce-badge data-append="mr-1.5">B</ce-badge>
+            <ce-badge data-variant="info" data-append="mr-1.5">A</ce-badge>
+            <ce-badge data-variant="error" data-append="mr-1.5">D</ce-badge>
+            <ce-badge data-variant="success" data-append="mr-1.5">G</ce-badge>
+            <ce-badge data-variant="contrast" data-append="mr-1.5">E</ce-badge>
+          </div>
 
           <ce-accordion-group style="width: 300px" data-style="solid">
             <ce-accordion data-header="1 item">
@@ -53,7 +64,7 @@
             </ce-accordion>
           </ce-accordion-group>
 
-          <ce-avatar-group>
+          <!-- <ce-avatar-group>
             <ce-avatar data-append="border-4 border-canvas -mr-4">
               <div class="bg-blue-300 w-10 h-10">
                 <span class="text-white font-semibold text-md">PS</span>
@@ -79,7 +90,7 @@
                 <span class="text-white font-semibold text-md">+99</span>
               </div>
             </ce-avatar>
-          </ce-avatar-group>
+          </ce-avatar-group> -->
 
           <ce-alert data-variant="info">
             <span class="font-medium">Info alert!</span>
