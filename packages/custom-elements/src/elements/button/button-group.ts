@@ -15,24 +15,15 @@ define<DataSet>('ce-button-group', {
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassNames(dataset);
   },
-  template: ({ dataset, children }) => {
+  onConnected({ dataset, children }) {
     for (let idx = 0; idx < (children ?? []).length; idx++) {
-      switch (idx) {
-        case 0:
-          children[idx]?.setAttribute('data-group', 'first');
-          break;
-        case children.length - 1:
-          children[idx]?.setAttribute('data-group', 'last');
-          break;
-        default:
-          children[idx]?.setAttribute('data-group', '');
-      }
+      children[idx].setAttribute('data-group', idx === 0 ? 'first' : idx === children.length - 1 ? 'last' : '');
     }
-    return /*html*/ `
-      <link rel="stylesheet" href="/tailwind.css" />
-      <div id="root" class="${getClassNames(dataset)}">
-        <slot></slot>
-      </div>
-    `;
-  }
+  },
+  template: ({ dataset }) => /*html*/ `
+    <link rel="stylesheet" href="/tailwind.css" />
+    <div id="root" class="${getClassNames(dataset)}">
+      <slot></slot>
+    </div>
+  `
 });

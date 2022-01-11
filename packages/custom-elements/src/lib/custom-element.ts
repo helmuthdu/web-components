@@ -14,7 +14,7 @@ export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'd
 };
 
 type CustomElementOptions<T extends CustomElementDataSet> = {
-  onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<T>) => void;
+  onAttributeChanged?: (name: keyof T, prev: string, curr: string, host: CustomElement<T>) => void;
   onConnected?: (host: CustomElement<T>) => void;
   onDisconnected?: (host: CustomElement<T>) => void;
   data: T;
@@ -76,7 +76,7 @@ export const component = <T extends CustomElementDataSet>({
 
     attributeChangedCallback(name: string, prev: string, curr: string) {
       if (this.#ready && prev !== curr && onAttributeChanged) {
-        onAttributeChanged(name, prev, curr, this.#self as any);
+        onAttributeChanged(name.replace('data-', '') as keyof T, prev, curr, this.#self as any);
       }
     }
 

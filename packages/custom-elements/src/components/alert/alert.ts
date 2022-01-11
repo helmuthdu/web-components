@@ -28,15 +28,11 @@ define<DataSet>('ce-alert', {
     root.className = getClassNames(dataset);
   },
   onConnected: ({ event, fire, remove }) => {
-    event(
-      'button',
-      'click',
-      () => {
-        fire('close');
-        remove();
-      },
-      { once: true }
-    );
+    const callback = () => {
+      fire('close');
+      remove();
+    };
+    event('button', 'click', callback, { once: true });
   },
   template: ({ dataset }) => /*html*/ `
     <link rel="stylesheet" href="/tailwind.css" />

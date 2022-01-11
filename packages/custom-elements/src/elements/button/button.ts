@@ -87,17 +87,19 @@ const getClassNames = (data: DataSet) =>
       : data.outline
       ? {
           'bg-transparent border-2': true,
-          'text-primary border-primary hover:ring-4 focus:ring-4 ring-primary-focus': data.variant === 'primary',
-          'text-error border-error hover:ring-4 focus:ring-4 ring-error-focus': data.variant === 'error',
-          'text-success border-success hover:ring-4 focus:ring-4 ring-success-focus': data.variant === 'success',
-          'text-transparent': data.loading
+          'border-primary hover:ring-4 focus:ring-4 ring-primary-focus': data.variant === 'primary',
+          'border-error hover:ring-4 focus:ring-4 ring-error-focus': data.variant === 'error',
+          'border-success hover:ring-4 focus:ring-4 ring-success-focus': data.variant === 'success',
+          'text-transparent': data.loading,
+          [`text-${data.variant}`]: !data.loading
         }
       : {
           'border-none': true,
-          'text-primary-contrast bg-primary hover:ring-4 focus:ring-4 ring-primary-focus': data.variant === 'primary',
-          'text-error-contrast bg-error hover:ring-4 focus:ring-4 ring-error-focus': data.variant === 'error',
-          'text-success-contrast bg-success hover:ring-4 focus:ring-4 ring-success-focus': data.variant === 'success',
-          'text-transparent': data.loading
+          'bg-primary hover:ring-4 focus:ring-4 ring-primary-focus': data.variant === 'primary',
+          'bg-error hover:ring-4 focus:ring-4 ring-error-focus': data.variant === 'error',
+          'bg-success hover:ring-4 focus:ring-4 ring-success-focus': data.variant === 'success',
+          'text-transparent': data.loading,
+          [`text-${data.variant}-contrast`]: !data.loading
         },
     data.append
   );
@@ -116,8 +118,8 @@ define<DataSet>('ce-button', {
     type: 'button',
     variant: 'primary'
   },
-  onAttributeChanged: (name, prev, curr, { root, update, dataset }) => {
-    switch (name.replace('data-', '')) {
+  onAttributeChanged: (name, prev, curr, { classList, root, update, dataset }) => {
+    switch (name) {
       case 'append':
       case 'circle':
       case 'disabled':
@@ -128,22 +130,22 @@ define<DataSet>('ce-button', {
       case 'variant':
         root.className = getClassNames(dataset);
         break;
+      case 'block':
+        classList[dataset.block ? 'add' : 'remove']('w-full');
+        root.className = getClassNames(dataset);
+        break;
       default:
         update();
     }
   },
-  template: ({ classList, dataset }) => {
-    if (dataset.block) {
-      classList.add('w-full');
-    } else {
-      classList.remove('w-full');
-    }
-    return /*html*/ `
-      <link rel="stylesheet" href="/tailwind.css" />
-      <button id="root" type="${dataset.type}" class="${getClassNames(dataset)}">
-        ${dataset.loading ? renderLoading(dataset) : ''}
-        <slot></slot>
-      </button>
-    `;
-  }
+  onConnected({ classList, dataset }) {
+    classList[dataset.block ? 'add' : 'remove']('w-full');
+  },
+  template: ({ dataset }) => /*html*/ `
+    <link rel="stylesheet" href="/tailwind.css" />
+    <button id="root" type="${dataset.type}" class="${getClassNames(dataset)}">
+      ${dataset.loading ? renderLoading(dataset) : ''}
+      <slot></slot>
+    </button>
+  `
 });
