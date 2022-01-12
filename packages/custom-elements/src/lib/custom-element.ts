@@ -88,7 +88,7 @@ export const component = <T extends CustomElementDataSet>({
         // @ts-ignore
         this.shadowRoot.innerHTML = tmpl;
       } else if (Array.isArray(tmpl)) {
-        this.shadowRoot?.append(...tmpl);
+        this.shadowRoot?.append(...tmpl.flat());
       }
     }
 

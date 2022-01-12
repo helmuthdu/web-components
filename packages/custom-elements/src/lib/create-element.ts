@@ -1,9 +1,17 @@
+type CreateElementProps<T extends keyof HTMLElementTagNameMap> =
+  | Partial<HTMLElementTagNameMap[T]>
+  | {
+      $for?: any[];
+      $if?: undefined | boolean | ((item: any, index: number) => boolean);
+    }
+  | ((item: any, index: number) => string | number | HTMLElementTagNameMap[T]);
+
 const isString = (arg: unknown) => typeof arg === 'string';
 const isObject = (arg: unknown) => typeof arg === 'object';
 const isFunction = (arg: unknown) => typeof arg === 'function';
 const isArray = Array.isArray;
 
-class Blueprint {
+class DraftElement {
   tag!: string;
   attributes: Record<string, any> = {};
   host: any;
@@ -15,21 +23,21 @@ class Blueprint {
   }
 }
 
-const AttributeHandler = Object.freeze({
-  $for: (attributeValue: unknown) => {
-    const blueprints = [];
-    if (!attributeValue || !Array.isArray(attributeValue)) {
-      blueprints.push(new Blueprint());
+const Operators = Object.freeze({
+  $for: (value: unknown) => {
+    const drafts = [];
+    if (!value || !isArray(value)) {
+      drafts.push(new DraftElement());
     } else {
-      attributeValue.forEach((host, index) => blueprints.push(new Blueprint(host, index)));
+      value.forEach((host, index) => drafts.push(new DraftElement(host, index)));
     }
-    return blueprints;
+    return drafts;
   },
-  $if: (attributeValue: unknown, callbackInput: any) => {
-    if (attributeValue === undefined) {
+  $if: (value: unknown, callbackFn: any) => {
+    if (value === undefined) {
       return true;
     } else {
-      return typeof attributeValue === 'function' ? attributeValue(callbackInput) : !!attributeValue;
+      return typeof value === 'function' ? value(callbackFn) : !!value;
     }
   }
 });
@@ -46,46 +54,39 @@ const attachAttribute = (attr: string, value: any, element: HTMLElement) => {
   }
 };
 
-const appendChild = (child: any, element: HTMLElement, blueprint: Blueprint) => {
+const appendChild = (child: any, element: HTMLElement, draft: DraftElement) => {
   if (child !== undefined) {
-    const container: HTMLElement = element;
-    if (Array.isArray(child)) {
-      child.forEach(_child => appendChild(_child, container, blueprint));
+    if (isArray(child)) {
+      child.forEach(_child => appendChild(_child, element, draft));
     } else if (child instanceof HTMLElement) {
-      container.append(child);
+      element.append(child);
     } else if (isFunction(child)) {
-      appendChild(blueprint.host ? child(blueprint.host, blueprint.index) : child(), container, blueprint.host);
+      appendChild(draft.host ? child(draft.host, draft.index) : child(), element, draft.host);
     } else {
-      container.append(document.createTextNode(child.toString()));
+      element.append(document.createTextNode(child.toString()));
     }
   }
 };
 
-const create = (blueprint: Blueprint) => {
-  const element = document.createElement(blueprint.tag);
-  Object.entries(blueprint.attributes).forEach(([key, value]) => attachAttribute(key, value, element));
-  blueprint.children.forEach(child => appendChild(child, element, blueprint));
+const create = (draftElement: DraftElement) => {
+  const element = document.createElement(draftElement.tag);
+  Object.entries(draftElement.attributes).forEach(([key, value]) => attachAttribute(key, value, element));
+  draftElement.children.forEach(child => appendChild(child, element, draftElement));
   return element;
 };
 
-const extract = (...parts: unknown[]) => {
+const extract = (...props: unknown[]) => {
   let attributes: any = {};
   let children: any = [];
 
-  if (parts?.length > 0) {
-    if (parts.length > 1) {
-      if (isObject(parts[0])) {
-        attributes = parts[0];
-        children = parts.slice(1);
-      } else {
-        children = parts;
-      }
-    } else {
-      if (!isObject(parts[0])) {
-        children = parts;
-      } else {
-        attributes = parts[0];
-      }
+  if (props?.length > 0) {
+    if (isObject(props[0])) {
+      attributes = props[0];
+    }
+    if (props.length > 1) {
+      children = isObject(props[0]) ? props.slice(1) : props;
+    } else if (!isObject(props[0])) {
+      children = props;
     }
   }
   return { attributes, children };
@@ -99,15 +100,15 @@ const define =
       children
     } = extract(...props);
 
-    const elements = AttributeHandler.$for($for)
-      .filter(blueprint => AttributeHandler.$if($if, blueprint.host))
-      .map(blueprint => {
-        blueprint.tag = tag;
-        Object.assign(blueprint.attributes, attributes);
+    const elements = Operators.$for($for)
+      .filter(draft => Operators.$if($if, draft.host))
+      .map(draft => {
+        draft.tag = tag;
+        Object.assign(draft.attributes, attributes);
         if (children) {
-          blueprint.children.push([...children]);
+          draft.children.push([...children]);
         }
-        return create(blueprint);
+        return create(draft);
       });
 
     return elements.length === 1 ? elements[0] : elements;
@@ -115,12 +116,5 @@ const define =
 
 export const createElement = <T extends keyof HTMLElementTagNameMap>(
   ...tags: T[]
-): Record<
-  T,
-  (
-    ...props: (Partial<HTMLElementTagNameMap[T]> & {
-      $if?: (attributeValue: unknown, callbackInput: any) => boolean;
-      $for?: (attributeValue: unknown) => Blueprint[];
-    })[]
-  ) => HTMLElementTagNameMap[T]
-> => tags.reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
+): Record<T, (...props: CreateElementProps<T>[]) => HTMLElementTagNameMap[T]> =>
+  tags.reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
