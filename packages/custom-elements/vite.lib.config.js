@@ -19,6 +19,7 @@ export default defineConfig({
         './src/components/alert/alert.ts',
         './src/components/avatar/avatar.ts',
         './src/components/avatar/avatar-group.ts',
+        './src/components/badge/badge.ts',
         './src/elements/box/box.ts',
         './src/elements/button/button.ts',
         './src/elements/button/button-group.ts'
