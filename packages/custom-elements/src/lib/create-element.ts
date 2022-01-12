@@ -93,11 +93,11 @@ const extract = (...parts: unknown[]) => {
 
 const define =
   (tag: string) =>
-  (...parts: unknown[]) => {
+  (...props: unknown[]) => {
     const {
       attributes: { $for, $if, ...attributes },
       children
-    } = extract(...parts);
+    } = extract(...props);
 
     const elements = AttributeHandler.$for($for)
       .filter(blueprint => AttributeHandler.$if($if, blueprint.host))
@@ -115,5 +115,12 @@ const define =
 
 export const createElement = <T extends keyof HTMLElementTagNameMap>(
   ...tags: T[]
-): Record<T, (...parts: Partial<HTMLElementTagNameMap[T]>[]) => HTMLElementTagNameMap[T]> =>
-  tags.reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
+): Record<
+  T,
+  (
+    ...props: (Partial<HTMLElementTagNameMap[T]> & {
+      $if?: (attributeValue: unknown, callbackInput: any) => boolean;
+      $for?: (attributeValue: unknown) => Blueprint[];
+    })[]
+  ) => HTMLElementTagNameMap[T]
+> => tags.reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
