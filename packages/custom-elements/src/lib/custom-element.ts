@@ -1,3 +1,5 @@
+export { createElement } from './create-element';
+
 type CustomElementDataSet = Record<string, any | undefined>;
 
 export type CustomElement<T extends CustomElementDataSet> = Omit<HTMLElement, 'dataset'> & {
@@ -19,7 +21,7 @@ type CustomElementOptions<T extends CustomElementDataSet> = {
   onDisconnected?: (host: CustomElement<T>) => void;
   data: T;
   styles?: unknown[];
-  template: (host: CustomElement<T>) => string;
+  template: (host: CustomElement<T>) => any;
 };
 
 export const component = <T extends CustomElementDataSet>({
@@ -81,8 +83,13 @@ export const component = <T extends CustomElementDataSet>({
     }
 
     update() {
-      // @ts-ignore
-      this.shadowRoot.innerHTML = template(this.#self as any);
+      const tmpl = template(this.#self as any);
+      if (typeof tmpl === 'string') {
+        // @ts-ignore
+        this.shadowRoot.innerHTML = tmpl;
+      } else if (Array.isArray(tmpl)) {
+        this.shadowRoot?.append(...tmpl);
+      }
     }
 
     fire(event: string | keyof HTMLElementEventMap, options?: CustomEventInit) {
