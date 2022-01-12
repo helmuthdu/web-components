@@ -1,24 +1,33 @@
-type CreateElementProps<T extends keyof HTMLElementTagNameMap> =
-  | Partial<HTMLElementTagNameMap[T]>
-  | {
-      $for?: any[];
-      $if?: undefined | boolean | ((item: any, index: number) => boolean);
-    }
-  | ((item: any, index: number) => string | number | HTMLElementTagNameMap[T]);
+import { isArray, isFunction, isObject, isString } from './shared';
+import HTMLElementsReference from './elements-reference.json';
 
-const isString = (arg: unknown) => typeof arg === 'string';
-const isObject = (arg: unknown) => typeof arg === 'object';
-const isFunction = (arg: unknown) => typeof arg === 'function';
-const isArray = Array.isArray;
+type ElementType = 'html' | 'fragment';
+
+type OperatorProps = {
+  $for?: unknown[];
+  $if?: undefined | boolean | ((item: any, index: number) => boolean);
+};
+
+type HTMLTags = keyof HTMLElementTagNameMap;
+
+type MarkupElement<T extends HTMLTags> = (...props: ElementProps<T>[]) => HTMLElementTagNameMap[T];
+
+type ElementProps<T extends HTMLTags> =
+  | (Partial<HTMLElementTagNameMap[T]> & OperatorProps)
+  | ((item: unknown, index: number) => string | number | HTMLElementTagNameMap[T]);
+
+type FragmentProps =
+  | (Partial<DocumentFragment> & OperatorProps)
+  | ((item: unknown, index: number) => string | number | HTMLElement);
 
 class DraftElement {
-  tag!: string;
   attributes: Record<string, any> = {};
-  host: any;
   children: any[] = [];
+  element: any;
   index: number = 0;
-  constructor(host = undefined, index = 0) {
-    this.host = host;
+  tag!: string;
+  constructor(element = undefined, index = 0) {
+    this.element = element;
     this.index = index;
   }
 }
@@ -29,47 +38,45 @@ const Operators = Object.freeze({
     if (!value || !isArray(value)) {
       drafts.push(new DraftElement());
     } else {
-      value.forEach((host, index) => drafts.push(new DraftElement(host, index)));
+      value.forEach((element, index) => drafts.push(new DraftElement(element, index)));
     }
     return drafts;
   },
   $if: (value: unknown, callbackFn: any) => {
-    if (value === undefined) {
-      return true;
-    } else {
-      return typeof value === 'function' ? value(callbackFn) : !!value;
-    }
+    return value === undefined ? true : typeof value === 'function' ? value(callbackFn) : !!value;
   }
 });
 
-const attachAttribute = (attr: string, value: any, element: HTMLElement) => {
+const attachAttribute = (attr: string, value: any, element: HTMLElement | DocumentFragment) => {
   if (attr === 'style' || attr === 'dataset') {
     Object.entries(value).forEach(([key, val]: any) => ((element as any)[attr][key] = val));
-  } else if (attr === 'className' || [isObject, isFunction, isArray].some(is => is(typeof value))) {
+  } else if (attr === 'className' || [isObject, isFunction, isArray].some(is => is(value))) {
     (element as any)[attr] = value;
-  } else if (attr === 'innerHTML') {
-    if (isString(value)) element.innerHTML = value;
-  } else {
-    element.setAttribute(attr, value);
+  } else if (element instanceof HTMLElement) {
+    if (attr === 'innerHTML') {
+      if (isString(value)) element.innerHTML = value;
+    } else {
+      element.setAttribute(attr, value);
+    }
   }
 };
 
-const appendChild = (child: any, element: HTMLElement, draft: DraftElement) => {
+const appendChild = (child: any, element: HTMLElement | DocumentFragment, draft: DraftElement) => {
   if (child !== undefined) {
     if (isArray(child)) {
       child.forEach(_child => appendChild(_child, element, draft));
     } else if (child instanceof HTMLElement) {
       element.append(child);
     } else if (isFunction(child)) {
-      appendChild(draft.host ? child(draft.host, draft.index) : child(), element, draft.host);
+      appendChild(draft.element ? child(draft.element, draft.index) : child(), element, draft);
     } else {
       element.append(document.createTextNode(child.toString()));
     }
   }
 };
 
-const create = (draftElement: DraftElement) => {
-  const element = document.createElement(draftElement.tag);
+const createElement = (draftElement: DraftElement, type: ElementType = 'html') => {
+  const element = type === 'fragment' ? new DocumentFragment() : document.createElement(draftElement.tag);
   Object.entries(draftElement.attributes).forEach(([key, value]) => attachAttribute(key, value, element));
   draftElement.children.forEach(child => appendChild(child, element, draftElement));
   return element;
@@ -93,7 +100,7 @@ const extract = (...props: unknown[]) => {
 };
 
 const define =
-  (tag: string) =>
+  (tag?: string, type: ElementType = 'html') =>
   (...props: unknown[]) => {
     const {
       attributes: { $for, $if, ...attributes },
@@ -101,20 +108,17 @@ const define =
     } = extract(...props);
 
     const elements = Operators.$for($for)
-      .filter(draft => Operators.$if($if, draft.host))
+      .filter(draft => Operators.$if($if, draft.element))
       .map(draft => {
-        draft.tag = tag;
-        Object.assign(draft.attributes, attributes);
-        if (children) {
-          draft.children.push([...children]);
-        }
-        return create(draft);
+        Object.assign(draft, { attributes, tag, children: children ? [...children] : [] });
+        return createElement(draft, type);
       });
 
     return elements.length === 1 ? elements[0] : elements;
   };
 
-export const createElement = <T extends keyof HTMLElementTagNameMap>(
-  ...tags: T[]
-): Record<T, (...props: CreateElementProps<T>[]) => HTMLElementTagNameMap[T]> =>
-  tags.reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
+export const markup = (<T extends HTMLTags = HTMLTags>(): Record<T, MarkupElement<T>> => {
+  return (HTMLElementsReference as T[]).reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
+})();
+
+export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);

@@ -1,4 +1,5 @@
-export { createElement } from './create-element';
+import { getAttrName, isArray, isFunction, isString } from './shared';
+import { injectStyles } from './styling-element';
 
 type CustomElementDataSet = Record<string, any | undefined>;
 
@@ -37,20 +38,17 @@ export const component = <T extends CustomElementDataSet>({
     #self = new Proxy(this, {
       get(target, key) {
         const value = Reflect.get(target, key);
-        return typeof value === 'function'
+        return isFunction(value)
           ? value.bind(target)
           : key === 'dataset'
-          ? Object.entries(value).reduce(
-              (acc, [key, val]) => ({ ...acc, [key]: val === '' ? true : val }),
-              {} as typeof value
-            )
+          ? Object.entries(value).reduce((acc, [k, v]) => ({ ...acc, [k]: v === '' ? true : v }), {} as typeof value)
           : value;
       }
     });
 
     constructor() {
       super();
-      applyStyles(this.attachShadow({ mode: 'open' }), styles);
+      injectStyles(this.attachShadow({ mode: 'open' }), styles);
       Object.entries(data)
         .filter(([key, value]) => value)
         .forEach(([key, value]) => {
@@ -84,11 +82,11 @@ export const component = <T extends CustomElementDataSet>({
 
     update() {
       const tmpl = template(this.#self as any);
-      if (typeof tmpl === 'string') {
-        // @ts-ignore
-        this.shadowRoot.innerHTML = tmpl;
-      } else if (Array.isArray(tmpl)) {
-        this.shadowRoot?.append(...tmpl.flat());
+      const shadowRoot = this.shadowRoot as ShadowRoot;
+      if (isString(tmpl)) {
+        shadowRoot.innerHTML = tmpl;
+      } else if (isArray(tmpl)) {
+        shadowRoot.replaceChildren(...tmpl.flat());
       }
     }
 
@@ -102,7 +100,7 @@ export const component = <T extends CustomElementDataSet>({
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = typeof id === 'string' ? (this.shadowRoot?.getElementById(`${id}`) as HTMLElement) : id;
+      const el = (isString(id) ? this.shadowRoot?.getElementById(`${id}`) : id) as HTMLElement | CustomElement<T>;
       if (!el) throw new Error(`element with id="${id}" not found`);
       el.addEventListener(event, callback, options);
     }
@@ -116,39 +114,5 @@ export const define = <T extends CustomElementDataSet>(name: string, options: Cu
   customElements.define(name, component(options));
 };
 
-export const classMap = (...classes: unknown[]) =>
-  classes
-    .reduce((acc: string, arg: unknown) => {
-      if (typeof arg === 'string') {
-        acc += `${arg} `;
-      } else if (typeof arg === 'object' && arg !== null) {
-        Object.entries(arg)
-          .filter(([_, valid]) => valid)
-          .forEach(([key]) => {
-            acc += `${key} `;
-          });
-      }
-      return acc;
-    }, '')
-    .trim();
-
-const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
-  if ((styles ?? []).length > 0) {
-    Promise.all(
-      styles.map((style, idx) => {
-        if (typeof style === 'string') {
-          const sheet = new CSSStyleSheet(); // @ts-ignore
-          return sheet.replace(style);
-        } else if (style instanceof CSSStyleSheet) {
-          return Promise.resolve(style);
-        }
-        throw new Error(`invalid css in styles`);
-      })
-    ).then((sheets: CSSStyleSheet[]) => {
-      // @ts-ignore
-      shadowRoot.adoptedStyleSheets = sheets;
-    });
-  }
-};
-
-const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+export { classMap } from './styling-element';
+export { markup, fragment } from './create-element';
