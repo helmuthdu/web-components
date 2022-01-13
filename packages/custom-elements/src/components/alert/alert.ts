@@ -1,11 +1,11 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define, markup, rawHtml } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
   variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
-const getClassNames = (data: DataSet) =>
+const getClassName = (data: DataSet) =>
   classMap(
     'flex justify-between items-center py-2 px-4 text-sm border rounded-xl shadow-sm',
     !data.variant
@@ -25,28 +25,36 @@ define<DataSet>('ce-alert', {
     variant: undefined
   },
   onAttributeChanged(name, prev, curr, { dataset, root }) {
-    root.className = getClassNames(dataset);
+    root.className = getClassName(dataset);
   },
-  onConnected: ({ event, fire, remove }) => {
-    const callback = () => {
-      fire('close');
-      remove();
-    };
-    event('button', 'click', callback, { once: true });
-  },
-  template: ({ dataset }) => /*html*/ `
-    <link rel="stylesheet" href="/tailwind.css" />
-    <div id="root" class="${getClassNames(dataset)}" role="alert">
-      <div class="text-sm"><slot></slot></div>
-      <button
-        id="button"
-        type="button"
-        class="inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 text-current"
-        data-collapse-toggle="alert"
-        aria-label="Close">
-        <span class="sr-only">Close</span>
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-      </button>
-    </div>
-  `
+  template: ({ dataset, fire, remove }) => {
+    const { link, button, div, span, slot } = markup;
+    return [
+      link({ rel: 'stylesheet', href: '/tailwind.css' }),
+      div(
+        { id: 'root', className: getClassName(dataset), role: 'alert' },
+        span({ className: 'text-sm' }, slot()),
+        button(
+          {
+            id: 'button',
+            type: 'button',
+            dataset: {
+              collapseToggle: 'alert'
+            },
+            className: 'inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 text-current',
+            ariaLabel: 'close',
+            onclick: () => {
+              fire('close');
+              remove();
+            }
+          },
+          rawHtml(`
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>`),
+          span({ className: 'sr-only' }, 'close')
+        )
+      )
+    ];
+  }
 });

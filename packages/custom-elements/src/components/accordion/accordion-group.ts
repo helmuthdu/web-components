@@ -1,11 +1,11 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define, markup } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
   variant?: 'primary' | 'secondary' | 'tertiary';
 };
 
-const getClassNames = (data: DataSet) =>
+const getClassName = (data: DataSet) =>
   classMap(
     'block rounded-lg px-2 py-1',
     {
@@ -37,10 +37,10 @@ define<DataSet>('ce-accordion-group', {
   onAttributeChanged(name, prev, curr, { children, dataset, root }) {
     switch (name) {
       case 'append':
-        root.className = getClassNames(dataset);
+        root.className = getClassName(dataset);
         break;
       case 'variant':
-        root.className = getClassNames(dataset);
+        root.className = getClassName(dataset);
         updateChildren(children, dataset);
         break;
     }
@@ -48,10 +48,11 @@ define<DataSet>('ce-accordion-group', {
   onConnected: ({ dataset, children }) => {
     updateChildren(children, dataset);
   },
-  template: ({ dataset }) => /*html*/ `
-    <link rel="stylesheet" href="/tailwind.css" />
-    <div id="root" class="${getClassNames(dataset)}">
-      <slot></slot>
-    </div>
-  `
+  template: ({ dataset }) => {
+    const { link, div, slot } = markup;
+    return [
+      link({ rel: 'stylesheet', href: '/tailwind.css' }),
+      div({ id: 'root', className: getClassName(dataset) }, slot())
+    ];
+  }
 });

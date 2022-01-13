@@ -1,4 +1,4 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define, markup } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
 export type DataSet = {
@@ -8,7 +8,7 @@ export type DataSet = {
   variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
 };
 
-const getClassNames = (data: DataSet) =>
+const getClassName = (data: DataSet) =>
   classMap(
     'inline-flex flex-wrap items-center justify-center text-center whitespace-nowrap align-baseline font-semibold py-1 px-2.5',
     data.pill ? 'rounded-full' : 'rounded-lg',
@@ -43,14 +43,15 @@ define<DataSet>('ce-badge', {
       case 'pill':
       case 'size':
       case 'variant':
-        root.className = getClassNames(dataset);
+        root.className = getClassName(dataset);
         break;
     }
   },
-  template: ({ dataset }) => /*html*/ `
-    <link rel="stylesheet" href="/tailwind.css" />
-    <span id="root" class="${getClassNames(dataset)}">
-      <slot></slot>
-    </span>
-  `
+  template: ({ dataset }) => {
+    const { link, span, slot } = markup;
+    return [
+      link({ rel: 'stylesheet', href: '/tailwind.css' }),
+      span({ id: 'root', className: getClassName(dataset) }, slot())
+    ];
+  }
 });
