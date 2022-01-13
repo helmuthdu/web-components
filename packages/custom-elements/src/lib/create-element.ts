@@ -92,9 +92,10 @@ const extract = (...props: unknown[]) => {
       attributes = item;
       children = rest;
     } else {
-      children = [item];
+      children = item;
     }
   }
+
   return { attributes, children };
 };
 
@@ -116,8 +117,8 @@ const define =
     return elements.length === 1 ? elements[0] : elements;
   };
 
-export const markup = (<T extends HTMLTags = HTMLTags>(): Record<T, MarkupElement<T>> => {
-  return (HTMLElementsReference as T[]).reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
+export const markup = ((): { [T in HTMLTags]: MarkupElement<T> } => {
+  return HTMLElementsReference.reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any);
 })();
 
 export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);
