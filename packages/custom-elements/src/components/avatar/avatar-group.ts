@@ -6,7 +6,7 @@ export type DataSet = {
 
 const getClassName = (data: DataSet) => classMap('inline-flex items-center flex-wrap', data.append);
 
-define<DataSet>('ce-avatar-group', {
+define<DataSet>('ui-avatar-group', {
   data: {
     append: undefined
   },

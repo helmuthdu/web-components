@@ -10,7 +10,7 @@ export const data: DataSet = {
 
 const getClassName = (data: DataSet) => classMap('inline-flex rounded-md shadow-sm', data.append);
 
-define<DataSet>('ce-button-group', {
+define<DataSet>('ui-button-group', {
   data: data,
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassName(dataset);

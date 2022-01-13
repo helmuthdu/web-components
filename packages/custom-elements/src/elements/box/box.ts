@@ -11,7 +11,7 @@ export const data: DataSet = {
 const getClassName = (data: DataSet) =>
   classMap('block text-content bg-canvas border border-contrast-300 rounded-lg p-5', data.append);
 
-define<DataSet>('ce-box', {
+define<DataSet>('ui-box', {
   data,
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassName(dataset);

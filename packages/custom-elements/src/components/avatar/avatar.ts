@@ -15,7 +15,7 @@ const getClassName = (data: DataSet) =>
     data.append
   );
 
-define<DataSet>('ce-avatar', {
+define<DataSet>('ui-avatar', {
   data: {
     append: undefined,
     style: 'circle'

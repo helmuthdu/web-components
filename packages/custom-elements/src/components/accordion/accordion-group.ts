@@ -29,7 +29,7 @@ const updateChildren = (children: HTMLCollection, dataset: DataSet) => {
   });
 };
 
-define<DataSet>('ce-accordion-group', {
+define<DataSet>('ui-accordion-group', {
   data: {
     append: undefined,
     variant: 'primary'

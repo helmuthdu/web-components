@@ -19,7 +19,7 @@ const getClassName = (data: DataSet) =>
     data.append
   );
 
-define<DataSet>('ce-alert', {
+define<DataSet>('ui-alert', {
   data: {
     append: undefined,
     variant: undefined
@@ -32,7 +32,7 @@ define<DataSet>('ce-alert', {
     return [
       link({ rel: 'stylesheet', href: '/tailwind.css' }),
       div(
-        { id: 'root', className: getClassName(dataset), role: 'alert' },
+        { id: 'root', className: getClassName(dataset) },
         span({ className: 'text-sm' }, slot()),
         button(
           {

@@ -17,17 +17,17 @@ export default {
 } as Meta<DataSet>;
 
 const Template: Story<Partial<DataSet>> = ({ variant }) => /*html*/ `
-  <ce-accordion-group style="width: 300px" data-variant="${variant}">
-    <ce-accordion data-header="1 item">
+  <ui-accordion-group style="width: 300px" data-variant="${variant}">
+    <ui-accordion data-header="1 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-    </ce-accordion>
-    <ce-accordion data-header="2 item">
+    </ui-accordion>
+    <ui-accordion data-header="2 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-    </ce-accordion>
-    <ce-accordion data-header="3 item">
+    </ui-accordion>
+    <ui-accordion data-header="3 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-    </ce-accordion>
-  </ce-accordion-group>
+    </ui-accordion>
+  </ui-accordion-group>
 `;
 
 export const Primary = Template.bind({});

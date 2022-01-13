@@ -104,7 +104,7 @@ const getClassName = (data: DataSet) =>
     data.append
   );
 
-define<DataSet>('ce-button', {
+define<DataSet>('ui-button', {
   data: {
     append: undefined,
     block: undefined,

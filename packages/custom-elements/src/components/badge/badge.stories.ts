@@ -3,7 +3,7 @@ import './badge';
 import type { DataSet } from './badge';
 
 export default {
-  title: 'Elements/Badge',
+  title: 'Components/Badge',
   argTypes: {
     variant: {
       name: 'variant',
@@ -23,12 +23,12 @@ export default {
 } as Meta<DataSet>;
 
 const Template: Story<DataSet & { text: any }> = ({ text, ...props }) => /*html*/ `
-  <ce-badge
+  <ui-badge
     data-size="${props.size}"
     data-variant="${props.variant}"
     ${props.pill ? 'data-pill' : ''}>
     ${text}
-  </ce-badge>
+  </ui-badge>
 `;
 
 export const Basic = Template.bind({});

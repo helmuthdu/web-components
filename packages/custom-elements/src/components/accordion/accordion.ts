@@ -7,7 +7,7 @@ export type DataSet = {
 
 const getClassName = (data: DataSet) => classMap('block text-content py-2 px-4', data.append);
 
-define<DataSet>('ce-accordion', {
+define<DataSet>('ui-accordion', {
   data: {
     append: undefined,
     header: ''

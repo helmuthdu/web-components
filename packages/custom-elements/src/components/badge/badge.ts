@@ -30,7 +30,7 @@ const getClassName = (data: DataSet) =>
     data.append
   );
 
-define<DataSet>('ce-badge', {
+define<DataSet>('ui-badge', {
   data: {
     append: undefined,
     pill: undefined,
