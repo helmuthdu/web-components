@@ -65,7 +65,7 @@ const appendChild = (child: any, element: HTMLElement | DocumentFragment, draft:
   if (child !== undefined) {
     if (isArray(child)) {
       child.forEach(_child => appendChild(_child, element, draft));
-    } else if (child instanceof HTMLElement) {
+    } else if (child instanceof HTMLElement || child instanceof SVGSVGElement) {
       element.append(child);
     } else if (isFunction(child)) {
       appendChild(draft.element ? child(draft.element, draft.index) : child(), element, draft);
@@ -87,13 +87,12 @@ const extract = (...props: unknown[]) => {
   let children: any = [];
 
   if (props?.length > 0) {
-    if (isObject(props[0])) {
-      attributes = props[0];
-    }
-    if (props.length > 1) {
-      children = isObject(props[0]) ? props.slice(1) : props;
-    } else if (!isObject(props[0])) {
-      children = props;
+    const [item, ...rest] = props.filter(i => i !== undefined);
+    if (isObject(item)) {
+      attributes = item;
+      children = rest;
+    } else {
+      children = [item];
     }
   }
   return { attributes, children };
@@ -122,3 +121,5 @@ export const markup = (<T extends HTMLTags = HTMLTags>(): Record<T, MarkupElemen
 })();
 
 export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);
+
+export const rawHtml = (str: string) => new DOMParser().parseFromString(str, 'text/html').body.children[0];
