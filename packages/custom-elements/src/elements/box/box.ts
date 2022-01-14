@@ -10,7 +10,7 @@ export const data: DataSet = {
 };
 
 const getClassName = (data: DataSet) =>
-  classMap('block text-content bg-canvas border border-contrast-300 rounded-lg p-5', data.append);
+  classMap('block text-content bg-canvas border border-contrast-200 rounded-lg p-5', data.append);
 
 define<DataSet>('ui-box', {
   data,

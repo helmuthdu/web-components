@@ -3,7 +3,5 @@
 .idea
 *.local
 build
-dist
-dist-ssr
 node_modules
 package-lock.json

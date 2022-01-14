@@ -10,7 +10,7 @@ const getClassName = (data: DataSet) =>
   classMap(
     'flex justify-between items-center py-2 px-4 text-sm border rounded-xl shadow-sm',
     !data.variant
-      ? 'text-content bg-contrast-50 border-contrast-300'
+      ? 'text-content bg-contrast-50 border-contrast-200'
       : {
           'text-primary-content bg-primary-backdrop border-primary-focus': data.variant === 'info',
           'text-error-content bg-error-backdrop border-error-focus': data.variant === 'error',

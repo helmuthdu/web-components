@@ -10,16 +10,16 @@ const getClassName = (data: DataSet) =>
   classMap(
     'block rounded-lg px-2 py-1',
     {
-      'bg-canvas border border-contrast-300': data.variant === 'primary',
+      'bg-canvas border border-contrast-200': data.variant === 'primary',
       'bg-transparent': data.variant === 'secondary' || data.variant === 'tertiary'
     },
     data.append
   );
 
 const updateChildren = (children: HTMLCollection, dataset: DataSet) => {
-  const primary = ['block', 'border-b', 'border-contrast-300'];
-  const secondary = ['block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-300'];
-  const tertiary = ['block', 'border-b', 'border-contrast-700'];
+  const primary = ['block', 'border-b', 'border-contrast-200'];
+  const secondary = ['block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-200'];
+  const tertiary = ['block', 'border-b', 'border-contrast-800'];
   [...children].forEach((el, idx) => {
     el.classList.remove(...primary, ...secondary, ...tertiary);
     if (dataset.variant === 'secondary') {

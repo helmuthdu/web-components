@@ -11,7 +11,7 @@ export type DataSet = {
 
 const getClassName = (data: DataSet) =>
   classMap(
-    'inline-flex flex-wrap items-center justify-center text-center whitespace-nowrap align-baseline font-semibold py-1 px-2.5',
+    'inline-flex flex-wrap items-center justify-center text-center whitespace-nowrap align-middle font-semibold py-0.5 px-2',
     data.pill ? 'rounded-full' : 'rounded-lg',
     {
       'text-xs': data.size === 'xs',
@@ -21,7 +21,7 @@ const getClassName = (data: DataSet) =>
       'text-xl': data.size === 'xl'
     },
     !data.variant
-      ? 'text-content bg-contrast-50 border-contrast-300'
+      ? 'text-content bg-contrast-50 border-contrast-200'
       : {
           'text-primary-contrast bg-primary border-primary-focus': data.variant === 'info',
           'text-error-contrast bg-error border-error-focus': data.variant === 'error',
