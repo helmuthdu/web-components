@@ -15,13 +15,13 @@ type ElementProps<T extends HTMLTags> =
   | boolean
   | undefined
   | (Partial<HTMLElementTagNameMap[T]> & OperatorProps)
-  | ((item: unknown, index: number) => string | number | HTMLElementTagNameMap[T]);
+  | ((item: any, index: number) => any | HTMLElementTagNameMap[T]);
 
 type FragmentProps =
   | boolean
   | undefined
   | (Partial<DocumentFragment> & OperatorProps)
-  | ((item: unknown, index: number) => string | number | HTMLElement);
+  | ((item: any, index?: number) => any | HTMLElement);
 
 class DraftElement {
   attributes: Record<string, any> = {};
