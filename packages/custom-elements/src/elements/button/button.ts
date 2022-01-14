@@ -1,4 +1,5 @@
-import { classMap, define, markup, rawHtml } from '../../lib/custom-element';
+import { markup, raw } from '../../lib/create-element';
+import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
 export type DataSet = {
@@ -152,7 +153,7 @@ define<DataSet>('ui-button', {
           disabled: dataset.disabled,
           className: getClassName(dataset)
         },
-        rawHtml(dataset.loading ? getLoadingIcon(dataset) : ''),
+        dataset.loading && raw(getLoadingIcon(dataset)),
         slot()
       )
     ];

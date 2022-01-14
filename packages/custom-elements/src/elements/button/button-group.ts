@@ -1,4 +1,5 @@
-import { classMap, define, markup } from '../../lib/custom-element';
+import { markup } from '../../lib/create-element';
+import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
@@ -15,7 +16,7 @@ define<DataSet>('ui-button-group', {
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassName(dataset);
   },
-  onConnected({ dataset, children }) {
+  onConnected({ children }) {
     for (let idx = 0; idx < (children ?? []).length; idx++) {
       children[idx].setAttribute('data-group', idx === 0 ? 'first' : idx === children.length - 1 ? 'last' : '');
     }

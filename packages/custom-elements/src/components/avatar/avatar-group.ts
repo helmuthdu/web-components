@@ -1,4 +1,5 @@
-import { classMap, define, markup } from '../../lib/custom-element';
+import { markup } from '../../lib/create-element';
+import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
   append?: string;
