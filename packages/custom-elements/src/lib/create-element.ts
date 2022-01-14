@@ -12,10 +12,14 @@ type HTMLTags = keyof HTMLElementTagNameMap;
 type MarkupElement<T extends HTMLTags> = (...props: ElementProps<T>[]) => HTMLElementTagNameMap[T];
 
 type ElementProps<T extends HTMLTags> =
+  | boolean
+  | undefined
   | (Partial<HTMLElementTagNameMap[T]> & OperatorProps)
   | ((item: unknown, index: number) => string | number | HTMLElementTagNameMap[T]);
 
 type FragmentProps =
+  | boolean
+  | undefined
   | (Partial<DocumentFragment> & OperatorProps)
   | ((item: unknown, index: number) => string | number | HTMLElement);
 
@@ -115,6 +119,10 @@ const define =
 
     return elements.length === 1 ? elements[0] : elements;
   };
+
+export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);
+
+export const raw = (str: string) => new DOMParser().parseFromString(str, 'text/html').body.children[0];
 
 export const markup = ((): { [T in HTMLTags]: MarkupElement<T> } =>
   [
@@ -229,7 +237,3 @@ export const markup = ((): { [T in HTMLTags]: MarkupElement<T> } =>
     'video',
     'wbr'
   ].reduce((acc, tag) => ({ ...acc, [tag]: define(tag) }), {} as any))();
-
-export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);
-
-export const rawHtml = (str: string) => new DOMParser().parseFromString(str, 'text/html').body.children[0];

@@ -115,4 +115,3 @@ export const define = <T extends CustomElementDataSet>(name: string, options: Cu
 };
 
 export { classMap } from './styling-element';
-export { fragment, markup, rawHtml } from './create-element';
