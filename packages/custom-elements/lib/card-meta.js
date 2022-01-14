@@ -1,0 +1,1 @@
+import{d as n,c as l,m}from"./custom-element.js";n("ui-card-meta",{data:{append:void 0},template:({dataset:e})=>{const{link:t,span:a,slot:s}=m;return[t({rel:"stylesheet",href:"/tailwind.css"}),a({className:l("block text-sm text-content-tertiary",e.append)},s())]}});

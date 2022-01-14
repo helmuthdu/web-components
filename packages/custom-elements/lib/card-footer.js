@@ -1,0 +1,1 @@
+import{d as l,c as n,m as o}from"./custom-element.js";l("ui-card-footer",{data:{append:void 0},template:({dataset:e})=>{const{link:a,footer:s,slot:t}=o;return[a({rel:"stylesheet",href:"/tailwind.css"}),s({className:n("inline-flex gap-2 w-full",e.append)},t())]}});
