@@ -28,7 +28,7 @@ class DraftElement {
   children: any[] = [];
   element: any;
   index = 0;
-  tag!: string;
+  tag!: string | undefined;
   constructor(element = undefined, index = 0) {
     this.element = element;
     this.index = index;
@@ -36,18 +36,17 @@ class DraftElement {
 }
 
 const Operators = Object.freeze({
-  $for: (value: unknown) => {
+  $for: (item: unknown) => {
     const drafts = [];
-    if (!value || !isArray(value)) {
+    if (!item || !isArray(item)) {
       drafts.push(new DraftElement());
     } else {
-      value.forEach((element, index) => drafts.push(new DraftElement(element, index)));
+      item.forEach((element, index) => drafts.push(new DraftElement(element, index)));
     }
     return drafts;
   },
-  $if: (value: unknown, callbackFn: any) => {
-    return value === undefined ? true : typeof value === 'function' ? value(callbackFn) : !!value;
-  }
+  $if: (item: unknown, callbackFn: any) =>
+    item === undefined ? true : typeof item === 'function' ? item(callbackFn) : !!item
 });
 
 const attachAttribute = (attr: string, value: any, element: HTMLElement | DocumentFragment) => {
@@ -79,7 +78,7 @@ const appendChild = (child: any, element: HTMLElement | DocumentFragment, draft:
 };
 
 const createElement = (draftElement: DraftElement, type: ElementType = 'html') => {
-  const element = type === 'fragment' ? new DocumentFragment() : document.createElement(draftElement.tag);
+  const element = type === 'fragment' ? new DocumentFragment() : document.createElement(draftElement.tag as string);
   Object.entries(draftElement.attributes).forEach(([key, value]) => attachAttribute(key, value, element));
   draftElement.children.forEach(child => appendChild(child, element, draftElement));
   return element;
@@ -95,7 +94,7 @@ const extract = (...props: unknown[]) => {
       attributes = item;
       children = rest;
     } else {
-      children = item;
+      children = [item];
     }
   }
 
@@ -112,10 +111,7 @@ const define =
 
     const elements = Operators.$for($for)
       .filter(draft => Operators.$if($if, draft.element))
-      .map(draft => {
-        Object.assign(draft, { attributes, tag, children: children ? [...children] : [] });
-        return createElement(draft, type);
-      });
+      .map(draft => createElement({ ...draft, attributes, tag, children }, type));
 
     return elements.length === 1 ? elements[0] : elements;
   };
