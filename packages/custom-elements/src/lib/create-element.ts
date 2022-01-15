@@ -27,7 +27,7 @@ class DraftElement {
   attributes: Record<string, any> = {};
   children: any[] = [];
   element: any;
-  index: number = 0;
+  index = 0;
   tag!: string;
   constructor(element = undefined, index = 0) {
     this.element = element;
@@ -122,7 +122,7 @@ const define =
 
 export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);
 
-export const raw = (str: string) => new DOMParser().parseFromString(str, 'text/html').body.children[0];
+export const raw = (string: string) => new DOMParser().parseFromString(string, 'text/html').body.children[0];
 
 export const markup = ((): { [T in HTMLTags]: MarkupElement<T> } =>
   [

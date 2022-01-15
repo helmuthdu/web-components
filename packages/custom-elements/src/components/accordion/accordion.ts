@@ -18,10 +18,11 @@ define<DataSet>('ui-accordion', {
       case 'append':
         root.className = getClassName(dataset);
         break;
-      case 'header':
+      case 'header': {
         const el = shadowRoot?.getElementById('header');
         if (el) el.innerText = curr;
         break;
+      }
     }
   },
   template: ({ dataset }) => {

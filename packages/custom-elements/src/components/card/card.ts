@@ -16,16 +16,14 @@ define<DataSet>('ui-card', {
     return [
       link({ rel: 'stylesheet', href: '/tailwind.css' }),
       div(
-        { id: 'root', className: classMap('block', dataset.append) },
-        div(
-          {
-            className: classMap(
-              'flex justify-center rounded-lg shadow-lg bg-white dark:bg-canvas border border-contrast-200 max-w-sm overflow-hidden',
-              dataset.horizontal ? 'flex-row' : 'flex-col'
-            )
-          },
-          slot()
-        )
+        {
+          className: classMap(
+            'flex justify-center rounded-lg shadow-lg bg-white dark:bg-canvas border border-contrast-200 max-w-sm overflow-hidden',
+            dataset.horizontal ? 'flex-row' : 'flex-col',
+            dataset.append
+          )
+        },
+        slot()
       )
     ];
   }
