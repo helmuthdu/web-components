@@ -85,8 +85,8 @@ export const component = <T extends CustomElementDataSet>({
       const shadowRoot = this.shadowRoot as ShadowRoot;
       if (isString(tmpl)) {
         shadowRoot.innerHTML = tmpl;
-      } else if (isArray(tmpl)) {
-        shadowRoot.replaceChildren(...tmpl.flat());
+      } else {
+        shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
       }
     }
 

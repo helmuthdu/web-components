@@ -9,7 +9,7 @@ type OperatorProps = {
 
 type HTMLTags = keyof HTMLElementTagNameMap;
 
-type MarkupElement<T extends HTMLTags> = (...props: ElementProps<T>[]) => HTMLElementTagNameMap[T];
+type MarkupElement<T extends HTMLTags> = (...props: (ElementProps<T> | Element[])[]) => HTMLElementTagNameMap[T];
 
 type ElementProps<T extends HTMLTags> =
   | boolean
@@ -21,31 +21,20 @@ type FragmentProps =
   | boolean
   | undefined
   | (Partial<DocumentFragment> & OperatorProps)
-  | ((item: any, index?: number) => any | HTMLElement);
+  | ((item: any, index: number) => any | HTMLElement);
 
-class DraftElement {
-  attributes: Record<string, any> = {};
-  children: any[] = [];
+type DraftElement = {
+  attributes?: Record<string, any>;
+  children?: any[];
   element: any;
-  index = 0;
-  tag!: string | undefined;
-  constructor(element = undefined, index = 0) {
-    this.element = element;
-    this.index = index;
-  }
-}
+  index: number;
+  tag?: string;
+};
 
 const Operators = Object.freeze({
-  $for: (item: unknown) => {
-    const drafts = [];
-    if (!item || !isArray(item)) {
-      drafts.push(new DraftElement());
-    } else {
-      item.forEach((element, index) => drafts.push(new DraftElement(element, index)));
-    }
-    return drafts;
-  },
-  $if: (item: unknown, callbackFn: any) =>
+  $for: (item: unknown = undefined): DraftElement[] =>
+    isArray(item) ? item.map((element, index) => ({ element, index })) : [{ element: undefined, index: 0 }],
+  $if: (item: unknown, callbackFn: (item: unknown, index: number) => boolean): boolean =>
     item === undefined ? true : typeof item === 'function' ? item(callbackFn) : !!item
 });
 
@@ -77,7 +66,7 @@ const appendChild = (child: any, element: HTMLElement | DocumentFragment, draft:
   }
 };
 
-const createElement = (draftElement: DraftElement, type: ElementType = 'html') => {
+const createElement = (draftElement: Required<DraftElement>, type: ElementType = 'html') => {
   const element = type === 'fragment' ? new DocumentFragment() : document.createElement(draftElement.tag as string);
   Object.entries(draftElement.attributes).forEach(([key, value]) => attachAttribute(key, value, element));
   draftElement.children.forEach(child => appendChild(child, element, draftElement));
@@ -92,7 +81,7 @@ const extract = (...props: unknown[]) => {
     const [item, ...rest] = props.filter(i => i !== undefined);
     if (isObject(item)) {
       attributes = item;
-      children = rest;
+      children = rest.flat();
     } else {
       children = [item];
     }
@@ -102,7 +91,7 @@ const extract = (...props: unknown[]) => {
 };
 
 const define =
-  (tag?: string, type: ElementType = 'html') =>
+  (tag = '', type: ElementType = 'html') =>
   (...props: unknown[]) => {
     const {
       attributes: { $for, $if, ...attributes },
@@ -116,9 +105,9 @@ const define =
     return elements.length === 1 ? elements[0] : elements;
   };
 
-export const fragment = (...props: FragmentProps[]) => define(undefined, 'fragment')(...props);
+export const fragment = (...props: FragmentProps[]) => define('', 'fragment')(...props);
 
-export const raw = (string: string) => new DOMParser().parseFromString(string, 'text/html').body.children[0];
+export const raw = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
 export const markup = ((): { [T in HTMLTags]: MarkupElement<T> } =>
   [
