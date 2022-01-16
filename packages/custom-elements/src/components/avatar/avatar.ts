@@ -1,4 +1,4 @@
-import { markup } from '../../lib/create-element';
+import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
@@ -24,18 +24,19 @@ define<DataSet>('ui-avatar', {
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassName(dataset);
   },
-  template: ({ dataset }) => {
-    const { link, style, div, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      style(`
-        ::slotted(:first-child) {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-      `),
-      div({ id: 'root', className: getClassName(dataset) }, slot())
-    ];
-  }
+  template: ({ dataset }) => [
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom(
+      'style',
+      {},
+      `
+          ::slotted(:first-child) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        `
+    ),
+    dom('div', { id: 'root', className: getClassName(dataset) }, dom('slot'))
+  ]
 });

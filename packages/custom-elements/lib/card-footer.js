@@ -1,1 +1,1 @@
-import{d as l,c as n,m as o}from"./custom-element.js";l("ui-card-footer",{data:{append:void 0},template:({dataset:e})=>{const{link:a,footer:s,slot:t}=o;return[a({rel:"stylesheet",href:"/tailwind.css"}),s({className:n("inline-flex gap-2 w-full",e.append)},t())]}});
+import{d as s,m as e,c as l}from"./custom-element.js";s("ui-card-footer",{data:{append:void 0},template:({dataset:a})=>[e("link",{rel:"stylesheet",href:"/tailwind.css"}),e("footer",{className:l("inline-flex gap-2 w-full",a.append)},e("slot"))]});

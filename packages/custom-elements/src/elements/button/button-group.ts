@@ -1,4 +1,4 @@
-import { markup } from '../../lib/create-element';
+import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
@@ -21,11 +21,11 @@ define<DataSet>('ui-button-group', {
       children[idx].setAttribute('data-group', idx === 0 ? 'first' : idx === children.length - 1 ? 'last' : '');
     }
   },
-  template: ({ dataset }) => {
-    const { link, div, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      div({ id: 'root', className: getClassName(dataset) }, slot())
-    ];
-  }
+  template: ({ dataset }) => [
+    dom(
+      'link',
+      { rel: 'stylesheet', href: '/tailwind.css' },
+      dom('div', { id: 'root', className: getClassName(dataset) }, dom('slot'))
+    )
+  ]
 });

@@ -1,4 +1,4 @@
-import { markup, rawHtml } from '../../lib/create-element';
+import { dom, rawHtml } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
@@ -142,20 +142,18 @@ define<DataSet>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  template: ({ dataset }) => {
-    const { link, button, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      button(
-        {
-          id: 'root',
-          type: dataset.type,
-          disabled: dataset.disabled,
-          className: getClassName(dataset)
-        },
-        dataset.loading && rawHtml(getLoadingIcon(dataset)),
-        slot()
-      )
-    ];
-  }
+  template: ({ dataset }) => [
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom(
+      'button',
+      {
+        id: 'root',
+        type: dataset.type,
+        disabled: dataset.disabled,
+        className: getClassName(dataset)
+      },
+      dataset.loading && rawHtml(getLoadingIcon(dataset)),
+      dom('slot')
+    )
+  ]
 });

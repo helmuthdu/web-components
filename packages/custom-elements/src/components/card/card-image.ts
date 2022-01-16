@@ -1,5 +1,5 @@
-import { markup } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
+import { dom } from '../../lib/create-element';
 
 export type DataSet = {
   append?: string;
@@ -11,18 +11,16 @@ define<DataSet>('ui-card-image', {
     append: undefined,
     url: undefined
   },
-  template: ({ dataset }) => {
-    const { link, img, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      img(
-        {
-          className: classMap('w-auto h-full object-cover', dataset.append),
-          src: dataset.url,
-          alt: ''
-        },
-        slot()
-      )
-    ];
-  }
+  template: ({ dataset }) => [
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom(
+      'img',
+      {
+        className: classMap('w-auto h-full object-cover', dataset.append),
+        src: dataset.url,
+        alt: ''
+      },
+      dom('slot')
+    )
+  ]
 });

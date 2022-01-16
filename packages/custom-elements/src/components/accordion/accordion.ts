@@ -1,4 +1,4 @@
-import { markup, rawHtml } from '../../lib/create-element';
+import { dom, rawHtml } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
@@ -25,11 +25,12 @@ define<DataSet>('ui-accordion', {
       }
     }
   },
-  template: ({ dataset }) => {
-    const { link, style, details, summary, div, span, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      style(`
+  template: ({ dataset }) => [
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom(
+      'style',
+      {},
+      `
         details[open] summary ~ * {
           animation: open 0.5s ease-in-out;
         }
@@ -47,22 +48,22 @@ define<DataSet>('ui-accordion', {
           1% { opacity: 0; display: block; }
           100% { opacity: 1; display: block; }
         }
-      `),
-      details(
-        { id: 'root', className: getClassName(dataset) },
-        summary(
-          {
-            className: 'block py-1 cursor-pointer'
-          },
-          rawHtml(`
+      `
+    ),
+    dom(
+      'details',
+      { id: 'root', className: getClassName(dataset) },
+      dom(
+        'summary',
+        { className: 'block py-1 cursor-pointer' },
+        rawHtml(`
             <svg class="w-4 h-4 float-left mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
           `),
-          span({ id: 'header' }, dataset.header)
-        ),
-        div({}, slot())
-      )
-    ];
-  }
+        dom('span', { id: 'header' }, dataset.header)
+      ),
+      dom('div', {}, dom('slot'))
+    )
+  ]
 });

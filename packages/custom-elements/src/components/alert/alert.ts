@@ -1,4 +1,4 @@
-import { markup, rawHtml } from '../../lib/create-element';
+import { dom, rawHtml } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
@@ -28,34 +28,33 @@ define<DataSet>('ui-alert', {
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassName(dataset);
   },
-  template: ({ dataset, fire, remove }) => {
-    const { link, button, div, span, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      div(
-        { id: 'root', className: getClassName(dataset) },
-        span({ className: 'text-sm' }, slot()),
-        button(
-          {
-            id: 'button',
-            type: 'button',
-            dataset: {
-              collapseToggle: 'alert'
-            },
-            className: 'inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 text-current',
-            ariaLabel: 'close',
-            onclick: () => {
-              fire('close');
-              remove();
-            }
+  template: ({ dataset, fire, remove }) => [
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom(
+      'div',
+      { id: 'root', className: getClassName(dataset) },
+      dom('span', { className: 'text-sm' }, dom('slot')),
+      dom(
+        'button',
+        {
+          id: 'button',
+          type: 'button',
+          dataset: {
+            collapseToggle: 'alert'
           },
-          rawHtml(`
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-            </svg>`),
-          span({ className: 'sr-only' }, 'close')
-        )
+          className: 'inline-flex items-center justify-center ml-2 -mr-2 p-0.5 h-8 w-8 text-current',
+          ariaLabel: 'close',
+          onclick: () => {
+            fire('close');
+            remove();
+          }
+        },
+        dom('span', { className: 'sr-only' }, 'close'),
+        rawHtml(`
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>`)
       )
-    ];
-  }
+    )
+  ]
 });

@@ -1,1 +1,1 @@
-import{d as s,m as d}from"./custom-element.js";s("ui-card-header",{data:{append:void 0},template:({dataset:l,classList:i})=>{const{link:e,header:t,slot:a}=d;return[e({rel:"stylesheet",href:"/tailwind.css"}),t({className:"align-middle text-content text-xl font-medium"},a())]}});
+import{d as t,m as e}from"./custom-element.js";t("ui-card-header",{data:{append:void 0},template:({dataset:a,classList:s})=>[e("link",{rel:"stylesheet",href:"/tailwind.css"}),e("header",{className:"align-middle text-content text-xl font-medium"},e("slot"))]});

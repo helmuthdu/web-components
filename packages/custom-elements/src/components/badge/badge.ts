@@ -1,4 +1,4 @@
-import { markup } from '../../lib/create-element';
+import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
@@ -48,11 +48,8 @@ define<DataSet>('ui-badge', {
         break;
     }
   },
-  template: ({ dataset }) => {
-    const { link, span, slot } = markup;
-    return [
-      link({ rel: 'stylesheet', href: '/tailwind.css' }),
-      span({ id: 'root', className: getClassName(dataset) }, slot())
-    ];
-  }
+  template: ({ dataset }) => [
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom('span', { id: 'root', className: getClassName(dataset) }, dom('slot'))
+  ]
 });
