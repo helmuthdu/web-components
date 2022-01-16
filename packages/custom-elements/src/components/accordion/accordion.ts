@@ -1,4 +1,4 @@
-import { markup, raw } from '../../lib/create-element';
+import { markup, rawHtml } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type DataSet = {
@@ -54,7 +54,7 @@ define<DataSet>('ui-accordion', {
           {
             className: 'block py-1 cursor-pointer'
           },
-          raw(`
+          rawHtml(`
             <svg class="w-4 h-4 float-left mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
