@@ -56,10 +56,10 @@ const appendChild = (child: any, element: HTMLElement | DocumentFragment, draft:
   if (child !== undefined) {
     if (isArray(child)) {
       child.forEach(_child => appendChild(_child, element, draft));
-    } else if (child instanceof HTMLElement || child instanceof SVGSVGElement) {
-      element.append(child);
     } else if (isFunction(child)) {
       appendChild(draft.element ? child(draft.element, draft.index) : child(), element, draft);
+    } else if (child instanceof HTMLElement || child instanceof SVGSVGElement) {
+      element.append(child);
     } else {
       element.append(document.createTextNode(child.toString()));
     }
@@ -107,7 +107,7 @@ const define =
 
 export const fragment = (...props: FragmentProps[]) => define('', 'fragment')(...props);
 
-export const raw = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
+export const rawHtml = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
 export const markup = ((): { [T in HTMLTags]: MarkupElement<T> } =>
   [

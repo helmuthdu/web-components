@@ -1,4 +1,4 @@
-import{d as p,c as d,r as c,m}from"./custom-element.js";const o=e=>d("block text-content py-2 px-4",e.append);p("ui-accordion",{data:{append:void 0,header:""},onAttributeChanged(e,i,t,{dataset:r,update:l,root:n,shadowRoot:a}){switch(e){case"append":n.className=o(r);break;case"header":const s=a==null?void 0:a.getElementById("header");s&&(s.innerText=t);break}},template:({dataset:e})=>{const{link:i,style:t,details:r,summary:l,div:n,span:a,slot:s}=m;return[i({rel:"stylesheet",href:"/tailwind.css"}),t(`
+import{d as p,c as d,r as c,m}from"./custom-element.js";const o=e=>d("block text-content py-2 px-4",e.append);p("ui-accordion",{data:{append:void 0,header:""},onAttributeChanged(e,i,t,{dataset:r,update:l,root:n,shadowRoot:a}){switch(e){case"append":n.className=o(r);break;case"header":{const s=a==null?void 0:a.getElementById("header");s&&(s.innerText=t);break}}},template:({dataset:e})=>{const{link:i,style:t,details:r,summary:l,div:n,span:a,slot:s}=m;return[i({rel:"stylesheet",href:"/tailwind.css"}),t(`
         details[open] summary ~ * {
           animation: open 0.5s ease-in-out;
         }
