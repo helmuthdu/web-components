@@ -1,16 +1,20 @@
 import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
-export type DataSet = {
-  append?: string;
+export type Props = Partial<Omit<HTMLSpanElement, 'dataset'>> & {
+  dataset: { append?: string };
 };
 
-define<DataSet>('ui-card-meta', {
-  data: {
-    append: undefined
+const getClassName = ({ dataset }: Props) => classMap('block text-sm text-content-tertiary', dataset.append);
+
+define<Props>('ui-card-meta', {
+  props: {
+    dataset: {
+      append: undefined
+    }
   },
   template: ({ dataset }) => [
     dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('span', { className: classMap('block text-sm text-content-tertiary', dataset.append) }, dom('slot'))
+    dom('span', { className: getClassName({ dataset }) }, dom('slot'))
   ]
 });

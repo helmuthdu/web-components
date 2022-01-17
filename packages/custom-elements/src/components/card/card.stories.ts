@@ -7,14 +7,14 @@ import './card-image';
 import './card-meta';
 import './../../elements/button/button';
 import '../badge/badge';
-import type { DataSet } from './card';
+import type { Props } from './card';
 
 export default {
   title: 'Components/Card',
   argTypes: {}
-} as Meta<DataSet>;
+} as Meta<Props['dataset']>;
 
-const Template: Story<DataSet & { text: any }> = ({ text, ...props }) => /*html*/ `
+const Template: Story<Props['dataset'] & { text: any }> = ({ text, ...props }) => /*html*/ `
   <ui-card ${props.horizontal ? 'data-horizontal' : ''}>
     <ui-card-image data-url="https://mdbootstrap.com/img/new/standard/nature/184.jpg"></ui-card-image>
     <ui-card-body>
@@ -22,7 +22,7 @@ const Template: Story<DataSet & { text: any }> = ({ text, ...props }) => /*html*
         Card Header <ui-badge data-append="ml-1" data-variant="contrast" data-pill data-size="sm">new</ui-badge>
         <ui-card-meta>Last updated 3 mins ago</ui-card-meta>
       </ui-card-header>
-        ${text}
+      ${text}
       <ui-card-footer>
         <ui-button>Confirm</ui-button>
         <ui-button data-outline>Cancel</ui-button>

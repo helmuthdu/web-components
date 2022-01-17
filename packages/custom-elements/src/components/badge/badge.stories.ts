@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/html';
 import './badge';
-import type { DataSet } from './badge';
+import type { Props } from './badge';
 
 export default {
   title: 'Components/Badge',
@@ -20,9 +20,9 @@ export default {
       options: ['xs', 'sm', 'md', 'lg', 'xl']
     }
   }
-} as Meta<DataSet>;
+} as Meta<Props['dataset']>;
 
-const Template: Story<DataSet & { text: any }> = ({ text, ...props }) => /*html*/ `
+const Template: Story<Props['dataset'] & { text: any }> = ({ text, ...props }) => /*html*/ `
   <ui-badge
     data-size="${props.size}"
     data-variant="${props.variant}"

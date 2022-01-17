@@ -1,22 +1,24 @@
 import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
-export type DataSet = {
-  append?: string;
-  variant?: 'primary' | 'secondary' | 'tertiary';
+export type Props = Partial<Omit<HTMLDivElement, 'dataset'>> & {
+  dataset: {
+    append?: string;
+    variant?: 'primary' | 'secondary' | 'tertiary';
+  };
 };
 
-const getClassName = (data: DataSet) =>
+const getClassName = ({ dataset }: Props) =>
   classMap(
     'block rounded-lg px-2 py-1',
     {
-      'bg-canvas border border-contrast-200': data.variant === 'primary',
-      'bg-transparent': data.variant === 'secondary' || data.variant === 'tertiary'
+      'bg-canvas border border-contrast-200': dataset.variant === 'primary',
+      'bg-transparent': dataset.variant === 'secondary' || dataset.variant === 'tertiary'
     },
-    data.append
+    dataset.append
   );
 
-const updateChildren = (children: HTMLCollection, dataset: DataSet) => {
+const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
   const primary = ['block', 'border-b', 'border-contrast-200'];
   const secondary = ['block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-200'];
   const tertiary = ['block', 'border-b', 'border-contrast-800'];
@@ -30,27 +32,29 @@ const updateChildren = (children: HTMLCollection, dataset: DataSet) => {
   });
 };
 
-define<DataSet>('ui-accordion-group', {
-  data: {
-    append: undefined,
-    variant: 'primary'
+define<Props>('ui-accordion-group', {
+  props: {
+    dataset: {
+      append: undefined,
+      variant: 'primary'
+    }
   },
   onAttributeChanged(name, prev, curr, { children, dataset, root }) {
     switch (name) {
-      case 'append':
-        root.className = getClassName(dataset);
+      case 'data-append':
+        root.className = getClassName({ dataset });
         break;
-      case 'variant':
-        root.className = getClassName(dataset);
-        updateChildren(children, dataset);
+      case 'data-variant':
+        root.className = getClassName({ dataset });
+        updateChildren(children, { dataset });
         break;
     }
   },
   onConnected: ({ dataset, children }) => {
-    updateChildren(children, dataset);
+    updateChildren(children, { dataset });
   },
   template: ({ dataset }) => [
     dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('div', { id: 'root', className: getClassName(dataset) }, dom('slot'))
+    dom('div', { id: 'root', className: getClassName({ dataset }) }, dom('slot'))
   ]
 });

@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/html';
 import './button';
-import type { DataSet } from './button';
+import type { Props } from './button';
 
 export default {
   title: 'Elements/Button',
@@ -35,9 +35,9 @@ export default {
       defaultValue: false
     }
   }
-} as Meta<DataSet>;
+} as Meta<Props['dataset']>;
 
-const Template: Story<DataSet & { text: any }> = ({ text, ...props }) => /*html*/ `
+const Template: Story<Props['dataset'] & { disabled: boolean; text: any }> = ({ text, ...props }) => /*html*/ `
   <ui-button
     data-variant="${props.variant}"
     data-size="${props.size}"

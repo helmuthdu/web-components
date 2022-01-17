@@ -1,15 +1,15 @@
 import { Meta, Story } from '@storybook/html';
 import './alert';
-import type { DataSet } from './alert';
+import type { Props } from './alert';
 
 export default {
   title: 'Components/Alert',
   args: {
     variant: 'info'
   }
-} as Meta<DataSet>;
+} as Meta<Props['dataset']>;
 
-const Template: Story<Partial<DataSet>> = (_attrs: Partial<DataSet>) => {
+const Template: Story<Partial<Props['dataset']>> = _attrs => {
   return /*html*/ `
     <ui-alert data-append="mb-4">
       <span class="font-medium">Default alert!</span> Change a few things up and try submitting again.

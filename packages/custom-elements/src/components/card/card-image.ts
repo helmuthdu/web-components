@@ -1,26 +1,21 @@
-import { classMap, define } from '../../lib/custom-element';
 import { dom } from '../../lib/create-element';
+import { classMap, define } from '../../lib/custom-element';
 
-export type DataSet = {
-  append?: string;
-  url?: string;
+export type Props = Partial<Omit<HTMLImageElement, 'dataset'>> & {
+  dataset: { append?: string; url?: string };
 };
 
-define<DataSet>('ui-card-image', {
-  data: {
-    append: undefined,
-    url: undefined
+const getClassName = ({ dataset }: Props) => classMap('w-auto h-full object-cover', dataset.append);
+
+define<Props>('ui-card-image', {
+  props: {
+    dataset: {
+      append: undefined,
+      url: undefined
+    }
   },
   template: ({ dataset }) => [
     dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom(
-      'img',
-      {
-        className: classMap('w-auto h-full object-cover', dataset.append),
-        src: dataset.url,
-        alt: ''
-      },
-      dom('slot')
-    )
+    dom('img', { className: getClassName({ dataset }), src: dataset.url, alt: '' }, dom('slot'))
   ]
 });

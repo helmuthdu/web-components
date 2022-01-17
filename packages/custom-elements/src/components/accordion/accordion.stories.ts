@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/html';
 import './accordion';
 import './accordion-group';
-import type { DataSet } from './accordion-group';
+import type { Props } from './accordion-group';
 
 export default {
   title: 'Components/Accordion',
@@ -14,9 +14,9 @@ export default {
       options: ['primary', 'secondary', 'tertiary']
     }
   }
-} as Meta<DataSet>;
+} as Meta<Props['dataset']>;
 
-const Template: Story<Partial<DataSet>> = ({ variant }) => /*html*/ `
+const Template: Story<Partial<Props['dataset']>> = ({ variant }) => /*html*/ `
   <ui-accordion-group style="width: 300px" data-variant="${variant}">
     <ui-accordion data-header="1 item">
       <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
