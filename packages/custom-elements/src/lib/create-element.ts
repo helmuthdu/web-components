@@ -1,12 +1,16 @@
-import { isArray, isFunction, isObject, isString } from './shared';
+import { isArray, isFunction, isObject, isString, isSVG } from './shared';
 
-type HTMLTags = keyof HTMLElementTagNameMap;
+type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 
-type ElementDom<T extends HTMLTags> = (...props: (ElementProps<T> | Element[])[]) => HTMLElementTagNameMap[T];
+type HtmlOrSvg<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
+  ? HTMLElementTagNameMap[Tag]
+  : Tag extends keyof SVGElementTagNameMap
+  ? SVGElementTagNameMap[Tag]
+  : unknown;
 
-type ElementProps<T extends HTMLTags> = Partial<HTMLElementTagNameMap[T]>;
+type ElementDom<T extends Markup> = (...props: (HtmlOrSvg<T> | Element[])[]) => HtmlOrSvg<T>;
 
-type FragmentProps = Partial<DocumentFragment>;
+type ElementProps<T extends Markup> = Partial<HtmlOrSvg<T>>;
 
 type ElementDraft = {
   attributes: Record<string, any>;
@@ -14,25 +18,31 @@ type ElementDraft = {
   tag: string | any;
 };
 
-const attachAttribute = (attr: string, value: any, element: HTMLElement | DocumentFragment) => {
-  if (attr === 'style' || attr === 'dataset') {
+const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
+  if (element instanceof DocumentFragment) return;
+
+  if (isObject(value)) {
     Object.assign((element as any)[attr], value);
-  } else if (attr === 'className' || [isObject, isFunction, isArray].some(is => is(value))) {
-    (element as any)[attr] = value;
-  } else if (element instanceof HTMLElement) {
-    if (attr === 'innerHTML') {
-      if (isString(value)) element.innerHTML = value;
-    } else {
-      element.setAttribute(attr, value);
+  } else if (isFunction(value)) {
+    const event = attr.toLowerCase();
+    const regexp = /^(on[a-z]+)$/i;
+    if (regexp.test(event)) {
+      (element as any)[event] = value;
     }
+  } else if (attr === 'innerHTML' || attr === 'dangerouslySetInnerHTML') {
+    if (isString(value)) element.innerHTML = value.html ?? value;
+  } else if (attr === 'className') {
+    element.setAttribute('class', value);
+  } else {
+    element.setAttribute(attr, value);
   }
 };
 
-const appendChild = (child: any, element: HTMLElement | DocumentFragment) => {
+const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (child !== undefined) {
     if (isArray(child)) {
       child.forEach(c => appendChild(c, element));
-    } else if (child instanceof HTMLElement || child instanceof SVGSVGElement) {
+    } else if (isObject(child)) {
       element.append(child);
     } else {
       element.append(document.createTextNode(child.toString()));
@@ -40,20 +50,23 @@ const appendChild = (child: any, element: HTMLElement | DocumentFragment) => {
   }
 };
 
-const createElement = (draft: ElementDraft) => {
-  if (typeof draft.tag === 'function') return draft.tag(draft.attributes, draft.children);
-  const element = draft.tag === 'fragment' ? new DocumentFragment() : document.createElement(draft.tag);
-  Object.entries(draft.attributes).forEach(([key, value]) => attachAttribute(key, value, element));
+const createElement = (tag: string) =>
+  isSVG(tag) ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
+
+const create = (draft: ElementDraft) => {
+  if (isFunction(draft.tag)) return draft.tag(draft.attributes, draft.children);
+  const element = draft.tag === 'fragment' ? new DocumentFragment() : createElement(draft.tag);
+  Object.entries(draft.attributes ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
   draft.children.forEach(child => appendChild(child, element));
   return element;
 };
 
-const define = (tag = 'fragment', attributes: Record<string, any>, ...children: any[]) =>
-  createElement({ tag, attributes, children });
+const define = (tag: string, attributes: Record<string, any>, ...children: any[]) =>
+  create({ tag, attributes, children });
 
-export const fragment = (props: FragmentProps[], ...children: any[]) => define('fragment', props, ...children);
+export const fragment = (...children: any[]) => define('fragment', {}, ...children);
 
-export const dom = <T extends HTMLTags>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
+export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
   define(tag, props, ...children) as any;
 
 export const rawHtml = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];

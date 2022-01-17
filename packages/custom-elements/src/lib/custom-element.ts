@@ -111,7 +111,7 @@ export const component = <T extends CustomElementDataSet>({
   };
 
 export const define = <T extends CustomElementDataSet>(name: string, options: CustomElementOptions<T>) => {
-  customElements.define(name, component(options));
+  if (!window.customElements.get(name)) customElements.define(name, component(options));
 };
 
 export { classMap } from './styling-element';
