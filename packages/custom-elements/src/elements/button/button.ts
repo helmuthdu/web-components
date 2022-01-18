@@ -3,22 +3,23 @@ import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
 export type Props = {
-  type?: string;
-  disabled?: boolean;
   dataset: {
     append?: string;
     block?: boolean;
     circle?: boolean;
+    disabled?: boolean;
     group?: string;
     loading?: boolean;
     outline?: boolean;
     rounded?: boolean;
     size?: Sizes;
+    type?: 'button' | 'submit' | 'reset';
     variant?: 'primary' | 'error' | 'success';
   };
 };
 
-const getLoadingIcon = ({ dataset }: Props) => /*html*/ `
+const getLoadingIcon = ({ dataset }: Props) =>
+  rawHtml(/*html*/ `
   <svg
     class="${classMap(
       'absolute animate-spin',
@@ -45,9 +46,9 @@ const getLoadingIcon = ({ dataset }: Props) => /*html*/ `
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
   </svg>
-`;
+`);
 
-const getClassName = ({ disabled, dataset }: Props) =>
+const getClassName = ({ dataset }: Props) =>
   classMap(
     'inline-flex flex-wrap items-center justify-center text-center font-semibold border-transparent gap-2',
     !dataset.group && 'shadow-sm',
@@ -70,7 +71,7 @@ const getClassName = ({ disabled, dataset }: Props) =>
           'h-14 w-14': dataset.size === 'lg',
           'h-16 w-16': dataset.size === 'xl'
         }
-      : dataset.outline && !disabled
+      : dataset.outline && !dataset.disabled
       ? {
           'text-xs px-4 py-0.5 mt-0.5': dataset.size === 'xs',
           'text-sm px-4 py-1.5': dataset.size === 'sm',
@@ -85,7 +86,7 @@ const getClassName = ({ disabled, dataset }: Props) =>
           'text-lg px-5 py-4': dataset.size === 'lg',
           'text-xl px-6 py-4': dataset.size === 'xl'
         },
-    disabled
+    dataset.disabled
       ? `bg-neutral-500 border-opacity-0 bg-opacity-20 ${dataset.loading ? 'text-transparent' : 'text-neutral-600/25'}`
       : dataset.outline
       ? {
@@ -109,35 +110,46 @@ const getClassName = ({ disabled, dataset }: Props) =>
 
 define<Props, HTMLButtonElement>('ui-button', {
   props: {
-    disabled: undefined,
-    type: 'button',
     dataset: {
       append: undefined,
       block: undefined,
       circle: undefined,
+      disabled: undefined,
       group: undefined,
       loading: undefined,
       outline: undefined,
       rounded: undefined,
       size: 'md',
+      type: 'button',
       variant: 'primary'
     }
   },
-  onAttributeChanged: (name, prev, curr, { classList, disabled, root, update, dataset }) => {
+  onAttributeChanged: (name, prev, curr, { classList, root, update, dataset }) => {
     switch (name) {
       case 'data-append':
       case 'data-circle':
-      case 'data-disabled':
       case 'data-group':
       case 'data-outline':
       case 'data-rounded':
       case 'data-size':
       case 'data-variant':
-        root.className = getClassName({ disabled, dataset });
+        root.className = getClassName({ dataset });
+        break;
+      case 'data-loading':
+        if (curr === null) {
+          root.querySelector('svg')?.remove();
+        } else {
+          root.prepend(getLoadingIcon({ dataset })[0]);
+        }
+        root.className = getClassName({ dataset });
+        break;
+      case 'data-disabled':
+        root.disabled = curr !== null;
+        root.className = getClassName({ dataset });
         break;
       case 'data-block':
         classList[dataset.block ? 'add' : 'remove']('w-full');
-        root.className = getClassName({ disabled, dataset });
+        root.className = getClassName({ dataset });
         break;
       default:
         update();
@@ -146,12 +158,12 @@ define<Props, HTMLButtonElement>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  template: ({ dataset, disabled, type }) => [
+  template: ({ dataset }) => [
     dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
     dom(
       'button',
-      { id: 'root', type: type, disabled: disabled, className: getClassName({ disabled, dataset }) },
-      dataset.loading && rawHtml(getLoadingIcon({ dataset })),
+      { id: 'root', type: dataset.type, disabled: dataset.disabled, className: getClassName({ dataset }) },
+      dataset.loading && getLoadingIcon({ dataset }),
       dom('slot')
     )
   ]

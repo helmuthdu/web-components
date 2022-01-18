@@ -9,12 +9,12 @@ type CustomElementOptions<P extends CustomElementProps, T extends HTMLElement> =
   onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<P, T>) => void;
   onConnected?: (host: CustomElement<P, T>) => void;
   onDisconnected?: (host: CustomElement<P, T>) => void;
-  props: P & Partial<Omit<T, keyof P>>;
+  props: P & Partial<Omit<HTMLElement, keyof P>>;
   styles?: unknown[];
   template: (host: CustomElement<P, T>) => any;
 };
 
-export type CustomElement<P extends CustomElementProps, T extends HTMLElement> = Omit<T, keyof P> &
+export type CustomElement<P extends CustomElementProps, T extends HTMLElement> = Omit<HTMLElement, keyof P> &
   P & {
     fire: (event: string | HTMLTags, { detail }?: CustomEventInit) => void;
     event: (
@@ -23,7 +23,7 @@ export type CustomElement<P extends CustomElementProps, T extends HTMLElement> =
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) => void;
-    root: HTMLElement;
+    root: T;
     update: () => void;
   };
 

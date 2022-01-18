@@ -39,11 +39,11 @@ export default {
 
 const Template: Story<Props['dataset'] & { disabled: boolean; text: any }> = ({ text, ...props }) => /*html*/ `
   <ui-button
-    data-variant="${props.variant}"
-    data-size="${props.size}"
+    ${props.variant ? `data-variant="${props.variant}"` : ''}
+    ${props.size ? `data-size="${props.size}"` : ''}
+    ${props.disabled ? 'disabled' : ''}
     ${props.loading ? 'data-loading' : ''}
     ${props.outline ? 'data-outline' : ''}
-    ${props.disabled ? 'data-disabled' : ''}
     ${props.circle ? 'data-circle' : ''}
     ${props.rounded ? 'data-rounded' : ''}
     ${props.block ? 'data-block' : ''}
