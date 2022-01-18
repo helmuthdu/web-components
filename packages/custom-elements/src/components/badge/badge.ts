@@ -2,7 +2,7 @@ import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
-export type Props = Partial<Omit<HTMLSpanElement, 'dataset'>> & {
+export type Props = {
   dataset: {
     append?: string;
     pill?: boolean;

@@ -1,7 +1,7 @@
 import { dom } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
-export type Props = Partial<Omit<HTMLImageElement, 'dataset'>> & {
+export type Props = {
   dataset: { append?: string; url?: string };
 };
 

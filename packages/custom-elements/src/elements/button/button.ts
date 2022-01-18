@@ -2,7 +2,9 @@ import { dom, rawHtml } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
-export type Props = Partial<Omit<HTMLButtonElement, 'dataset'>> & {
+export type Props = {
+  type?: string;
+  disabled?: boolean;
   dataset: {
     append?: string;
     block?: boolean;
@@ -105,7 +107,7 @@ const getClassName = ({ disabled, dataset }: Props) =>
     dataset.append
   );
 
-define<Props>('ui-button', {
+define<Props, HTMLButtonElement>('ui-button', {
   props: {
     disabled: undefined,
     type: 'button',

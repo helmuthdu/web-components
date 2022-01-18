@@ -1,7 +1,7 @@
 import { dom, rawHtml } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
-export type Props = Partial<Omit<HTMLDivElement, 'dataset'>> & {
+export type Props = {
   dataset: { append?: string; header: string };
 };
 
