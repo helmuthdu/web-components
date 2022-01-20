@@ -21,7 +21,7 @@ const getClassName = ({ dataset }: Props) =>
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
   const primary = ['block', 'border-b', 'border-contrast-200'];
   const secondary = ['block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-200'];
-  const tertiary = ['block', 'border-b', 'border-contrast-800'];
+  const tertiary = ['block', 'border-b', 'border-contrast-200'];
   [...children].forEach((el, idx) => {
     el.classList.remove(...primary, ...secondary, ...tertiary);
     if (dataset.variant === 'secondary') {

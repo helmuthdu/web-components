@@ -6,14 +6,14 @@ export default {
   title: 'Components/Badge',
   argTypes: {
     variant: {
-      name: 'variant',
+      name: 'data-variant',
       type: { name: 'string', required: true },
       defaultValue: 'info',
       control: { type: 'select' },
       options: ['info', 'error', 'success', 'contrast']
     },
     size: {
-      name: 'size',
+      name: 'data-size',
       type: { name: 'string' },
       defaultValue: 'md',
       control: { type: 'select' },

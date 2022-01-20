@@ -5,7 +5,7 @@ export type Props = {
   dataset: { append?: string; header: string };
 };
 
-const getClassName = ({ dataset }: Props) => classMap('block text-content py-2 px-4', dataset.append);
+const getClassName = ({ dataset }: Props) => classMap('block text-content p-3', dataset.append);
 
 define<Props>('ui-accordion', {
   props: {
@@ -44,7 +44,7 @@ define<Props>('ui-accordion', {
         ),
         dom('span', { id: 'header' }, dataset.header)
       ),
-      dom('div', {}, dom('slot'))
+      dom('div', { className: 'mt-2' }, dom('slot'))
     )
   ]
 });
