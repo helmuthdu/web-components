@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isFunction, isObject, isString, isSVG } from './shared';
+import { isArray, isBoolean, isFunction, isObject, isSVG } from './shared';
 
 type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 
@@ -21,16 +21,16 @@ type ElementDraft = {
 const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (element instanceof DocumentFragment) return;
 
-  if (isObject(value)) {
-    Object.assign((element as any)[attr], value);
+  if (attr === 'innerHTML' || attr === 'dangerouslySetInnerHTML') {
+    element.innerHTML = value.__html ?? value;
   } else if (isFunction(value)) {
     const event = attr.toLowerCase();
     const regexp = /^(on[a-z]+)$/i;
     if (regexp.test(event)) {
       (element as any)[event] = value;
     }
-  } else if (attr === 'innerHTML' || attr === 'dangerouslySetInnerHTML') {
-    if (isString(value)) element.innerHTML = value.html ?? value;
+  } else if (isObject(value)) {
+    Object.assign((element as any)[attr], value);
   } else if (attr === 'className') {
     element.setAttribute('class', value);
   } else {
@@ -39,7 +39,7 @@ const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGEle
 };
 
 const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFragment) => {
-  if (child !== undefined) {
+  if ([undefined, null].every(t => child !== t)) {
     if (isArray(child)) {
       child.forEach(c => appendChild(c, element));
     } else if (isObject(child)) {

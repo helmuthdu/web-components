@@ -6,31 +6,31 @@ export default {
   title: 'Elements/Button',
   argTypes: {
     variant: {
-      name: 'variant',
+      name: 'data-variant',
       type: { name: 'string', required: true },
       defaultValue: 'primary',
       control: { type: 'select' },
       options: ['primary', 'error', 'success']
     },
     size: {
-      name: 'size',
+      name: 'data-size',
       type: { name: 'string' },
       defaultValue: 'md',
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg', 'xl']
     },
     loading: {
-      name: 'loading',
+      name: 'data-loading',
       type: { name: 'boolean' },
       defaultValue: false
     },
     outline: {
-      name: 'outline',
+      name: 'data-outline',
       type: { name: 'boolean' },
       defaultValue: false
     },
     disabled: {
-      name: 'disabled',
+      name: 'data-disabled',
       type: { name: 'boolean' },
       defaultValue: false
     }
