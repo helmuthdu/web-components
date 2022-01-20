@@ -1,13 +1,36 @@
 import { dom } from '../../lib/create-element';
-import { define } from '../../lib/custom-element';
+import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
-  dataset: { appendClass?: string; src: string };
+  dataset: {
+    append?: string;
+    textPosition?: 'top' | 'center' | 'bottom';
+    textAlign?: 'left' | 'center' | 'right';
+    src: string;
+  };
 };
+
+const getClassName = ({ dataset }: Props) =>
+  classMap(
+    'flex flex-col py-8 px-12 absolute inset-0',
+    {
+      'justify-start': dataset.textPosition === 'top',
+      'justify-center': dataset.textPosition === 'center',
+      'justify-end': dataset.textPosition === 'bottom'
+    },
+    {
+      'text-left': dataset.textAlign === 'left',
+      'text-center': dataset.textAlign === 'center',
+      'text-right': dataset.textAlign === 'right'
+    },
+    dataset.append
+  );
 
 define<Props>('ui-carousel-item', {
   props: {
     dataset: {
+      textAlign: 'center',
+      textPosition: 'bottom',
       src: ''
     }
   },
@@ -21,6 +44,6 @@ define<Props>('ui-carousel-item', {
       className: 'block relative w-full',
       alt: ''
     }),
-    dom('div', { className: 'hidden md:block absolute inset-x-0 bottom-0 text-center pb-8' }, dom('slot'))
+    dom('div', { className: getClassName({ dataset }) }, dom('slot'))
   ]
 });
