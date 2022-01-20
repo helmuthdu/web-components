@@ -3,7 +3,7 @@ import { injectStyles } from './styling-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
-type CustomElementProps = Record<string, any | undefined>;
+type CustomElementProps = Record<string, any> | undefined;
 
 type CustomElementOptions<P extends CustomElementProps, T extends HTMLElement> = {
   onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<P, T>) => void;
