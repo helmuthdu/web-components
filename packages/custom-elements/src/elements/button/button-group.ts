@@ -24,10 +24,7 @@ define<Props>('ui-button-group', {
     }
   },
   template: ({ dataset }) => [
-    dom(
-      'link',
-      { rel: 'stylesheet', href: '/tailwind.css' },
-      dom('div', { id: 'root', className: getClassName({ dataset }) }, dom('slot'))
-    )
+    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom('div', { id: 'root', className: getClassName({ dataset }) }, dom('slot'))
   ]
 });

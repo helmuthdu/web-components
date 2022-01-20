@@ -42,8 +42,10 @@ const getClassName = ({ dataset }: Props) =>
     dataset.group && !dataset.circle
       ? {
           '-mx-px': dataset.outline,
-          'rounded-l-lg': dataset.group === 'first',
-          'rounded-r-lg': dataset.group === 'last'
+          'rounded-l-lg': dataset.group === 'first' && !dataset.rounded,
+          'rounded-r-lg': dataset.group === 'last' && !dataset.rounded,
+          'rounded-l-full': dataset.group === 'first' && dataset.rounded,
+          'rounded-r-full': dataset.group === 'last' && dataset.rounded
         }
       : dataset.rounded
       ? 'rounded-full'
@@ -74,7 +76,7 @@ const getClassName = ({ dataset }: Props) =>
           'text-xl px-6 py-4': dataset.size === 'xl'
         },
     dataset.disabled
-      ? `bg-neutral-500 border-opacity-0 bg-opacity-20 text-neutral-600/25}`
+      ? `bg-neutral-500 border-opacity-0 bg-opacity-20 text-neutral-600/25`
       : dataset.outline
       ? {
           'bg-transparent border-2': true,
