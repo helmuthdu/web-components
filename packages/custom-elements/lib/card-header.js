@@ -1,1 +1,0 @@
-import{d as a,a as s,c as t}from"./custom-element.js";const d=({dataset:e})=>t("align-middle text-content text-xl font-medium",e.append);a("ui-card-header",{props:{dataset:{append:void 0}},template:({dataset:e,classList:l})=>[s("link",{rel:"stylesheet",href:"/tailwind.css"}),s("header",{className:d({dataset:e})},s("slot"))]});

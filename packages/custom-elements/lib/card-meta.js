@@ -1,1 +1,0 @@
-import{d as s,a as t,c as a}from"./custom-element.js";const l=({dataset:e})=>a("block text-sm text-content-tertiary",e.append);s("ui-card-meta",{props:{dataset:{append:void 0}},template:({dataset:e})=>[t("link",{rel:"stylesheet",href:"/tailwind.css"}),t("span",{className:l({dataset:e})},t("slot"))]});

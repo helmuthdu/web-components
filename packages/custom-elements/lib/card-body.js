@@ -1,1 +1,0 @@
-import{d as t,a as s,c as a}from"./custom-element.js";const l=({dataset:e})=>a("flex flex-col gap-2 text-base text-content p-4",e.append);t("ui-card-body",{props:{dataset:{append:void 0}},template:({dataset:e})=>[s("link",{rel:"stylesheet",href:"/tailwind.css"}),s("section",{className:l({dataset:e})},s("slot"))]});

@@ -1,1 +1,0 @@
-import{d as a,a as s,c as l}from"./custom-element.js";const t=({dataset:e})=>l("w-auto h-full object-cover",e.append);a("ui-card-image",{props:{dataset:{append:void 0,url:void 0}},template:({dataset:e})=>[s("link",{rel:"stylesheet",href:"/tailwind.css"}),s("img",{className:t({dataset:e}),src:e.url,alt:""},s("slot"))]});

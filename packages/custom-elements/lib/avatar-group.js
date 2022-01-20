@@ -1,1 +1,0 @@
-import{d as r,c as i,a}from"./custom-element.js";const s=({dataset:e})=>i("inline-flex items-center flex-wrap",e.append);r("ui-avatar-group",{props:{dataset:{append:void 0}},onAttributeChanged(e,n,o,{dataset:t,root:l}){l.className=s({dataset:t})},template:({dataset:e})=>[a("link",{rel:"stylesheet",href:"/tailwind.css"}),a("div",{id:"root",className:s({dataset:e})},a("slot"))]});

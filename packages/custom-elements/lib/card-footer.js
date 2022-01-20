@@ -1,1 +1,0 @@
-import{d as a,a as s,c as t}from"./custom-element.js";const l=({dataset:e})=>t("inline-flex gap-2 w-full",e.append);a("ui-card-footer",{props:{dataset:{append:void 0}},template:({dataset:e})=>[s("link",{rel:"stylesheet",href:"/tailwind.css"}),s("footer",{className:l({dataset:e})},s("slot"))]});
