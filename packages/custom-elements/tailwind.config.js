@@ -44,6 +44,21 @@ module.exports = {
           tertiary: 'var(--color-content-tertiary)',
           disabled: 'var(--color-content-disabled)'
         }
+      },
+      keyframes: {
+        'fade-in-down': {
+          '0%': {
+            opacity: '0',
+            transform: 'translate3d(0, -100%, 0)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translate3d(0, 0, 0)'
+          }
+        }
+      },
+      animation: {
+        'fade-in-down': 'fade-in-down .5s ease-in'
       }
     }
   },

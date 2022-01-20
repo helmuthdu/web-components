@@ -18,20 +18,20 @@
 
   --color-primary-backdrop: theme('colors.blue.200');
   --color-primary-focus: theme('colors.blue.300');
-  --color-primary: theme('colors.blue.500');
-  --color-primary-content: theme('colors.blue.700');
+  --color-primary: theme('colors.blue.700');
+  --color-primary-content: theme('colors.blue.900');
   --color-primary-contrast: #fff;
 
-  --color-error-backdrop: theme('colors.red.200');
-  --color-error-focus: theme('colors.red.300');
-  --color-error: theme('colors.red.500');
-  --color-error-content: theme('colors.red.700');
+  --color-error-backdrop: theme('colors.rose.200');
+  --color-error-focus: theme('colors.rose.300');
+  --color-error: theme('colors.rose.700');
+  --color-error-content: theme('colors.rose.900');
   --color-error-contrast: #fff;
 
-  --color-success-backdrop: theme('colors.green.200');
-  --color-success-focus: theme('colors.green.300');
-  --color-success: theme('colors.green.500');
-  --color-success-content: theme('colors.green.700');
+  --color-success-backdrop: theme('colors.emerald.200');
+  --color-success-focus: theme('colors.emerald.300');
+  --color-success: theme('colors.emerald.700');
+  --color-success-content: theme('colors.emerald.900');
   --color-success-contrast: #fff;
 
   --color-content-heading: theme('colors.gray.900');
@@ -58,20 +58,20 @@
 
     --color-primary-backdrop: theme('colors.blue.200');
     --color-primary-focus: theme('colors.blue.300');
-    --color-primary: theme('colors.blue.500');
-    --color-primary-content: theme('colors.blue.800');
+    --color-primary: theme('colors.blue.700');
+    --color-primary-content: theme('colors.blue.900');
     --color-primary-contrast: #fff;
 
-    --color-error-backdrop: theme('colors.red.200');
-    --color-error-focus: theme('colors.red.300');
-    --color-error: theme('colors.red.500');
-    --color-error-content: theme('colors.red.800');
+    --color-error-backdrop: theme('colors.rose.200');
+    --color-error-focus: theme('colors.rose.300');
+    --color-error: theme('colors.rose.700');
+    --color-error-content: theme('colors.rose.900');
     --color-error-contrast: #fff;
 
-    --color-success-backdrop: theme('colors.green.200');
-    --color-success-focus: theme('colors.green.300');
-    --color-success: theme('colors.green.500');
-    --color-success-content: theme('colors.green.800');
+    --color-success-backdrop: theme('colors.emerald.200');
+    --color-success-focus: theme('colors.emerald.300');
+    --color-success: theme('colors.emerald.700');
+    --color-success-content: theme('colors.emerald.900');
     --color-success-contrast: #fff;
 
     --color-content-heading: theme('colors.gray.50');

@@ -26,6 +26,7 @@ export default defineConfig({
         './src/components/card/card-meta.ts',
         './src/components/carousel/carousel.ts',
         './src/components/carousel/carousel-item.ts',
+        './src/components/toast/toast.ts',
         './src/elements/box/box.ts',
         './src/elements/button/button.ts',
         './src/elements/button/button-group.ts'

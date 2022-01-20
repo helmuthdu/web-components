@@ -12,3 +12,4 @@ import './card/card-image';
 import './card/card-meta';
 import './carousel/carousel';
 import './carousel/carousel-item';
+import './toast/toast';
