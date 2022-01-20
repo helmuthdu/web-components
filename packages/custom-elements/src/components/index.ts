@@ -11,3 +11,4 @@ import './card/card-header';
 import './card/card-image';
 import './card/card-meta';
 import './carousel/carousel';
+import './carousel/carousel-item';
