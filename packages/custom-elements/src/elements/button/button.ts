@@ -21,27 +21,13 @@ export type Props = {
 const getLoadingIcon = ({ dataset }: Props) =>
   rawHtml(/*html*/ `
   <svg
-    class="${classMap(
-      'absolute animate-spin',
-      {
-        'h-3 w-3': dataset.size === 'xs',
-        'h-4 w-4': dataset.size === 'sm',
-        'h-5 w-5': dataset.size === 'md' || !dataset.size,
-        'h-6 w-6': dataset.size === 'lg',
-        'h-7 w-7': dataset.size === 'xl'
-      },
-      dataset.outline
-        ? {
-            'text-primary': dataset.variant === 'primary',
-            'text-error': dataset.variant === 'error',
-            'text-success': dataset.variant === 'success'
-          }
-        : {
-            'text-primary-contrast': dataset.variant === 'primary',
-            'text-error-contrast': dataset.variant === 'error',
-            'text-success-contrast': dataset.variant === 'success'
-          }
-    )}"
+    class="${classMap('absolute animate-spin', {
+      'h-3 w-3': dataset.size === 'xs',
+      'h-4 w-4': dataset.size === 'sm',
+      'h-5 w-5': dataset.size === 'md' || !dataset.size,
+      'h-6 w-6': dataset.size === 'lg',
+      'h-7 w-7': dataset.size === 'xl'
+    })}"
     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -51,6 +37,7 @@ const getLoadingIcon = ({ dataset }: Props) =>
 const getClassName = ({ dataset }: Props) =>
   classMap(
     'inline-flex flex-wrap items-center justify-center text-center font-semibold border-transparent gap-2',
+    dataset.loading && 'loading',
     !dataset.group && 'shadow-sm',
     dataset.group && !dataset.circle
       ? {
@@ -87,23 +74,20 @@ const getClassName = ({ dataset }: Props) =>
           'text-xl px-6 py-4': dataset.size === 'xl'
         },
     dataset.disabled
-      ? `bg-neutral-500 border-opacity-0 bg-opacity-20 ${dataset.loading ? 'text-transparent' : 'text-neutral-600/25'}`
+      ? `bg-neutral-500 border-opacity-0 bg-opacity-20 text-neutral-600/25}`
       : dataset.outline
       ? {
           'bg-transparent border-2': true,
-          'border-primary hover:ring-4 focus:ring-4 ring-primary-focus': dataset.variant === 'primary',
-          'border-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.variant === 'error',
-          'border-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.variant === 'success',
-          'text-transparent': dataset.loading,
-          [`text-${dataset.variant}`]: !dataset.loading
+          'text-primary border-primary hover:ring-4 focus:ring-4 ring-primary-focus': dataset.variant === 'primary',
+          'text-error border-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.variant === 'error',
+          'text-success border-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.variant === 'success'
         }
       : {
           'border-none': true,
-          'bg-primary hover:ring-4 focus:ring-4 ring-primary-focus': dataset.variant === 'primary',
-          'bg-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.variant === 'error',
-          'bg-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.variant === 'success',
-          'text-transparent': dataset.loading,
-          [`text-${dataset.variant}-contrast`]: !dataset.loading
+          'text-primary-contrast bg-primary hover:ring-4 focus:ring-4 ring-primary-focus':
+            dataset.variant === 'primary',
+          'text-error-contrast bg-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.variant === 'error',
+          'text-success-contrast bg-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.variant === 'success'
         },
     dataset.append
   );
@@ -160,6 +144,7 @@ define<Props, HTMLButtonElement>('ui-button', {
   },
   template: ({ dataset }) => [
     dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
+    dom('style', {}, '.loading slot { visibility: hidden; }'),
     dom(
       'button',
       { id: 'root', type: dataset.type, disabled: dataset.disabled, className: getClassName({ dataset }) },
