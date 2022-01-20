@@ -1,4 +1,4 @@
-import { isArray, isFunction, isObject, isString, isSVG } from './shared';
+import { isArray, isBoolean, isFunction, isObject, isString, isSVG } from './shared';
 
 type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 
@@ -44,7 +44,7 @@ const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFra
       child.forEach(c => appendChild(c, element));
     } else if (isObject(child)) {
       element.append(child);
-    } else {
+    } else if (!isBoolean(child)) {
       element.append(document.createTextNode(child.toString()));
     }
   }
