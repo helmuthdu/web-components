@@ -22,6 +22,7 @@
   </head>
   <body>
     <script src="/src/main.ts" type="module"></script>
+    <script src="/src/lib/create-element.ts" type="module"></script>
 
     <div class="not-prose relative w-screen h-screen bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
       <div class="absolute inset-0 bg-grid"></div>
@@ -29,7 +30,7 @@
         <div class="flex flex-col gap-3 items-center h-screen justify-center">
           <!-- <ui-box>this is a box!</ui-box> -->
 
-          <ui-button data-variant="primary">
+          <ui-button id="create-toast-button" data-variant="primary">
             Get Started
             <ui-badge data-variant="error" data-size="xs" data-pill data-append="-mr-1.5">+99</ui-badge>
           </ui-button>
@@ -144,21 +145,41 @@
             Change a few things up and try submitting again.
           </ui-alert> -->
 
-          <ui-toast>test</ui-toast>
+          <!-- <ui-toast>test</ui-toast>
           <ui-toast data-variant="info">test</ui-toast>
           <ui-toast data-variant="success">test</ui-toast>
           <ui-toast data-variant="error">test</ui-toast>
-          <ui-toast data-variant="contrast">test</ui-toast>
+          <ui-toast data-variant="contrast">test</ui-toast>-->
         </div>
       </div>
       <div class="absolute inset-0 pointer-events-none border border-black/5 rounded-xl dark:border-white/5"></div>
     </div>
   </body>
   <script>
+    function random(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
     const el = document.querySelectorAll('ui-alert')[0];
     el &&
       el.addEventListener('close', event => {
         console.log('ui-alert was closed', event);
       });
+
+    const createToastButton = document.getElementById('create-toast-button');
+    createToastButton.addEventListener('click', () => {
+      document.body.appendChild(
+        rawHTML(
+          random([true, false])
+            ? '<ui-toast><header slot="header">Toast Header</header><p>Lorem ipsum net zu.</p></ui-toast>'
+            : `<ui-toast data-variant="${random([
+                'info',
+                'error',
+                'success',
+                'contrast'
+              ])}"><header slot="header">Toast Header</header><p>Lorem ipsum net zu.</p></ui-toast>`
+        )[0]
+      );
+    });
   </script>
 </html>

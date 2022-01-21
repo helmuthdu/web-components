@@ -1,4 +1,4 @@
-import { dom, rawHtml } from '../../lib/create-element';
+import { dom, rawHTML } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
@@ -39,7 +39,7 @@ define<Props>('ui-accordion', {
       dom(
         'summary',
         { className: 'flex items-center gap-2 cursor-pointer' },
-        rawHtml(
+        rawHTML(
           `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`
         ),
         dom('span', { id: 'header' }, dataset.header)

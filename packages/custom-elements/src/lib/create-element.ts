@@ -69,4 +69,7 @@ export const fragment = (...children: any[]) => define('fragment', {}, ...childr
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
   define(tag, props, ...children) as any;
 
-export const rawHtml = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
+export const rawHTML = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
+
+// @ts-ignore
+window.rawHTML = rawHTML;

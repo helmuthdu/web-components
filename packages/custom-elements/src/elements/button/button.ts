@@ -1,4 +1,4 @@
-import { dom, rawHtml } from '../../lib/create-element';
+import { dom, rawHTML } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
@@ -19,7 +19,7 @@ export type Props = {
 };
 
 const getLoadingIcon = ({ dataset }: Props) =>
-  rawHtml(/*html*/ `
+  rawHTML(/*html*/ `
   <svg
     class="${classMap('absolute animate-spin', {
       'h-3 w-3': dataset.size === 'xs',

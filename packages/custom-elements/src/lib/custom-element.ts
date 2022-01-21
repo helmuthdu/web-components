@@ -24,6 +24,7 @@ export type CustomElement<P extends CustomElementProps, T extends HTMLElement> =
       options?: boolean | AddEventListenerOptions
     ) => void;
     root: T;
+    host: CustomElement<P, T>;
     update: () => void;
   };
 
@@ -43,6 +44,7 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
         return isFunction(value) ? value.bind(target) : normalizeValue(key, value);
       }
     });
+    host = this;
 
     constructor() {
       super();
