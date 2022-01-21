@@ -5,7 +5,7 @@ import './card-footer';
 import './card-header';
 import './card-image';
 import './card-meta';
-import './../../elements/button/button';
+import '../../elements/button/button';
 import '../badge/badge';
 import type { Props } from './card';
 
@@ -16,7 +16,7 @@ export default {
 
 const Template: Story<Props['dataset'] & { text: any }> = ({ text, ...props }) => /*html*/ `
   <ui-card ${props.horizontal ? 'data-horizontal' : ''}>
-    <ui-card-image data-url="https://mdbootstrap.com/img/new/standard/nature/184.jpg"></ui-card-image>
+    <ui-card-image data-src="https://mdbootstrap.com/img/new/standard/nature/184.jpg"></ui-card-image>
     <ui-card-body>
       <ui-card-header>
         Card Header <ui-badge data-append="ml-1" data-variant="contrast" data-pill data-size="sm">new</ui-badge>

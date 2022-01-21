@@ -1,4 +1,6 @@
-import { dom } from '../../lib/create-element';
+/** @jsx dom */
+/** @jsxFrag fragment */
+import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
@@ -52,8 +54,12 @@ define<Props>('ui-badge', {
         break;
     }
   },
-  template: ({ dataset }) => [
-    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('span', { id: 'root', className: getClassName({ dataset }) }, dom('slot'))
-  ]
+  template: ({ dataset }) => (
+    <>
+      <link rel="stylesheet" href="/tailwind.css" />
+      <span id="root" className={getClassName({ dataset })}>
+        <slot />
+      </span>
+    </>
+  )
 });

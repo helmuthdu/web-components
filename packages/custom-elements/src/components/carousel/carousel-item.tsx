@@ -1,4 +1,6 @@
-import { dom } from '../../lib/create-element';
+/** @jsx dom */
+/** @jsxFrag fragment */
+import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
@@ -37,13 +39,13 @@ define<Props>('ui-carousel-item', {
   onConnected: ({ classList }) => {
     classList.add('absolute', 'first:relative', 'w-full', 'transition-opacity', 'duration-1000', 'ease-in');
   },
-  template: ({ dataset, shadowRoot }) => [
-    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('img', {
-      src: dataset.src,
-      className: 'block relative w-full',
-      alt: ''
-    }),
-    dom('div', { className: getClassName({ dataset }) }, dom('slot'))
-  ]
+  template: ({ dataset }) => (
+    <>
+      <link rel="stylesheet" href="/tailwind.css" />
+      <img id="root" className="block relative w-full" src={dataset.src} alt="" />
+      <div className={getClassName({ dataset })}>
+        <slot />
+      </div>
+    </>
+  )
 });

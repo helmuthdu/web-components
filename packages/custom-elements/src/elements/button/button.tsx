@@ -1,4 +1,6 @@
-import { dom, rawHTML } from '../../lib/create-element';
+/** @jsx dom */
+/** @jsxFrag fragment */
+import { dom, fragment, rawHTML } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
@@ -144,14 +146,14 @@ define<Props, HTMLButtonElement>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  template: ({ dataset }) => [
-    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('style', {}, '.loading slot { visibility: hidden; }'),
-    dom(
-      'button',
-      { id: 'root', type: dataset.type, disabled: dataset.disabled, className: getClassName({ dataset }) },
-      dataset.loading && getLoadingIcon({ dataset }),
-      dom('slot')
-    )
-  ]
+  template: ({ dataset }) => (
+    <>
+      <link rel="stylesheet" href="/tailwind.css" />
+      <style dangerouslySetInnerHTML={{ __html: '.loading slot { visibility: hidden; }' }} />
+      <div id="root" className={getClassName({ dataset })}>
+        {dataset.loading && getLoadingIcon({ dataset })}
+        <slot />
+      </div>
+    </>
+  )
 });

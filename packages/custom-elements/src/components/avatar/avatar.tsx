@@ -1,4 +1,6 @@
-import { dom } from '../../lib/create-element';
+/** @jsx dom */
+/** @jsxFrag fragment */
+import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
@@ -28,9 +30,19 @@ define<Props>('ui-avatar', {
   onAttributeChanged(name, prev, curr, { dataset, root }) {
     root.className = getClassName({ dataset });
   },
-  template: ({ dataset }) => [
-    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('style', {}, `::slotted(:first-child) { display: flex; justify-content: center; align-items: center; }`),
-    dom('div', { id: 'root', className: getClassName({ dataset }) }, dom('slot'))
-  ]
+  template: ({ dataset, fire, remove }) => (
+    <>
+      <link rel="stylesheet" href="/tailwind.css" />
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `::slotted(:first-child) { display: flex; justify-content: center; align-items: center; }`
+        }}
+      />
+      <div id="root" className={getClassName({ dataset })}>
+        <span className="text-sm">
+          <slot />
+        </span>
+      </div>
+    </>
+  )
 });

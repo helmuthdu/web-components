@@ -1,4 +1,6 @@
-import { dom } from '../../lib/create-element';
+/** @jsx dom */
+/** @jsxFrag fragment */
+import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
@@ -13,8 +15,12 @@ define<Props>('ui-card-footer', {
       append: undefined
     }
   },
-  template: ({ dataset }) => [
-    dom('link', { rel: 'stylesheet', href: '/tailwind.css' }),
-    dom('footer', { className: getClassName({ dataset }) }, dom('slot'))
-  ]
+  template: ({ dataset }) => (
+    <>
+      <link rel="stylesheet" href="/tailwind.css" />
+      <footer id="root" className={getClassName({ dataset })}>
+        <slot />
+      </footer>
+    </>
+  )
 });
