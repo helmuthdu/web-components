@@ -42,7 +42,8 @@ module.exports = {
           heading: 'var(--color-content-heading)',
           secondary: 'var(--color-content-secondary)',
           tertiary: 'var(--color-content-tertiary)',
-          disabled: 'var(--color-content-disabled)'
+          disabled: 'var(--color-content-disabled)',
+          contrast: 'var(--color-content-contrast)'
         }
       },
       keyframes: {

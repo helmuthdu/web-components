@@ -10,12 +10,12 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'flex justify-between items-center py-2 pl-4 pr-3 text-sm border rounded-xl shadow-sm',
     !dataset.variant
-      ? 'text-content bg-contrast-50 border-contrast-200'
+      ? 'text-content bg-canvas border-contrast-200'
       : {
           'text-primary-content bg-primary-backdrop border-primary-focus': dataset.variant === 'info',
           'text-error-content bg-error-backdrop border-error-focus': dataset.variant === 'error',
           'text-success-content bg-success-backdrop border-success-focus': dataset.variant === 'success',
-          'text-contrast-50 bg-contrast-800 border-contrast-700': dataset.variant === 'contrast'
+          'text-content-contrast bg-contrast-700 border-contrast-800': dataset.variant === 'contrast'
         },
     dataset.append
   );

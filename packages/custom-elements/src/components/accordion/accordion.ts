@@ -5,7 +5,7 @@ export type Props = {
   dataset: { append?: string; header: string };
 };
 
-const getClassName = ({ dataset }: Props) => classMap('block text-content p-3', dataset.append);
+const getClassName = ({ dataset }: Props) => classMap('block text-content p-4', dataset.append);
 
 define<Props>('ui-accordion', {
   props: {
@@ -38,7 +38,7 @@ define<Props>('ui-accordion', {
       { id: 'root', className: getClassName({ dataset }) },
       dom(
         'summary',
-        { className: 'flex items-center gap-2 py-1 cursor-pointer' },
+        { className: 'flex items-center gap-2 cursor-pointer' },
         rawHtml(
           `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`
         ),

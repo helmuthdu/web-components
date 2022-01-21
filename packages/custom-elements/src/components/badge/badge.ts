@@ -28,7 +28,7 @@ const getClassName = ({ dataset }: Props) =>
           'text-primary-contrast bg-primary border-primary-focus': dataset.variant === 'info',
           'text-error-contrast bg-error border-error-focus': dataset.variant === 'error',
           'text-success-contrast bg-success border-success-focus': dataset.variant === 'success',
-          'text-contrast-50 bg-contrast-800 border-contrast-700': dataset.variant === 'contrast'
+          'text-content-contrast bg-contrast-700 border-contrast-800': dataset.variant === 'contrast'
         },
     dataset.append
   );
