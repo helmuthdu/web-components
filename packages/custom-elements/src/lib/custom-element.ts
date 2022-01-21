@@ -48,6 +48,7 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
 
     constructor() {
       super();
+      this.style.visibility = 'hidden'; // initialise to avoid FOUC
       injectStyles(this.attachShadow({ mode: 'open' }), styles);
       Object.entries(props)
         .filter(([key, value]) => value)
@@ -79,6 +80,7 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
       if (onConnected) {
         onConnected(this.#self as any);
       }
+      setTimeout(() => (this.style.visibility = ''), 100); // remove after a shot time to avoid FOUC
     }
 
     disconnectedCallback() {
