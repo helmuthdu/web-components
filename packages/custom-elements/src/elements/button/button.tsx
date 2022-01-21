@@ -83,7 +83,7 @@ const getClassName = ({ dataset }: Props) =>
           'text-xl px-6 py-4': dataset.size === 'xl'
         },
     dataset.disabled
-      ? `bg-neutral-500 border-opacity-0 bg-opacity-20 text-neutral-600/25`
+      ? `bg-neutral-500 border-opacity-0 bg-opacity-20 text-content-disabled`
       : dataset.outline
       ? {
           'bg-transparent border-2': true,
