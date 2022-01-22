@@ -2,21 +2,40 @@ import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs';
 import './button';
 import './button-group';
 
-# Examples
+# Button
 
-<Meta title="Components/Button" excludeStories={/.*(Primary|Error|Success)$/} />
+## Example
 
-<Canvas>
-  <Story name="Examples" decorators={[story => `<div class="flex items-center justify-center gap-2">${story()}</div>`]}>
+<Meta title="Components/Button" />
+
+<Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
+  <Story
+    name="Example"
+    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
     {() => /*html*/ `
       <ui-button>Get Started</ui-button>
+      <ui-button data-variant="error"> Get Started</ui-button>
+      <ui-button data-variant="success">Get Started</ui-button>
+      <ui-button data-outline>Get Started</ui-button>
       <ui-button data-variant="error" data-outline> Get Started</ui-button>
-      <ui-button data-variant="success" data-disabled>Get Started</ui-button>
+      <ui-button data-variant="success" data-outline>Get Started</ui-button>
+      <ui-button data-loading data-disabled>Get Started</ui-button>
+      <ui-button data-circle data-variant="success">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+      </ui-button>
+      <ui-button data-circle data-variant="error">
+        UI
+      </ui-button>
+      <ui-button data-circle data-loading>
+        UI
+      </ui-button>
+      <ui-button data-circle data-outline>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+      </ui-button>
       <ui-button-group>
         <ui-button>Get Started</ui-button>
         <ui-button data-outline>Get Started</ui-button>
-      </ui-button-group>
-    `}
+      </ui-button-group>`}
   </Story>
 </Canvas>
 
@@ -24,7 +43,7 @@ import './button-group';
 
 <Story
   name="Playground"
-  decorators={[story => `<div class="flex items-center justify-center p-12">${story()}</div>`]}
+  decorators={[story => `<div class="flex items-center justify-center w-full p-12">${story()}</div>`]}
   args={{
     children: 'Get Started',
     variant: 'primary',

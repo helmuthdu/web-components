@@ -151,11 +151,11 @@ define<Props, HTMLButtonElement>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  template: ({ dataset }) => (
+  template: ({ dataset, children }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
       <style dangerouslySetInnerHTML={{ __html: '.loading slot { visibility: hidden; }' }} />
-      <button id="root" className={getClassName({ dataset })}>
+      <button id="root" className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
         {dataset.loading && <LoadingIcon dataset={dataset} />}
         <slot />
       </button>
