@@ -155,10 +155,10 @@ define<Props, HTMLButtonElement>('ui-button', {
     <>
       <link rel="stylesheet" href="/tailwind.css" />
       <style dangerouslySetInnerHTML={{ __html: '.loading slot { visibility: hidden; }' }} />
-      <div id="root" className={getClassName({ dataset })}>
+      <button id="root" className={getClassName({ dataset })}>
         {dataset.loading && <LoadingIcon dataset={dataset} />}
         <slot />
-      </div>
+      </button>
     </>
   )
 });

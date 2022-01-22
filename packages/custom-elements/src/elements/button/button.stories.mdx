@@ -1,0 +1,95 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs';
+import './button';
+import './button-group';
+
+# Examples
+
+<Meta title="Components/Button" excludeStories={/.*(Primary|Error|Success)$/} />
+
+<Canvas>
+  <Story name="Examples" decorators={[story => `<div class="flex items-center justify-center gap-2">${story()}</div>`]}>
+    {() => /*html*/ `
+      <ui-button>Get Started</ui-button>
+      <ui-button data-variant="error" data-outline> Get Started</ui-button>
+      <ui-button data-variant="success" data-disabled>Get Started</ui-button>
+      <ui-button-group>
+        <ui-button>Get Started</ui-button>
+        <ui-button data-outline>Get Started</ui-button>
+      </ui-button-group>
+    `}
+  </Story>
+</Canvas>
+
+## Playground
+
+<Story
+  name="Playground"
+  decorators={[story => `<div class="flex items-center justify-center p-12">${story()}</div>`]}
+  args={{
+    children: 'Get Started',
+    variant: 'primary',
+    size: 'md',
+    block: false,
+    circle: false,
+    disabled: false,
+    loading: false,
+    outline: false,
+    rounded: false
+  }}
+  argTypes={{
+    children: {
+      type: { name: 'string', required: true }
+    },
+    variant: {
+      name: 'data-variant',
+      control: { type: 'select' },
+      options: ['primary', 'error', 'success']
+    },
+    size: {
+      name: 'data-size',
+      type: { name: 'string' },
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl']
+    },
+    block: {
+      name: 'data-block',
+      type: { name: 'boolean' }
+    },
+    circle: {
+      name: 'data-circle',
+      type: { name: 'boolean' }
+    },
+    disabled: {
+      name: 'data-disabled',
+      type: { name: 'boolean' }
+    },
+    loading: {
+      name: 'data-loading',
+      type: { name: 'boolean' }
+    },
+    outline: {
+      name: 'data-outline',
+      type: { name: 'boolean' }
+    },
+    rounded: {
+      name: 'data-rounded',
+      type: { name: 'boolean' }
+    }
+  }}>
+  {({ children, ...props }) => /*html*/ `
+    <ui-button
+      ${props.variant ? `data-variant="${props.variant}"` : ''}
+      ${props.size ? `data-size="${props.size}"` : ''}
+      ${props.disabled ? 'data-disabled' : ''}
+      ${props.loading ? 'data-loading' : ''}
+      ${props.outline ? 'data-outline' : ''}
+      ${props.circle ? 'data-circle' : ''}
+      ${props.rounded ? 'data-rounded' : ''}
+      ${props.block ? 'data-block' : ''}
+    >
+      ${children}
+    </ui-button>
+  `}
+</Story>
+
+<ArgsTable story="Playground" />

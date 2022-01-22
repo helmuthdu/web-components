@@ -10,6 +10,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     ecmaVersion: 2021
   },
+  plugins: ["@typescript-eslint"],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
