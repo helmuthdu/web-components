@@ -1,5 +1,11 @@
 /// <reference types="vite/client" />
 declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ui-accordion': any;
+      'ui-accordion-group': any;
+    }
+  }
   interface ShadowRoot {
     adoptedStyleSheets: CSSStyleSheet[];
   }
