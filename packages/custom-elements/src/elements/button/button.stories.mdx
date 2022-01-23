@@ -6,7 +6,7 @@ import './button-group';
 
 ## Example
 
-<Meta title="Components/Button" />
+<Meta title="Elements/Button" />
 
 <Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
   <Story
@@ -41,61 +41,62 @@ import './button-group';
 
 ## Playground
 
-<Story
-  name="Playground"
-  decorators={[story => `<div class="flex items-center justify-center w-full p-12">${story()}</div>`]}
-  args={{
-    children: 'Get Started',
-    variant: 'primary',
-    size: 'md',
-    block: false,
-    circle: false,
-    disabled: false,
-    loading: false,
-    outline: false,
-    rounded: false
-  }}
-  argTypes={{
-    children: {
-      type: { name: 'string', required: true }
-    },
-    variant: {
-      name: 'data-variant',
-      control: { type: 'select' },
-      options: ['primary', 'error', 'success']
-    },
-    size: {
-      name: 'data-size',
-      type: { name: 'string' },
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl']
-    },
-    block: {
-      name: 'data-block',
-      type: { name: 'boolean' }
-    },
-    circle: {
-      name: 'data-circle',
-      type: { name: 'boolean' }
-    },
-    disabled: {
-      name: 'data-disabled',
-      type: { name: 'boolean' }
-    },
-    loading: {
-      name: 'data-loading',
-      type: { name: 'boolean' }
-    },
-    outline: {
-      name: 'data-outline',
-      type: { name: 'boolean' }
-    },
-    rounded: {
-      name: 'data-rounded',
-      type: { name: 'boolean' }
-    }
-  }}>
-  {({ children, ...props }) => /*html*/ `
+<Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
+  <Story
+    name="Playground"
+    decorators={[story => `<div class="flex items-center justify-center w-full p-12">${story()}</div>`]}
+    args={{
+      children: 'Get Started',
+      variant: 'primary',
+      size: 'md',
+      block: false,
+      circle: false,
+      disabled: false,
+      loading: false,
+      outline: false,
+      rounded: false
+    }}
+    argTypes={{
+      children: {
+        type: { name: 'string', required: true }
+      },
+      variant: {
+        name: 'data-variant',
+        control: { type: 'select' },
+        options: ['primary', 'error', 'success']
+      },
+      size: {
+        name: 'data-size',
+        type: { name: 'string' },
+        control: { type: 'select' },
+        options: ['xs', 'sm', 'md', 'lg', 'xl']
+      },
+      block: {
+        name: 'data-block',
+        type: { name: 'boolean' }
+      },
+      circle: {
+        name: 'data-circle',
+        type: { name: 'boolean' }
+      },
+      disabled: {
+        name: 'data-disabled',
+        type: { name: 'boolean' }
+      },
+      loading: {
+        name: 'data-loading',
+        type: { name: 'boolean' }
+      },
+      outline: {
+        name: 'data-outline',
+        type: { name: 'boolean' }
+      },
+      rounded: {
+        name: 'data-rounded',
+        type: { name: 'boolean' }
+      }
+    }}>
+    {({ children, ...props }) => /*html*/ `
     <ui-button
       ${props.variant ? `data-variant="${props.variant}"` : ''}
       ${props.size ? `data-size="${props.size}"` : ''}
@@ -105,10 +106,11 @@ import './button-group';
       ${props.circle ? 'data-circle' : ''}
       ${props.rounded ? 'data-rounded' : ''}
       ${props.block ? 'data-block' : ''}
-    >
-      ${children}
-    </ui-button>
-  `}
-</Story>
+      >
+        ${children}
+      </ui-button>
+    `}
+  </Story>
+</Canvas>
 
 <ArgsTable story="Playground" />

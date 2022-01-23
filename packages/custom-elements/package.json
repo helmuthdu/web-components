@@ -28,7 +28,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.16.10",
+    "@babel/core": "^7.16.12",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
@@ -45,7 +45,7 @@
     "@uppercod/vite-meta-url-load-css": "^1.2.0",
     "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
-    "cssnano": "^5.0.15",
+    "cssnano": "^5.0.16",
     "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
     "postcss-nesting": "^10.1.2",

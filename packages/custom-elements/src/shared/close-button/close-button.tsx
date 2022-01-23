@@ -1,13 +1,17 @@
 /** @jsx dom */
 import { dom } from '../../lib/create-element';
+import { classMap } from '../../lib/styling-element';
 
-type Props = { onClick: () => void };
+type Props = { className?: string; onClick: () => void };
 
 export const CloseButton = (props: Props) => (
   <button
     id="close-button"
     type="button"
-    className="inline-flex items-center justify-center ml-1 -mr-1 p-0.5 h-8 w-8 text-current"
+    className={classMap(
+      'inline-flex items-center justify-center ml-1 -mr-1 p-0.5 h-8 w-8 text-current',
+      props.className
+    )}
     onClick={props.onClick}>
     <span className="sr-only">close</span>
     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
