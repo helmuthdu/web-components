@@ -1,0 +1,75 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import './alert';
+
+# Alert
+
+<Meta title="Components/Alert" />
+
+## Examples
+
+<Canvas withToolbar={true}>
+  <Story
+    name="Examples"
+    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
+    {() => /*html*/ `
+      <ui-alert>
+        <span class="font-medium">Default alert!</span>
+        Change a few things up and try submitting again.
+      </ui-alert>
+      <ui-alert data-variant="info">
+        <span class="font-medium">Info alert!</span>
+        Change a few things up and try submitting again.
+      </ui-alert>
+      <ui-alert data-variant="error">
+        <span class="font-medium">Danger alert!</span>
+        Change a few things up and try submitting again.
+      </ui-alert>
+      <ui-alert data-variant="success">
+        <span class="font-medium">Success alert!</span>
+        Change a few things up and try submitting again.
+      </ui-alert>
+      <ui-alert data-variant="contrast">
+        <span class="font-medium">Warning alert!</span>
+        Change a few things up and try submitting again.
+      </ui-alert>`}
+  </Story>
+</Canvas>
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story
+    name="Playground"
+    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
+    args={{
+      slot: /*html*/ `<span class="font-medium">Alert!</span> Change a few things up and try submitting again.`,
+      variant: 'info'
+    }}
+    argTypes={{
+      variant: {
+        name: 'data-variant',
+        type: { name: 'string', required: true },
+        control: {
+          type: 'select',
+          labels: {
+            [undefined]: 'none',
+            info: 'info',
+            error: 'error',
+            success: 'success',
+            contrast: 'contrast'
+          }
+        },
+        options: [undefined, 'info', 'error', 'success', 'contrast']
+      }
+    }}>
+    {({ slot, ...props }) => /*html*/ `
+      <ui-alert data-append="mb-4" ${props.variant ? `data-variant="${props.variant}"` : ''} >
+        ${slot}
+      </ui-alert>
+    `}
+  </Story>
+</Canvas>
+
+#### SLOT & PROPS
+
+<ArgsTable story="Playground" />

@@ -1,16 +1,16 @@
-import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { truncate } from '../../lib/create-element';
 import './toast';
 
 # Toast
 
-## Example
-
 <Meta title="Components/Toast" />
+
+## Examples
 
 <Canvas withToolbar={true}>
   <Story
-    name="Example"
+    name="Examples"
     decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
     {() => /*html*/ `
       <ui-toast data-fixed>

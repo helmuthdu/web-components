@@ -1,0 +1,42 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import './accordion';
+import './accordion-group';
+
+# Accordion
+
+<Meta title="Components/Accordion" />
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story
+    name="Playground"
+    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
+    argTypes={{
+      variant: {
+        name: 'variant',
+        type: { name: 'string', required: true },
+        defaultValue: 'primary',
+        control: { type: 'select' },
+        options: ['primary', 'secondary', 'tertiary']
+      }
+    }}>
+    {({ variant }) => /*html*/ `
+      <ui-accordion-group class="w-96" data-variant="${variant}">
+        <ui-accordion data-header="1 item">
+          <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
+        </ui-accordion>
+        <ui-accordion data-header="2 item">
+          <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
+        </ui-accordion>
+        <ui-accordion data-header="3 item">
+          <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
+        </ui-accordion>
+      </ui-accordion-group>
+    `}
+  </Story>
+</Canvas>
+
+#### SLOT & PROPS
+
+<ArgsTable story="Playground" />

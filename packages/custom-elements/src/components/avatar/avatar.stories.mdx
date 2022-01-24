@@ -2,10 +2,16 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs';
 import './avatar';
 import './avatar-group';
 
+# Avatar
+
 <Meta title="Components/Avatar" />
 
+## Examples
+
 <Canvas>
-  <Story name="Example">
+  <Story
+    name="Examples"
+    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
     {() => /*html*/ `
       <div class="inline-flex gap-3">
         <ui-avatar data-style="rounded">

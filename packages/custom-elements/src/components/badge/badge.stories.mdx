@@ -1,0 +1,63 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import './badge';
+
+# Badges
+
+<Meta title="Components/Badges" />
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story
+    name="Playground"
+    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
+    argTypes={{
+      slot: {
+        type: { name: 'string', required: true }
+      },
+      variant: {
+        name: 'data-variant',
+        type: { name: 'string', required: true },
+        control: {
+          type: 'select',
+          labels: {
+            [undefined]: 'none',
+            info: 'info',
+            error: 'error',
+            success: 'success',
+            contrast: 'contrast'
+          }
+        },
+        options: [undefined, 'info', 'error', 'success', 'contrast']
+      },
+      size: {
+        name: 'data-size',
+        type: { name: 'string' },
+        control: { type: 'select' },
+        options: ['xs', 'sm', 'md', 'lg', 'xl']
+      },
+      pill: {
+        name: 'data-pill',
+        type: { name: 'boolean' }
+      }
+    }}
+    args={{
+      slot: 'Get Started',
+      pill: true,
+      size: 'md',
+      variant: undefined
+    }}>
+    {({ slot, ...props }) => /*html*/ `
+      <ui-badge
+        data-size="${props.size}"
+        ${props.variant ? `data-variant="${props.variant}"` : ''}
+        ${props.pill ? 'data-pill' : ''}>
+        ${slot}
+      </ui-badge>
+    `}
+  </Story>
+</Canvas>
+
+#### SLOT & PROPS
+
+<ArgsTable story="Playground" />
