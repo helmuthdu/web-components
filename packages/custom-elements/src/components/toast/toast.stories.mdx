@@ -1,4 +1,5 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { truncate } from '../../lib/create-element';
 import './toast';
 
 # Toast
@@ -7,7 +8,7 @@ import './toast';
 
 <Meta title="Components/Toast" />
 
-<Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
+<Canvas withToolbar={true}>
   <Story
     name="Example"
     decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
@@ -22,7 +23,7 @@ import './toast';
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
       <ui-toast data-variant="info" data-fixed>
-        Ut minim voluptate ea laboris velit duis exercitation sit minim ex magna commodo id.
+        ${truncate('Ut minim voluptate ea laboris velit duis exercitation sit minim ex magna commodo id.', 78)}
       </ui-toast>
       <ui-toast data-variant="success" data-fixed>
         Consectetur mollit exercitation duis consectetur pariatur cupidatat consequat.
@@ -35,12 +36,12 @@ import './toast';
 
 ## Playground
 
-<Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
+<Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-12">${story()}</div>`]}
+    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
-      children: /*html*/ `<header slot="header">My Notification</header><span slot="meta">10 minutes ago</span>Excepteur est ullamco do sit culpa laboris.`,
+      slot: /*html*/ `<header slot="header">My Notification</header><span slot="meta">10 minutes ago</span>Excepteur est ullamco do sit culpa laboris.`,
       variant: 'info'
     }}
     argTypes={{
@@ -60,14 +61,16 @@ import './toast';
         options: [undefined, 'info', 'error', 'success', 'contrast']
       }
     }}>
-    {({ children, ...props }) => /*html*/ `
-      <ui-toast
-        ${props.variant ? `data-variant="${props.variant}"` : ''}
-        data-fixed>
-        ${children}
-      </ui-toast>
-    `}
+    {({ slot, ...props }) => /*html*/ `
+    <ui-toast
+      ${props.variant ? `data-variant="${props.variant}"` : ''}
+      data-fixed>
+      ${slot}
+    </ui-toast>
+  `}
   </Story>
 </Canvas>
+
+#### SLOT & PROPS
 
 <ArgsTable story="Playground" />

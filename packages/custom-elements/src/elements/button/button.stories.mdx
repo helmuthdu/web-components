@@ -8,7 +8,7 @@ import './button-group';
 
 <Meta title="Elements/Button" />
 
-<Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
+<Canvas withToolbar={true}>
   <Story
     name="Example"
     decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
@@ -41,12 +41,12 @@ import './button-group';
 
 ## Playground
 
-<Canvas withToolbar={true} style={{ backgroundColor: '#333333' }}>
+<Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-12">${story()}</div>`]}
+    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
-      children: 'Get Started',
+      slot: 'Get Started',
       variant: 'primary',
       size: 'md',
       block: false,
@@ -57,7 +57,7 @@ import './button-group';
       rounded: false
     }}
     argTypes={{
-      children: {
+      slot: {
         type: { name: 'string', required: true }
       },
       variant: {
@@ -96,7 +96,7 @@ import './button-group';
         type: { name: 'boolean' }
       }
     }}>
-    {({ children, ...props }) => /*html*/ `
+    {({ slot, ...props }) => /*html*/ `
     <ui-button
       ${props.variant ? `data-variant="${props.variant}"` : ''}
       ${props.size ? `data-size="${props.size}"` : ''}
@@ -107,10 +107,12 @@ import './button-group';
       ${props.rounded ? 'data-rounded' : ''}
       ${props.block ? 'data-block' : ''}
       >
-        ${children}
+        ${slot}
       </ui-button>
     `}
   </Story>
 </Canvas>
+
+### SLOT & PROPS
 
 <ArgsTable story="Playground" />

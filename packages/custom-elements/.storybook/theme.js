@@ -9,5 +9,5 @@ export default create({
   // UI
   appBg: '#171717',
   appContentBg: '#262626',
-  appBorderColor: '#3f3f46',
+  appBorderColor: '#3f3f46'
 });
