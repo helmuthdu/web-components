@@ -6,7 +6,7 @@ import { classMap, define } from '../../lib/custom-element';
 export type Props = {
   dataset: {
     append?: string;
-    style?: 'circle' | 'rounded';
+    variant?: 'circle' | 'rounded';
   };
 };
 
@@ -14,8 +14,8 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'overflow-hidden border border-white/30',
     {
-      'rounded-full': dataset.style === 'circle',
-      'rounded-lg': dataset.style === 'rounded'
+      'rounded-full': dataset.variant === 'circle',
+      'rounded-lg': dataset.variant === 'rounded'
     },
     dataset.append
   );
@@ -24,7 +24,7 @@ define<Props>('ui-avatar', {
   props: {
     dataset: {
       append: undefined,
-      style: 'circle'
+      variant: undefined
     }
   },
   onAttributeChanged(name, prev, curr, { dataset, root }) {

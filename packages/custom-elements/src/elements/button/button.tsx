@@ -5,6 +5,7 @@ import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
 
 export type Props = {
+  type?: 'button' | 'submit' | 'reset';
   dataset: {
     append?: string;
     block?: boolean;
@@ -12,11 +13,10 @@ export type Props = {
     disabled?: boolean;
     group?: string;
     loading?: boolean;
-    outline?: boolean;
     rounded?: boolean;
     size?: Sizes;
-    type?: 'button' | 'submit' | 'reset';
-    variant?: 'primary' | 'error' | 'success';
+    color?: 'primary' | 'error' | 'success';
+    variant?: 'outline' | 'text' | undefined
   };
 };
 
@@ -45,10 +45,10 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'inline-flex flex-wrap items-center justify-center text-center font-semibold border-transparent gap-2',
     dataset.loading && 'loading',
-    !dataset.group && 'shadow-sm',
+    !dataset.group && dataset.variant !== 'text' && 'shadow-sm',
     dataset.group && !dataset.circle
       ? {
-          '-mx-px': dataset.outline,
+          '-mx-px': dataset.variant === 'outline',
           'rounded-l-lg': dataset.group === 'first' && !dataset.rounded,
           'rounded-r-lg': dataset.group === 'last' && !dataset.rounded,
           'rounded-l-full': dataset.group === 'first' && dataset.rounded,
@@ -67,7 +67,7 @@ const getClassName = ({ dataset }: Props) =>
           'h-14 w-14': dataset.size === 'lg',
           'h-16 w-16': dataset.size === 'xl'
         }
-      : dataset.outline && !dataset.disabled
+      : dataset.variant === 'outline' && !dataset.disabled
       ? {
           'text-xs px-4 py-0.5 mt-0.5': dataset.size === 'xs',
           'text-sm px-4 py-1.5': dataset.size === 'sm',
@@ -84,25 +84,33 @@ const getClassName = ({ dataset }: Props) =>
         },
     dataset.disabled
       ? `bg-neutral-500 border-opacity-0 bg-opacity-20 text-content-disabled`
-      : dataset.outline
+      : dataset.variant === 'text'
+      ? {
+          'bg-transparent': true,
+          'text-primary hover:text-primary-focus': dataset.color === 'primary',
+          'text-error hover:text-error-focus': dataset.color === 'error',
+          'text-success hover:text-success-focus': dataset.color === 'success'
+        }
+      : dataset.variant === 'outline'
       ? {
           'bg-transparent border-2': true,
-          'text-primary border-primary hover:ring-4 focus:ring-4 ring-primary-focus': dataset.variant === 'primary',
-          'text-error border-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.variant === 'error',
-          'text-success border-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.variant === 'success'
+          'text-primary border-primary hover:ring-4 focus:ring-4 ring-primary-focus': dataset.color === 'primary',
+          'text-error border-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.color === 'error',
+          'text-success border-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.color === 'success'
         }
       : {
           'border-none': true,
           'text-primary-contrast bg-primary hover:ring-4 focus:ring-4 ring-primary-focus':
-            dataset.variant === 'primary',
-          'text-error-contrast bg-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.variant === 'error',
-          'text-success-contrast bg-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.variant === 'success'
+            dataset.color === 'primary',
+          'text-error-contrast bg-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.color === 'error',
+          'text-success-contrast bg-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.color === 'success'
         },
     dataset.append
   );
 
 define<Props, HTMLButtonElement>('ui-button', {
   props: {
+    type: 'button',
     dataset: {
       append: undefined,
       block: undefined,
@@ -110,19 +118,17 @@ define<Props, HTMLButtonElement>('ui-button', {
       disabled: undefined,
       group: undefined,
       loading: undefined,
-      outline: undefined,
       rounded: undefined,
       size: 'md',
-      type: 'button',
-      variant: 'primary'
+      color: 'primary'
     }
   },
   onAttributeChanged: (name, prev, curr, { classList, root, update, dataset }) => {
     switch (name) {
       case 'data-append':
       case 'data-circle':
+      case 'data-color':
       case 'data-group':
-      case 'data-outline':
       case 'data-rounded':
       case 'data-size':
       case 'data-variant':
@@ -151,11 +157,11 @@ define<Props, HTMLButtonElement>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  template: ({ dataset, children }) => (
+  template: ({ dataset, children, type }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
       <style dangerouslySetInnerHTML={{ __html: '.loading slot { visibility: hidden; }' }} />
-      <button id="root" className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
+      <button type={type} id="root" className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
         {dataset.loading && <LoadingIcon dataset={dataset} />}
         <slot />
       </button>

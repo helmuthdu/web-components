@@ -1,4 +1,4 @@
-import { getAttrName, isArray, isFunction, isObject, isString, normalizeValue } from './shared';
+import { getAttrName, isArray, isFunction, isObject, isString, valueOf } from './shared';
 import { injectStyles } from './styling-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
@@ -37,14 +37,15 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
   template
 }: CustomElementOptions<P, T>) =>
   class extends HTMLElement {
+    host = this;
+
     #ready = false;
     #self = new Proxy(this, {
       get(target, key) {
         const value = Reflect.get(target, key);
-        return isFunction(value) ? value.bind(target) : normalizeValue(key, value);
+        return isFunction(value) ? value.bind(target) : valueOf(key, value);
       }
     });
-    host = this;
 
     constructor() {
       super();

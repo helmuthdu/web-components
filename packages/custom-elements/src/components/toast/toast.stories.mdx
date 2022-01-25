@@ -14,21 +14,71 @@ import './toast';
     decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
     {() => /*html*/ `
       <ui-toast data-fixed>
+        <i slot="icon">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+            />
+          </svg>
+        </i>
         <header slot="header">My Notification</header>
         <span slot="meta">10 minutes ago</span>
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
-      <ui-toast data-variant="contrast" data-fixed>
+      <ui-toast data-type="contrast" data-fixed>
+        <i slot="icon">
+          <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </i>
         <header slot="header">My Notification</header>
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
-      <ui-toast data-variant="info" data-fixed>
+      <ui-toast data-type="info" data-fixed>
+        <i slot="icon">
+          <svg class="w-8 h-8 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </i>
         ${truncate('Ut minim voluptate ea laboris velit duis exercitation sit minim ex magna commodo id.', 78)}
       </ui-toast>
-      <ui-toast data-variant="success" data-fixed>
+      <ui-toast data-type="success" data-fixed>
+        <i slot="icon">
+          <svg class="w-8 h-8 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </i>
         Consectetur mollit exercitation duis consectetur pariatur cupidatat consequat.
       </ui-toast>
-      <ui-toast data-variant="error" data-fixed>
+      <ui-toast data-type="error" data-fixed>
+        <i slot="icon">
+          <svg class="w-8 h-8 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </i>
         Duis amet cupidatat voluptate dolore nostrud ad fugiat reprehenderit.
       </ui-toast>`}
   </Story>
@@ -42,11 +92,11 @@ import './toast';
     decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
       slot: /*html*/ `<header slot="header">My Notification</header><span slot="meta">10 minutes ago</span>Excepteur est ullamco do sit culpa laboris.`,
-      variant: 'info'
+      color: 'info'
     }}
     argTypes={{
-      variant: {
-        name: 'data-variant',
+      color: {
+        name: 'data-color',
         type: { name: 'string', required: true },
         control: {
           type: 'select',
@@ -63,7 +113,7 @@ import './toast';
     }}>
     {({ slot, ...props }) => /*html*/ `
     <ui-toast
-      ${props.variant ? `data-variant="${props.variant}"` : ''}
+      ${props.color ? `data-type="${props.color}"` : ''}
       data-fixed>
       ${slot}
     </ui-toast>

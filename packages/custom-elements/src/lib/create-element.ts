@@ -71,7 +71,7 @@ export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...ch
 
 export const rawHTML = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
-export const truncate = (text: string, size = 80) => text.slice(0, size) + (text.length > size ? '…' : '');
+export const truncate = (text: string, size = 127) => text.slice(0, size) + (text.length > size ? '…' : '');
 
 // @ts-ignore
 window.rawHTML = rawHTML;

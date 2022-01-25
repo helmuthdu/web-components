@@ -7,9 +7,9 @@ import type { Sizes } from '../../types';
 export type Props = {
   dataset: {
     append?: string;
+    color?: 'error' | 'success' | 'info' | 'contrast' | undefined;
     pill?: boolean;
     size?: Sizes;
-    variant?: 'error' | 'success' | 'info' | 'contrast' | undefined;
   };
 };
 
@@ -24,13 +24,13 @@ const getClassName = ({ dataset }: Props) =>
       'text-lg': dataset.size === 'lg',
       'text-xl': dataset.size === 'xl'
     },
-    !dataset.variant
+    !dataset.color
       ? 'text-content bg-contrast-50 border-contrast-200'
       : {
-          'text-primary-contrast bg-primary border-primary-focus': dataset.variant === 'info',
-          'text-error-contrast bg-error border-error-focus': dataset.variant === 'error',
-          'text-success-contrast bg-success border-success-focus': dataset.variant === 'success',
-          'text-content-contrast bg-contrast-700 border-contrast-800': dataset.variant === 'contrast'
+          'text-primary-contrast bg-primary border-primary-focus': dataset.color === 'info',
+          'text-error-contrast bg-error border-error-focus': dataset.color === 'error',
+          'text-success-contrast bg-success border-success-focus': dataset.color === 'success',
+          'text-content-contrast bg-contrast-700 border-contrast-800': dataset.color === 'contrast'
         },
     dataset.append
   );
@@ -41,15 +41,15 @@ define<Props>('ui-badge', {
       append: undefined,
       pill: undefined,
       size: 'md',
-      variant: undefined
+      color: undefined
     }
   },
   onAttributeChanged: (name, prev, curr, { dataset, root }) => {
     switch (name) {
       case 'data-append':
+      case 'data-color':
       case 'data-pill':
       case 'data-size':
-      case 'data-variant':
         root.className = getClassName({ dataset });
         break;
     }

@@ -15,8 +15,8 @@ import './badge';
       slot: {
         type: { name: 'string', required: true }
       },
-      variant: {
-        name: 'data-variant',
+      color: {
+        name: 'data-color',
         type: { name: 'string', required: true },
         control: {
           type: 'select',
@@ -45,12 +45,12 @@ import './badge';
       slot: 'Get Started',
       pill: true,
       size: 'md',
-      variant: undefined
+      color: undefined
     }}>
     {({ slot, ...props }) => /*html*/ `
       <ui-badge
         data-size="${props.size}"
-        ${props.variant ? `data-variant="${props.variant}"` : ''}
+        ${props.color ? `data-color="${props.color}"` : ''}
         ${props.pill ? 'data-pill' : ''}>
         ${slot}
       </ui-badge>

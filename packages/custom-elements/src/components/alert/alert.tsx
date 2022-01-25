@@ -5,19 +5,19 @@ import { classMap, define } from '../../lib/custom-element';
 import { CloseButton } from '../../shared/close-button/close-button';
 
 export type Props = {
-  dataset: { append?: string; variant?: 'error' | 'success' | 'info' | 'contrast' | undefined };
+  dataset: { append?: string; color?: 'error' | 'success' | 'info' | 'contrast' | undefined };
 };
 
 const getClassName = ({ dataset }: Props) =>
   classMap(
     'flex justify-between items-center py-2 pl-4 pr-3 text-sm border rounded-xl shadow-sm',
-    !dataset.variant
+    !dataset.color
       ? 'text-content bg-canvas border-contrast-300'
       : {
-          'text-primary-content bg-primary-backdrop border-primary-focus': dataset.variant === 'info',
-          'text-error-content bg-error-backdrop border-error-focus': dataset.variant === 'error',
-          'text-success-content bg-success-backdrop border-success-focus': dataset.variant === 'success',
-          'text-content-contrast bg-contrast-700 border-contrast-600': dataset.variant === 'contrast'
+          'text-primary-content bg-primary-backdrop border-primary-focus': dataset.color === 'info',
+          'text-error-content bg-error-backdrop border-error-focus': dataset.color === 'error',
+          'text-success-content bg-success-backdrop border-success-focus': dataset.color === 'success',
+          'text-content-contrast bg-contrast-700 border-contrast-600': dataset.color === 'contrast'
         },
     dataset.append
   );
@@ -26,7 +26,7 @@ define<Props>('ui-alert', {
   props: {
     dataset: {
       append: undefined,
-      variant: undefined
+      color: undefined
     }
   },
   onAttributeChanged(name, prev, curr, { dataset, root }) {

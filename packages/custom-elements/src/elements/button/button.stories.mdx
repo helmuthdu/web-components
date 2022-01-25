@@ -14,27 +14,30 @@ import './button-group';
     decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
     {() => /*html*/ `
       <ui-button>Get Started</ui-button>
-      <ui-button data-variant="error"> Get Started</ui-button>
-      <ui-button data-variant="success">Get Started</ui-button>
-      <ui-button data-outline>Get Started</ui-button>
-      <ui-button data-variant="error" data-outline> Get Started</ui-button>
-      <ui-button data-variant="success" data-outline>Get Started</ui-button>
+      <ui-button data-color="error"> Get Started</ui-button>
+      <ui-button data-color="success">Get Started</ui-button>
+      <ui-button data-variant="outline" data-size="sm">Get Started</ui-button>
+      <ui-button data-color="error" data-variant="outline" data-size="md"> Get Started</ui-button>
+      <ui-button data-color="success" data-variant="outline" data-size="lg">Get Started</ui-button>
+      <ui-button data-variant="text">Get Started</ui-button>
+      <ui-button data-color="error" data-variant="text"> Get Started</ui-button>
+      <ui-button data-color="success" data-variant="text">Get Started</ui-button>
       <ui-button data-loading data-disabled>Get Started</ui-button>
-      <ui-button data-circle data-variant="success">
+      <ui-button data-circle data-color="success">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
       </ui-button>
-      <ui-button data-circle data-variant="error">
+      <ui-button data-circle data-color="error">
         UI
       </ui-button>
       <ui-button data-circle data-loading>
         UI
       </ui-button>
-      <ui-button data-circle data-outline>
+      <ui-button data-circle data-variant="outline">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
       </ui-button>
       <ui-button-group>
         <ui-button>Get Started</ui-button>
-        <ui-button data-outline>Get Started</ui-button>
+        <ui-button data-variant="outline">Get Started</ui-button>
       </ui-button-group>`}
   </Story>
 </Canvas>
@@ -47,21 +50,21 @@ import './button-group';
     decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
       slot: 'Get Started',
-      variant: 'primary',
+      color: 'primary',
       size: 'md',
+      variant: undefined,
       block: false,
       circle: false,
       disabled: false,
       loading: false,
-      outline: false,
       rounded: false
     }}
     argTypes={{
       slot: {
         type: { name: 'string', required: true }
       },
-      variant: {
-        name: 'data-variant',
+      color: {
+        name: 'data-color',
         control: { type: 'select' },
         options: ['primary', 'error', 'success']
       },
@@ -70,6 +73,19 @@ import './button-group';
         type: { name: 'string' },
         control: { type: 'select' },
         options: ['xs', 'sm', 'md', 'lg', 'xl']
+      },
+      variant: {
+        name: 'data-variant',
+        type: { name: 'string' },
+        control: {
+          type: 'select',
+          labels: {
+            [undefined]: 'none',
+            outline: 'outline',
+            text: 'text'
+          }
+        },
+        options: [undefined, 'outline', 'text']
       },
       block: {
         name: 'data-block',
@@ -87,10 +103,6 @@ import './button-group';
         name: 'data-loading',
         type: { name: 'boolean' }
       },
-      outline: {
-        name: 'data-outline',
-        type: { name: 'boolean' }
-      },
       rounded: {
         name: 'data-rounded',
         type: { name: 'boolean' }
@@ -98,11 +110,11 @@ import './button-group';
     }}>
     {({ slot, ...props }) => /*html*/ `
     <ui-button
-      ${props.variant ? `data-variant="${props.variant}"` : ''}
+      ${props.color ? `data-color="${props.color}"` : ''}
       ${props.size ? `data-size="${props.size}"` : ''}
+      ${props.variant ? `data-variant="${props.variant}"` : ''}
       ${props.disabled ? 'data-disabled' : ''}
       ${props.loading ? 'data-loading' : ''}
-      ${props.outline ? 'data-outline' : ''}
       ${props.circle ? 'data-circle' : ''}
       ${props.rounded ? 'data-rounded' : ''}
       ${props.block ? 'data-block' : ''}

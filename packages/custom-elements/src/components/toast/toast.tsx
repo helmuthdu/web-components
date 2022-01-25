@@ -8,56 +8,10 @@ export type Props = {
   dataset: {
     append?: string;
     fixed?: boolean;
-    variant: 'error' | 'success' | 'info' | 'contrast' | undefined;
+    color: 'error' | 'success' | 'info' | 'contrast' | undefined;
     timeout: number;
   };
 };
-
-const icons = {
-  default: (className: string) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-      />
-    </svg>
-  ),
-  info: (className: string) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  ),
-  error: (className: string) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  ),
-  success: (className: string) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  )
-};
-
-const getIcon = (variant: keyof typeof icons, className: string) =>
-  icons[variant] ? icons[variant](className) : icons.default(className);
 
 const getContainer = () => {
   let container: any = document.getElementById('toasts');
@@ -77,10 +31,10 @@ define<Props>('ui-toast', {
       append: undefined,
       fixed: undefined,
       timeout: 8000,
-      variant: undefined
+      color: undefined
     }
   },
-  onConnected({ host, children, dataset, remove }) {
+  onConnected({ host, dataset, remove }) {
     if (!dataset.fixed) {
       const container = getContainer();
       if (host.parentElement !== container) {
@@ -106,53 +60,53 @@ define<Props>('ui-toast', {
               className={classMap(
                 'flex justify-between items-center py-1 px-3',
                 {
-                  ' border-b border-neutral-400/25': !dataset.variant || dataset.variant === 'contrast'
+                  ' border-b border-neutral-400/25': !dataset.color || dataset.color === 'contrast'
                 },
-                !dataset.variant
+                !dataset.color
                   ? 'bg-canvas'
                   : {
-                      'bg-primary': dataset.variant === 'info',
-                      'bg-error': dataset.variant === 'error',
-                      'bg-success': dataset.variant === 'success',
-                      'bg-contrast-700': dataset.variant === 'contrast'
+                      'bg-primary': dataset.color === 'info',
+                      'bg-error': dataset.color === 'error',
+                      'bg-success': dataset.color === 'success',
+                      'bg-contrast-700': dataset.color === 'contrast'
                     }
               )}>
               <span
                 className={classMap(
-                  'font-bold flex',
-                  !dataset.variant
+                  'font-bold flex flex-row items-center justify-between gap-2',
+                  !dataset.color
                     ? 'text-content-heading'
                     : {
-                        'text-primary-contrast': dataset.variant === 'info',
-                        'text-error-contrast': dataset.variant === 'error',
-                        'text-success-contrast': dataset.variant === 'success',
-                        'text-content-contrast': dataset.variant === 'contrast'
+                        'text-primary-contrast': dataset.color === 'info',
+                        'text-error-contrast': dataset.color === 'error',
+                        'text-success-contrast': dataset.color === 'success',
+                        'text-content-contrast': dataset.color === 'contrast'
                       }
                 )}>
-                {getIcon(dataset.variant as keyof typeof icons, 'w-5 h-5 mr-1')}
+                <slot name="icon" />
                 <slot name="header" />
               </span>
               <div
                 className={classMap(
                   'flex items-center',
-                  !dataset.variant
+                  !dataset.color
                     ? 'text-content'
                     : {
-                        'text-primary-contrast': dataset.variant === 'info',
-                        'text-error-contrast': dataset.variant === 'error',
-                        'text-success-contrast': dataset.variant === 'success',
-                        'text-content-contrast': dataset.variant === 'contrast'
+                        'text-primary-contrast': dataset.color === 'info',
+                        'text-error-contrast': dataset.color === 'error',
+                        'text-success-contrast': dataset.color === 'success',
+                        'text-content-contrast': dataset.color === 'contrast'
                       }
                 )}>
                 <span
                   className={classMap(
                     'text-xs',
-                    !dataset.variant || dataset.variant === 'contrast'
+                    !dataset.color || dataset.color === 'contrast'
                       ? 'text-content-tertiary'
                       : {
-                          'text-primary-contrast': dataset.variant === 'info',
-                          'text-error-contrast': dataset.variant === 'error',
-                          'text-success-contrast': dataset.variant === 'success'
+                          'text-primary-contrast': dataset.color === 'info',
+                          'text-error-contrast': dataset.color === 'error',
+                          'text-success-contrast': dataset.color === 'success'
                         }
                   )}>
                   <slot name="meta" />
@@ -173,18 +127,18 @@ define<Props>('ui-toast', {
                 'p-3': hasHeader,
                 'flex flex-row items-center justify-between gap-3 p-3': !hasHeader
               },
-              !dataset.variant
+              !dataset.color
                 ? ' bg-canvas text-content'
                 : {
-                    'bg-primary text-primary-contrast': dataset.variant === 'info',
-                    'bg-error text-error-contrast': dataset.variant === 'error',
-                    'bg-success text-success-contrast': dataset.variant === 'success',
-                    'text-content-contrast bg-contrast-700': dataset.variant === 'contrast'
+                    'bg-primary text-primary-contrast': dataset.color === 'info',
+                    'bg-error text-error-contrast': dataset.color === 'error',
+                    'bg-success text-success-contrast': dataset.color === 'success',
+                    'text-content-contrast bg-contrast-700': dataset.color === 'contrast'
                   }
             )}>
             {!hasHeader ? (
               <>
-                {getIcon(dataset.variant as keyof typeof icons, 'w-8 h-8 flex-none')}
+                <slot name="icon" />
                 <div className="grow">
                   <slot />
                 </div>

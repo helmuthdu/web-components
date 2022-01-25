@@ -30,12 +30,12 @@
         <div class="flex flex-col gap-3 items-center h-screen justify-center">
           <!-- <ui-box>this is a box!</ui-box> -->
 
-          <ui-button id="create-toast-button" data-variant="primary">
+          <ui-button id="create-toast-button" data-color="primary">
             Get Started
-            <ui-badge data-variant="error" data-size="xs" data-pill data-append="-mr-1.5">+99</ui-badge>
+            <ui-badge data-color="error" data-size="xs" data-pill data-append="-mr-1.5">+99</ui-badge>
           </ui-button>
-          <ui-button data-disabled data-loading data-variant="primary">Get Started</ui-button>
-          <ui-button data-outline data-rounded data-variant="primary">Get Started</ui-button>
+          <ui-button data-disabled data-loading data-color="primary">Get Started</ui-button>
+          <ui-button data-variant="outline" data-rounded data-color="primary">Get Started</ui-button>
 
           <!-- <ui-card>
             <ui-card-image data-src="https://mdbootstrap.com/img/new/standard/nature/184.jpg"></ui-card-image>
@@ -46,22 +46,22 @@
                 <ui-card-meta>Last updated 3 mins ago</ui-card-meta>
               </ui-card-header>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium
-              <ui-card-footer>
+              <ui-card-footer>v
                 <ui-button>Confirm</ui-button>
-                <ui-button data-outline>Cancel</ui-button>
+                <ui-button data-variant="outline">Cancel</ui-button>
               </ui-card-footer>
             </ui-card-body>
           </ui-card> -->
 
           <!-- <div class="inline-block">
             <ui-badge data-append="mr-1.5">B</ui-badge>
-            <ui-badge data-variant="info" data-append="mr-1.5">A</ui-badge>
-            <ui-badge data-variant="error" data-append="mr-1.5">D</ui-badge>
-            <ui-badge data-variant="success" data-append="mr-1.5">G</ui-badge>
-            <ui-badge data-variant="contrast" data-append="mr-1.5">E</ui-badge>
+            <ui-badge data-color="info" data-append="mr-1.5">A</ui-badge>
+            <ui-badge data-color="error" data-append="mr-1.5">D</ui-badge>
+            <ui-badge data-color="success" data-append="mr-1.5">G</ui-badge>
+            <ui-badge data-color="contrast" data-append="mr-1.5">E</ui-badge>
           </div> -->
 
-          <!-- <ui-accordion-group style="width: 300px" data-variant="primary">
+          <!-- <ui-accordion-group style="width: 300px" data-color="primary">
             <ui-accordion data-header="1 item">
               <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
             </ui-accordion>
@@ -128,19 +128,19 @@
             <span class="font-medium">Info alert!</span>
             Change a few things up and try submitting again.
           </ui-alert>
-          <ui-alert data-variant="info">
+          <ui-alert data-color="info">
             <span class="font-medium">Info alert!</span>
             Change a few things up and try submitting again.
           </ui-alert>
-          <ui-alert data-variant="error">
+          <ui-alert data-color="error">
             <span class="font-medium">Danger alert!</span>
             Change a few things up and try submitting again.
           </ui-alert>
-          <ui-alert data-variant="success">
+          <ui-alert data-color="success">
             <span class="font-medium">Success alert!</span>
             Change a few things up and try submitting again.
           </ui-alert>
-          <ui-alert data-variant="contrast">
+          <ui-alert data-color="contrast">
             <span class="font-medium">Warning alert!</span>
             Change a few things up and try submitting again.
           </ui-alert>
@@ -150,9 +150,9 @@
             <span slot="meta">10 minutes ago</span>
             Excepteur est ullamco do sit culpa laboris.
           </ui-toast> -->
-          <!-- <ui-toast data-variant="success">test</ui-toast>
-          <ui-toast data-variant="error">test</ui-toast>
-          <ui-toast data-variant="contrast">test</ui-toast> -->
+          <!-- <ui-toast data-color="success">test</ui-toast>
+          <ui-toast data-color="error">test</ui-toast>
+          <ui-toast data-color="contrast">test</ui-toast> -->
         </div>
       </div>
       <div class="absolute inset-0 pointer-events-none border border-black/5 rounded-xl dark:border-white/5"></div>
@@ -171,17 +171,17 @@
 
     const createToastButton = document.getElementById('create-toast-button');
     createToastButton.addEventListener('click', () => {
-      document.body.appendChild(
-        rawHTML(
+      document.body.append(
+        ...rawHTML(
           random([true, false])
             ? '<ui-toast><header slot="header">Toast Header</header><p>Lorem ipsum net zu.</p></ui-toast>'
-            : `<ui-toast data-variant="${random([
+            : `<ui-toast data-color="${random([
                 'info',
                 'error',
                 'success',
                 'contrast'
               ])}"><header slot="header">Toast Header</header><p>Lorem ipsum net zu.</p></ui-toast>`
-        )[0]
+        )
       );
     });
   </script>
