@@ -38,6 +38,7 @@
     "@storybook/addon-essentials": "^6.4.14",
     "@storybook/addon-links": "^6.4.14",
     "@storybook/theming": "^6.4.14",
+    "@storybook/html": "^6.4.14",
     "@tailwindcss/typography": "^0.5.0",
     "@types/react": "^17.0.38",
     "@uppercod/vite-meta-url": "^1.5.1",
