@@ -28,7 +28,7 @@ import './toast';
         <span slot="meta">10 minutes ago</span>
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
-      <ui-toast data-type="contrast" data-fixed>
+      <ui-toast data-color="contrast" data-fixed>
         <i slot="icon">
           <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -42,7 +42,7 @@ import './toast';
         <header slot="header">My Notification</header>
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
-      <ui-toast data-type="info" data-fixed>
+      <ui-toast data-color="info" data-fixed>
         <i slot="icon">
           <svg class="w-8 h-8 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -55,7 +55,7 @@ import './toast';
         </i>
         ${truncate('Ut minim voluptate ea laboris velit duis exercitation sit minim ex magna commodo id.', 78)}
       </ui-toast>
-      <ui-toast data-type="success" data-fixed>
+      <ui-toast data-color="success" data-fixed>
         <i slot="icon">
           <svg class="w-8 h-8 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -68,7 +68,7 @@ import './toast';
         </i>
         Consectetur mollit exercitation duis consectetur pariatur cupidatat consequat.
       </ui-toast>
-      <ui-toast data-type="error" data-fixed>
+      <ui-toast data-color="error" data-fixed>
         <i slot="icon">
           <svg class="w-8 h-8 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -112,9 +112,7 @@ import './toast';
       }
     }}>
     {({ slot, ...props }) => /*html*/ `
-    <ui-toast
-      ${props.color ? `data-type="${props.color}"` : ''}
-      data-fixed>
+    <ui-toast ${props.color ? `data-color="${props.color}"` : ''} data-fixed>
       ${slot}
     </ui-toast>
   `}
