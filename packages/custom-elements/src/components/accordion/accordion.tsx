@@ -37,10 +37,10 @@ define<Props>('ui-accordion', {
         }}
       />
       <details id="root" className={getClassName({ dataset })}>
-        <summary className="flex items-center gap-2 py-1 cursor-pointer">
+        <summary className="flex cursor-pointer items-center gap-2 py-1">
           <svg
             fill="none"
-            className="w-4 h-4"
+            className="h-4 w-4"
             stroke="currentColor"
             viewBox="0 0 23 23"
             xmlns="http://www.w3.org/2000/svg">

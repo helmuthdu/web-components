@@ -16,7 +16,7 @@ export type Props = {
     rounded?: boolean;
     size?: Sizes;
     color?: 'primary' | 'error' | 'success';
-    variant?: 'outline' | 'text' | undefined
+    variant?: 'outline' | 'text' | undefined;
   };
 };
 
@@ -100,8 +100,7 @@ const getClassName = ({ dataset }: Props) =>
         }
       : {
           'border-none': true,
-          'text-primary-contrast bg-primary hover:ring-4 focus:ring-4 ring-primary-focus':
-            dataset.color === 'primary',
+          'text-primary-contrast bg-primary hover:ring-4 focus:ring-4 ring-primary-focus': dataset.color === 'primary',
           'text-error-contrast bg-error hover:ring-4 focus:ring-4 ring-error-focus': dataset.color === 'error',
           'text-success-contrast bg-success hover:ring-4 focus:ring-4 ring-success-focus': dataset.color === 'success'
         },

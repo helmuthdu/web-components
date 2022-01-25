@@ -1,30 +1,30 @@
 /// <reference types="vite/client" />
 import { DOMAttributes } from 'react';
 
-type CustomEvents<K extends string> = { [key in K] : (event: CustomEvent) => void };
+type CustomEvents<K extends string> = { [key in K]: (event: CustomEvent) => void };
 type CustomElement<T, K extends string> = Partial<T & DOMAttributes<T> & { children: any } & CustomEvents<`on${K}`>>;
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['ui-accordion']: CustomElement<Element>;
-      ['ui-accordion-group']: CustomElement<Element>;
-      ['ui-alert']: CustomElement<Element>;
-      ['ui-avatar']: CustomElement<Element>;
-      ['ui-avatar-group']: CustomElement<Element>;
-      ['ui-badge']: CustomElement<Element>;
-      ['ui-card']: CustomElement<Element>;
-      ['ui-card-body']: CustomElement<Element>;
-      ['ui-card-footer']: CustomElement<Element>;
-      ['ui-card-header']: CustomElement<Element>;
-      ['ui-card-image']: CustomElement<Element>;
-      ['ui-card-meta']: CustomElement<Element>;
-      ['ui-carousel']: CustomElement<Element>;
-      ['ui-carousel-item']: CustomElement<Element>;
-      ['ui-toast']: CustomElement<Element>;
-      ['ui-box']: CustomElement<Element>;
-      ['ui-button']: CustomElement<Element>;
-      ['ui-button-group']: CustomElement<Element>;
+      ['ui-accordion']: CustomElement<any>;
+      ['ui-accordion-group']: CustomElement<any>;
+      ['ui-alert']: CustomElement<any>;
+      ['ui-avatar']: CustomElement<any>;
+      ['ui-avatar-group']: CustomElement<any>;
+      ['ui-badge']: CustomElement<any>;
+      ['ui-card']: CustomElement<any>;
+      ['ui-card-body']: CustomElement<any>;
+      ['ui-card-footer']: CustomElement<any>;
+      ['ui-card-header']: CustomElement<any>;
+      ['ui-card-image']: CustomElement<any>;
+      ['ui-card-meta']: CustomElement<any>;
+      ['ui-carousel']: CustomElement<any>;
+      ['ui-carousel-item']: CustomElement<any>;
+      ['ui-toast']: CustomElement<any>;
+      ['ui-box']: CustomElement<any>;
+      ['ui-button']: CustomElement<any>;
+      ['ui-button-group']: CustomElement<any>;
     }
   }
   interface ShadowRoot {

@@ -57,7 +57,7 @@ define<Props>('ui-carousel', {
         }}
       />
       <div id="root" className="relative w-full">
-        <div className="carousel snap-x snap-mandatory scroll-smooth overflow-x-auto flex relative w-full">
+        <div className="carousel relative flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth">
           <slot />
         </div>
         {!dataset.noButtons && (
@@ -89,10 +89,10 @@ define<Props>('ui-carousel', {
           </>
         )}
         {!dataset.noIndicators && (
-          <ol className="absolute inset-x-0 bottom-0 flex gap-2 justify-center pb-4">
+          <ol className="absolute inset-x-0 bottom-0 flex justify-center gap-2 pb-4">
             {[...Array(children.length)].map((_, idx) => (
               <li
-                className="transition duration-1000 border-b-4 w-8 border-white/60 hover:border-white"
+                className="w-8 border-b-4 border-white/60 transition duration-1000 hover:border-white"
                 onClick={() => {
                   showSlides(idx, children, Array.from(shadowRoot?.querySelectorAll('li') ?? []), +dataset.timeout);
                 }}

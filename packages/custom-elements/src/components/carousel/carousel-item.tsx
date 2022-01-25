@@ -42,7 +42,7 @@ define<Props>('ui-carousel-item', {
   template: ({ dataset }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
-      <img id="root" className="block relative w-full" src={dataset.src} alt="" />
+      <img id="root" className="relative block w-full" src={dataset.src} alt="" />
       <div className={getClassName({ dataset })}>
         <slot />
       </div>

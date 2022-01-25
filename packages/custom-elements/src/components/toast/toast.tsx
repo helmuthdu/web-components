@@ -53,12 +53,12 @@ define<Props>('ui-toast', {
         <link rel="stylesheet" href="/tailwind.css" />
         <div
           className={classMap(
-            'shadow-lg w-96 max-w-full text-sm pointer-events-auto rounded-lg overflow-clip animate-fade-in-down border border-neutral-400/25'
+            'pointer-events-auto w-96 max-w-full animate-fade-in-down overflow-clip rounded-lg border border-neutral-400/25 text-sm shadow-lg'
           )}>
           {hasHeader && (
             <div
               className={classMap(
-                'flex justify-between items-center py-1 px-3',
+                'flex items-center justify-between py-1 px-3',
                 {
                   ' border-b border-neutral-400/25': !dataset.color || dataset.color === 'contrast'
                 },
@@ -73,7 +73,7 @@ define<Props>('ui-toast', {
               )}>
               <span
                 className={classMap(
-                  'font-bold flex flex-row items-center justify-between gap-2',
+                  'flex flex-row items-center justify-between gap-2 font-bold',
                   !dataset.color
                     ? 'text-content-heading'
                     : {
@@ -133,7 +133,7 @@ define<Props>('ui-toast', {
                     'bg-primary text-primary-contrast': dataset.color === 'info',
                     'bg-error text-error-contrast': dataset.color === 'error',
                     'bg-success text-success-contrast': dataset.color === 'success',
-                    'text-content-contrast bg-contrast-700': dataset.color === 'contrast'
+                    'bg-contrast-700 text-content-contrast': dataset.color === 'contrast'
                   }
             )}>
             {!hasHeader ? (
