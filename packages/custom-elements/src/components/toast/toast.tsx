@@ -43,9 +43,6 @@ define<Props>('ui-toast', {
       setTimeout(remove, dataset.timeout);
     }
   },
-  onAttributeChanged: (name, prev, curr, { update }) => {
-    update();
-  },
   template: ({ children, dataset, fire, remove }) => {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (

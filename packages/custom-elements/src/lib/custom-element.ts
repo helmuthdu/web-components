@@ -49,7 +49,6 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
 
     constructor() {
       super();
-      this.style.visibility = 'hidden'; // initialise to avoid FOUC
       injectStyles(this.attachShadow({ mode: 'open' }), styles);
       Object.entries(props)
         .filter(([key, value]) => value)
@@ -65,7 +64,6 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
             (this as any)[key] ??= value as string;
           }
         });
-      this.update();
     }
 
     static get observedAttributes() {
@@ -77,11 +75,15 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
     }
 
     connectedCallback() {
-      this.#ready = true;
+      this.style.visibility = 'hidden'; // make component hidden to avoid FOUC
+      this.update();
+
       if (onConnected) {
         onConnected(this.#self as any);
       }
-      setTimeout(() => (this.style.visibility = ''), 100); // remove after a shot time to avoid FOUC
+
+      this.#ready = true;
+      setTimeout(() => (this.style.visibility = ''), 100); // visible again after a short time to avoid FOUC
     }
 
     disconnectedCallback() {
