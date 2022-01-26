@@ -13,7 +13,7 @@ type ElementDom<T extends Markup> = (...props: (HtmlOrSvg<T> | Element[])[]) => 
 type ElementProps<T extends Markup> = Partial<HtmlOrSvg<T>>;
 
 type ElementDraft = {
-  attributes: Record<string, any>;
+  props: Record<string, any>;
   children: any[];
   tag: string | any;
 };
@@ -53,21 +53,18 @@ const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFra
 const createElement = (tag: string) =>
   isSVG(tag) ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
 
-const create = (draft: ElementDraft) => {
-  if (isFunction(draft.tag)) return draft.tag(draft.attributes, draft.children);
+const define = (draft: ElementDraft) => {
+  if (isFunction(draft.tag)) return draft.tag(draft.props, draft.children);
   const element = draft.tag === 'fragment' ? new DocumentFragment() : createElement(draft.tag);
-  Object.entries(draft.attributes ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
+  Object.entries(draft.props ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
   draft.children.forEach(child => appendChild(child, element));
   return element;
 };
 
-const define = (tag: string, attributes: Record<string, any>, ...children: any[]) =>
-  create({ tag, attributes, children });
-
-export const fragment = (...children: any[]) => define('fragment', {}, ...children);
+export const fragment = (...children: any[]) => define({ tag: 'fragment', props: {}, children });
 
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
-  define(tag, props, ...children) as any;
+  define({ tag, props, children }) as any;
 
 export const rawHTML = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
