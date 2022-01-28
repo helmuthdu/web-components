@@ -3,14 +3,12 @@ import './alert';
 
 # Alert
 
-<Meta title="Components/Alert" />
+<Meta title="Components/Alert" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Examples
 
 <Canvas withToolbar={true}>
-  <Story
-    name="Examples"
-    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
+  <Story name="Examples">
     {() => /*html*/ `
       <ui-alert>
         <span class="font-medium">Default alert!</span>
@@ -40,7 +38,6 @@ import './alert';
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
       slot: /*html*/ `<span class="font-medium">Alert!</span> Change a few things up and try submitting again.`,
       color: 'info'
@@ -52,7 +49,7 @@ import './alert';
         control: {
           type: 'select',
           labels: {
-            [undefined]: 'none',
+            [undefined]: 'default',
             info: 'info',
             error: 'error',
             success: 'success',

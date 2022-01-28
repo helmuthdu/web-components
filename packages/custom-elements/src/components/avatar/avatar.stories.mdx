@@ -4,14 +4,12 @@ import './avatar-group';
 
 # Avatar
 
-<Meta title="Components/Avatar" />
+<Meta title="Components/Avatar" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Examples
 
 <Canvas>
-  <Story
-    name="Examples"
-    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
+  <Story name="Examples">
     {() => /*html*/ `
       <div class="inline-flex gap-3">
         <ui-avatar>

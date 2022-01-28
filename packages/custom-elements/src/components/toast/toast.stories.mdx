@@ -3,16 +3,14 @@ import './toast';
 
 # Toast
 
-<Meta title="Components/Toast" />
+<Meta title="Components/Toast" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 export const truncate = (text, size = 127) => text.slice(0, size) + (text.length > size ? '…' : '');
 
 ## Examples
 
 <Canvas withToolbar={true}>
-  <Story
-    name="Examples"
-    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
+  <Story name="Examples">
     {() => /*html*/ `
       <ui-toast data-fixed>
         <i slot="icon">
@@ -90,7 +88,6 @@ export const truncate = (text, size = 127) => text.slice(0, size) + (text.length
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
       slot: /*html*/ `<header slot="header">My Notification</header><span slot="meta">10 minutes ago</span>Excepteur est ullamco do sit culpa laboris.`,
       color: 'info'
@@ -102,7 +99,7 @@ export const truncate = (text, size = 127) => text.slice(0, size) + (text.length
         control: {
           type: 'select',
           labels: {
-            [undefined]: 'none',
+            [undefined]: 'default',
             info: 'info',
             error: 'error',
             success: 'success',

@@ -4,14 +4,13 @@ import './accordion-group';
 
 # Accordion
 
-<Meta title="Components/Accordion" />
+<Meta title="Components/Accordion" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Playground
 
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     argTypes={{
       variant: {
         name: 'variant',

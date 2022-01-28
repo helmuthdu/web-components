@@ -19,19 +19,19 @@
   --color-primary-backdrop: theme('colors.blue.200');
   --color-primary-focus: theme('colors.blue.300');
   --color-primary: theme('colors.blue.600');
-  --color-primary-content: theme('colors.blue.900');
+  --color-primary-content: theme('colors.blue.800');
   --color-primary-contrast: #fff;
 
   --color-error-backdrop: theme('colors.red.200');
   --color-error-focus: theme('colors.red.300');
   --color-error: theme('colors.red.500');
-  --color-error-content: theme('colors.red.900');
+  --color-error-content: theme('colors.red.800');
   --color-error-contrast: #fff;
 
   --color-success-backdrop: theme('colors.green.200');
   --color-success-focus: theme('colors.green.300');
   --color-success: theme('colors.green.500');
-  --color-success-content: theme('colors.green.900');
+  --color-success-content: theme('colors.green.800');
   --color-success-contrast: #fff;
 
   --color-content-heading: theme('colors.gray.900');
@@ -60,19 +60,19 @@
     --color-primary-backdrop: theme('colors.blue.300');
     --color-primary-focus: theme('colors.blue.500');
     --color-primary: theme('colors.blue.600');
-    --color-primary-content: theme('colors.blue.900');
+    --color-primary-content: theme('colors.blue.800');
     --color-primary-contrast: #fff;
 
     --color-error-backdrop: theme('colors.red.300');
     --color-error-focus: theme('colors.red.500');
     --color-error: theme('colors.red.600');
-    --color-error-content: theme('colors.red.900');
+    --color-error-content: theme('colors.red.800');
     --color-error-contrast: #fff;
 
     --color-success-backdrop: theme('colors.green.300');
     --color-success-focus: theme('colors.green.500');
     --color-success: theme('colors.green.600');
-    --color-success-content: theme('colors.green.900');
+    --color-success-content: theme('colors.green.800');
     --color-success-contrast: #fff;
 
     --color-content-heading: theme('colors.gray.50');

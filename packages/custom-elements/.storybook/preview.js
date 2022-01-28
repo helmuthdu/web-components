@@ -3,7 +3,6 @@ import theme from './theme';
 
 export const parameters = {
   docs: { theme },
-  layout: 'centered',
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {

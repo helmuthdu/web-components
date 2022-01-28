@@ -10,14 +10,13 @@ import '../badge/badge';
 
 # Card
 
-<Meta title="Components/Card" />
+<Meta title="Components/Card" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Playground
 
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     argTypes={{
       slot: {
         type: { name: 'string', required: true }

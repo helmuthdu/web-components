@@ -1,47 +1,64 @@
 <style>
   #root {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .canvas {
     display: flex;
     flex: 1;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
-  #root:after {
+
+  .canvas:after {
     content: ' ';
     display: block;
     position: absolute;
-    left: 0;
     top: 0;
-    width: 100%;
+    left: 0;
     height: 100%;
+    width: 100%;
     background-color: #f5f5f5;
     z-index: -2;
   }
-  #root:before {
+
+  .canvas:before {
     content: ' ';
     display: block;
     position: absolute;
-    left: 0;
     top: 0;
-    width: 100%;
+    left: 0;
     height: 100%;
+    width: 100%;
     opacity: 1;
-    opacity: 0.9;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23ffffff'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
     z-index: -1;
-    background-position: 8px 2px;
   }
+
+  .sb-show-main.sb-main-padded {
+    padding: 0;
+  }
+
   .sbdocs.sbdocs-preview {
     background-color: #f5f5f5;
   }
 
   @media (prefers-color-scheme: dark) {
-    #root:after {
+    .canvas:after {
       background-color: #333333;
     }
-    #root:before {
+
+    .canvas:before {
       opacity: 0.04;
     }
+
     .sbdocs.sbdocs-preview {
       background-color: #333333;
     }

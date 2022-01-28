@@ -4,37 +4,95 @@ import './button-group';
 
 # Button
 
+Buttons allow users to take actions, and make choices, with a single tap.
+
 ## Examples
 
-<Meta title="Elements/Button" />
+<Meta title="Elements/Button" decorators={[story => `<div class="canvas">${story()}</div>`]} />
+
+## Variants
+
+Change the variants using the `data-variant` attribute, it comes with three variants: **default**, **outlined** and **text**.
 
 <Canvas withToolbar={true}>
-  <Story
-    name="Examples"
-    decorators={[story => `<div class="flex items-center justify-center flex-wrap gap-4">${story()}</div>`]}>
+  <Story name="Variants">
     {() => /*html*/ `
       <ui-button>Get Started</ui-button>
-      <ui-button data-color="error"> Get Started</ui-button>
-      <ui-button data-color="success">Get Started</ui-button>
-      <ui-button data-variant="outline" data-size="sm">Get Started</ui-button>
-      <ui-button data-color="error" data-variant="outline" data-size="md"> Get Started</ui-button>
-      <ui-button data-color="success" data-variant="outline" data-size="lg">Get Started</ui-button>
-      <ui-button data-variant="text">Get Started</ui-button>
-      <ui-button data-color="error" data-variant="text"> Get Started</ui-button>
-      <ui-button data-color="success" data-variant="text">Get Started</ui-button>
-      <ui-button data-loading data-disabled>Get Started</ui-button>
-      <ui-button data-circle data-color="success">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-      </ui-button>
-      <ui-button data-circle data-color="error">
-        UI
-      </ui-button>
-      <ui-button data-circle data-loading>
-        UI
-      </ui-button>
+      <ui-button data-variant="outline">Get Started</ui-button>
+      <ui-button data-variant="text">Get Started</ui-button>`}
+  </Story>
+</Canvas>
+
+## Colors
+
+Change the color using the `data-color` attribute, it comes with three colors defined: **primary**, **error** and **success**.
+
+<Canvas withToolbar={true}>
+  <Story name="Colors">
+    {() => /*html*/ `
+      <ui-button>Get Started</ui-button>
+      <ui-button data-color="error">Get Started</ui-button>
+      <ui-button data-color="success">Get Started</ui-button>`}
+  </Story>
+</Canvas>
+
+## Size
+
+For larger or smaller buttons, use the `data-size` prop.
+
+<Canvas withToolbar={true}>
+  <Story name="Size">
+    {() => /*html*/ `
+      <ui-button data-size="xs">Get Started</ui-button>
+      <ui-button data-size="sm">Get Started</ui-button>
+      <ui-button data-size="md">Get Started</ui-button>
+      <ui-button data-size="lg">Get Started</ui-button>
+      <ui-button data-size="xl">Get Started</ui-button>`}
+  </Story>
+</Canvas>
+
+## Disabled
+
+Avoid user interaction with the `data-disabled` attribute.
+
+<Canvas withToolbar={true}>
+  <Story name="Disabled">
+    {() => /*html*/ `
+      <ui-button data-disabled>Get Started</ui-button>`}
+  </Story>
+</Canvas>
+
+## Loading
+
+Active the loading state with the`data-loading` attribute.
+
+<Canvas withToolbar={true}>
+  <Story name="Loading">
+    {() => /*html*/ `
+      <ui-button data-loading>Get Started</ui-button>`}
+  </Story>
+</Canvas>
+
+## Circle
+
+For a small circular button use the `data-circle` attribute.
+
+<Canvas withToolbar={true}>
+  <Story name="Circle">
+    {() => /*html*/ `
       <ui-button data-circle data-variant="outline">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-      </ui-button>
+      </ui-button>`}
+  </Story>
+</Canvas>
+
+## Group
+
+All buttons can be grouped together wrapping with the `ui-button-group` component.
+
+<Canvas withToolbar={true}>
+  <Story name="Group">
+    {() => /*html*/ `
       <ui-button-group>
         <ui-button>Get Started</ui-button>
         <ui-button data-variant="outline">Get Started</ui-button>
@@ -47,7 +105,6 @@ import './button-group';
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     args={{
       slot: 'Get Started',
       color: 'primary',
@@ -61,18 +118,27 @@ import './button-group';
     }}
     argTypes={{
       slot: {
-        type: { name: 'string', required: true }
+        type: { name: 'string', required: true },
+        table: {
+          category: 'slot'
+        }
       },
       color: {
         name: 'data-color',
         control: { type: 'select' },
-        options: ['primary', 'error', 'success']
+        options: ['primary', 'error', 'success'],
+        table: {
+          category: 'props'
+        }
       },
       size: {
         name: 'data-size',
         type: { name: 'string' },
         control: { type: 'select' },
-        options: ['xs', 'sm', 'md', 'lg', 'xl']
+        options: ['xs', 'sm', 'md', 'lg', 'xl'],
+        table: {
+          category: 'props'
+        }
       },
       variant: {
         name: 'data-variant',
@@ -80,32 +146,50 @@ import './button-group';
         control: {
           type: 'select',
           labels: {
-            [undefined]: 'none',
+            [undefined]: 'default',
             outline: 'outline',
             text: 'text'
           }
         },
-        options: [undefined, 'outline', 'text']
+        options: [undefined, 'outline', 'text'],
+        table: {
+          category: 'props'
+        }
       },
       block: {
         name: 'data-block',
-        type: { name: 'boolean' }
+        type: { name: 'boolean' },
+        table: {
+          category: 'props'
+        }
       },
       circle: {
         name: 'data-circle',
-        type: { name: 'boolean' }
+        type: { name: 'boolean' },
+        table: {
+          category: 'props'
+        }
       },
       disabled: {
         name: 'data-disabled',
-        type: { name: 'boolean' }
+        type: { name: 'boolean' },
+        table: {
+          category: 'props'
+        }
       },
       loading: {
         name: 'data-loading',
-        type: { name: 'boolean' }
+        type: { name: 'boolean' },
+        table: {
+          category: 'props'
+        }
       },
       rounded: {
         name: 'data-rounded',
-        type: { name: 'boolean' }
+        type: { name: 'boolean' },
+        table: {
+          category: 'props'
+        }
       }
     }}>
     {({ slot, ...props }) => /*html*/ `

@@ -4,14 +4,13 @@ import './carousel-item';
 
 # Carousel
 
-<Meta title="Components/Carousel" />
+<Meta title="Components/Carousel" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Playground
 
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     argTypes={{
       noButtons: {
         name: 'data-no-buttons',

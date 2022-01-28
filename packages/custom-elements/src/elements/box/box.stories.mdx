@@ -3,21 +3,20 @@ import './box';
 
 # Box
 
-<Meta title="Components/Box" />
+<Meta title="Components/Box" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Playground
 
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     argTypes={{
       slot: {
         type: { name: 'string', required: true }
-      },
+      }
     }}
     args={{
-      slot: 'Get Started',
+      slot: 'Get Started'
     }}>
     {({ slot, ...props }) => /*html*/ `
       <ui-box>

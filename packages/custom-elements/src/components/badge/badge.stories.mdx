@@ -3,14 +3,13 @@ import './badge';
 
 # Badges
 
-<Meta title="Components/Badges" />
+<Meta title="Components/Badges" decorators={[story => `<div class="canvas">${story()}</div>`]} />
 
 ## Playground
 
 <Canvas withToolbar={true}>
   <Story
     name="Playground"
-    decorators={[story => `<div class="flex items-center justify-center w-full p-10">${story()}</div>`]}
     argTypes={{
       slot: {
         type: { name: 'string', required: true }
@@ -21,7 +20,7 @@ import './badge';
         control: {
           type: 'select',
           labels: {
-            [undefined]: 'none',
+            [undefined]: 'default',
             info: 'info',
             error: 'error',
             success: 'success',
