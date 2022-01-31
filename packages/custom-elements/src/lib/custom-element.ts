@@ -5,37 +5,37 @@ type HTMLTags = keyof HTMLElementEventMap;
 
 type CustomElementProps = Record<string, any> | undefined;
 
-type CustomElementOptions<P extends CustomElementProps, T extends HTMLElement> = {
-  onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<P, T>) => void;
-  onConnected?: (host: CustomElement<P, T>) => void;
-  onDisconnected?: (host: CustomElement<P, T>) => void;
-  props: P & Partial<Omit<HTMLElement, keyof P>>;
+type CustomElementOptions<Props extends CustomElementProps> = {
+  onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<Props>) => void;
+  onConnected?: (host: CustomElement<Props>) => void;
+  onDisconnected?: (host: CustomElement<Props>) => void;
+  props: Props & Partial<Omit<HTMLElement, keyof Props>>;
   styles?: unknown[];
-  template: (host: CustomElement<P, T>) => any;
+  template: (host: CustomElement<Props>) => any;
 };
 
-export type CustomElement<P extends CustomElementProps, T extends HTMLElement> = Omit<HTMLElement, keyof P> &
-  P & {
+export type CustomElement<Props extends CustomElementProps> = Omit<HTMLElement, keyof Props> &
+  Props & {
     fire: (event: string | HTMLTags, { detail }?: CustomEventInit) => void;
     event: (
-      id: string | HTMLElement | CustomElement<P, T>,
+      id: string | HTMLElement | CustomElement<Props>,
       event: string | HTMLTags,
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) => void;
-    root: T;
-    host: CustomElement<P, T>;
+    spot: <T extends HTMLElement>(id: string) => T;
+    host: CustomElement<Props>;
     update: () => void;
   };
 
-export const component = <P extends CustomElementProps, T extends HTMLElement>({
+export const component = <Props extends CustomElementProps>({
   onAttributeChanged,
   onConnected,
   onDisconnected,
   props = {} as any,
   styles = [],
   template
-}: CustomElementOptions<P, T>) =>
+}: CustomElementOptions<Props>) =>
   class extends HTMLElement {
     host = this;
 
@@ -61,7 +61,7 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
                 .reduce((acc, [k, v]) => ({ ...acc, [k]: acc[k] ?? v }), (this as any)[key] ?? {})
             );
           } else {
-            (this as any)[key] ??= value as string;
+            (this as any)[key] ??= value;
           }
         });
     }
@@ -75,15 +75,15 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
     }
 
     connectedCallback() {
-      this.style.visibility = 'hidden'; // make component hidden to avoid FOUC
-      this.update();
+      // workaround to avoid FOUC
+      this.style.visibility = 'hidden';
+      setTimeout(() => (this.style.visibility = ''), 100);
 
+      this.update();
       if (onConnected) {
         onConnected(this.#self as any);
       }
-
       this.#ready = true;
-      setTimeout(() => (this.style.visibility = ''), 100); // visible again after a short time to avoid FOUC
     }
 
     disconnectedCallback() {
@@ -113,26 +113,23 @@ export const component = <P extends CustomElementProps, T extends HTMLElement>({
     }
 
     event(
-      id: string | HTMLElement | CustomElement<P, T>,
+      id: string | HTMLElement | CustomElement<Props>,
       event: string | HTMLTags,
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = (isString(id) ? this.shadowRoot?.getElementById(`${id}`) : id) as HTMLElement | CustomElement<P, T>;
+      const el = (isString(id) ? this.shadowRoot?.getElementById(`${id}`) : id) as HTMLElement | CustomElement<Props>;
       if (!el) throw new Error(`element with id="${id}" not found`);
       el.addEventListener(event, callback, options);
     }
 
-    get root() {
-      return this.shadowRoot?.getElementById(`root`);
+    spot(id: string) {
+      return this.shadowRoot?.getElementById(id);
     }
   };
 
-export const define = <P extends CustomElementProps, T extends HTMLElement = HTMLElement>(
-  name: string,
-  options: CustomElementOptions<P, T>
-) => {
-  if (!window.customElements.get(name)) customElements.define(name, component<P, T>(options));
+export const define = <Props extends CustomElementProps>(name: string, options: CustomElementOptions<Props>) => {
+  if (!window.customElements.get(name)) customElements.define(name, component<Props>(options));
 };
 
 export { classMap } from './styling-element';

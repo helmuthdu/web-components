@@ -29,8 +29,8 @@ define<Props>('ui-alert', {
       color: undefined
     }
   },
-  onAttributeChanged(name, prev, curr, { dataset, root }) {
-    root.className = getClassName({ dataset });
+  onAttributeChanged(name, prev, curr, { dataset, spot }) {
+    spot('root').className = getClassName({ dataset });
   },
   template: ({ dataset, fire, remove }) => (
     <>

@@ -16,17 +16,8 @@ define<Props>('ui-accordion', {
       header: ''
     }
   },
-  onAttributeChanged(name, prev, curr, { dataset, update, root, shadowRoot }) {
-    switch (name) {
-      case 'data-append':
-        root.className = getClassName({ dataset });
-        break;
-      case 'data-header': {
-        const el = shadowRoot?.getElementById('header');
-        if (el) el.innerText = curr;
-        break;
-      }
-    }
+  onAttributeChanged(name, prev, curr, { dataset, spot }) {
+    spot('root').className = getClassName({ dataset });
   },
   template: ({ dataset }) => (
     <>
@@ -46,7 +37,7 @@ define<Props>('ui-accordion', {
             xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
           </svg>
-          {dataset.header}
+          <slot name="header"/>
         </summary>
         <div>
           <slot />

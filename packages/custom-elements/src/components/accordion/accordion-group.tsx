@@ -41,13 +41,13 @@ define<Props>('ui-accordion-group', {
       variant: 'primary'
     }
   },
-  onAttributeChanged(name, prev, curr, { children, dataset, root }) {
+  onAttributeChanged(name, prev, curr, { children, dataset, spot }) {
     switch (name) {
       case 'data-append':
-        root.className = getClassName({ dataset });
+        spot('root').className = getClassName({ dataset });
         break;
       case 'data-variant':
-        root.className = getClassName({ dataset });
+        spot('root').className = getClassName({ dataset });
         updateChildren(children, { dataset });
         break;
     }

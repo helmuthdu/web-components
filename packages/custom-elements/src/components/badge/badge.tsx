@@ -44,13 +44,13 @@ define<Props>('ui-badge', {
       color: undefined
     }
   },
-  onAttributeChanged: (name, prev, curr, { dataset, root }) => {
+  onAttributeChanged: (name, prev, curr, { dataset, spot }) => {
     switch (name) {
       case 'data-append':
       case 'data-color':
       case 'data-pill':
       case 'data-size':
-        root.className = getClassName({ dataset });
+        spot('root').className = getClassName({ dataset });
         break;
     }
   },

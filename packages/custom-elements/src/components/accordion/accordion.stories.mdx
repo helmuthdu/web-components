@@ -22,13 +22,16 @@ import './accordion-group';
     }}>
     {({ variant }) => /*html*/ `
       <ui-accordion-group class="w-96" data-variant="${variant}">
-        <ui-accordion data-header="1 item">
+        <ui-accordion>
+          <h2 slot="header">1 item</h2>
           <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
         </ui-accordion>
-        <ui-accordion data-header="2 item">
+        <ui-accordion>
+          <h2 slot="header">2 item</h2>
           <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
         </ui-accordion>
-        <ui-accordion data-header="3 item">
+        <ui-accordion>
+          <h2 slot="header">3 item</h2>
           <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
         </ui-accordion>
       </ui-accordion-group>

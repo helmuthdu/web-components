@@ -107,7 +107,7 @@ const getClassName = ({ dataset }: Props) =>
     dataset.append
   );
 
-define<Props, HTMLButtonElement>('ui-button', {
+define<Props>('ui-button', {
   props: {
     type: 'button',
     dataset: {
@@ -122,7 +122,8 @@ define<Props, HTMLButtonElement>('ui-button', {
       color: 'primary'
     }
   },
-  onAttributeChanged: (name, prev, curr, { classList, root, update, dataset }) => {
+  onAttributeChanged: (name, prev, curr, { classList, dataset, spot, update }) => {
+    const root = spot<HTMLButtonElement>('root');
     switch (name) {
       case 'data-append':
       case 'data-circle':
@@ -160,7 +161,7 @@ define<Props, HTMLButtonElement>('ui-button', {
     <>
       <link rel="stylesheet" href="/tailwind.css" />
       <style dangerouslySetInnerHTML={{ __html: '.loading slot { visibility: hidden; }' }} />
-      <button type={type} id="root" className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
+      <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
         {dataset.loading && <LoadingIcon dataset={dataset} />}
         <slot />
       </button>
