@@ -34,11 +34,11 @@ define<Props>('ui-toast', {
       color: undefined
     }
   },
-  onConnected({ host, dataset, remove }) {
+  onConnected({ hostElement, dataset, remove }) {
     if (!dataset.fixed) {
       const container = getContainer();
-      if (host.parentElement !== container) {
-        container.appendChild(host);
+      if (hostElement.parentElement !== container) {
+        container.appendChild(hostElement);
       }
       setTimeout(remove, dataset.timeout);
     }

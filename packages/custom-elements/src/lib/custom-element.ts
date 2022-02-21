@@ -23,8 +23,8 @@ export type CustomElement<Props extends CustomElementProps> = Omit<HTMLElement, 
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) => void;
+    hostElement: CustomElement<Props>;
     spot: <T extends HTMLElement>(id: string) => T;
-    host: CustomElement<Props>;
     update: () => void;
   };
 
@@ -37,8 +37,6 @@ export const component = <Props extends CustomElementProps>({
   template
 }: CustomElementOptions<Props>) =>
   class extends HTMLElement {
-    host = this;
-
     #ready = false;
     #self = new Proxy(this, {
       get(target, key) {
@@ -47,21 +45,23 @@ export const component = <Props extends CustomElementProps>({
       }
     });
 
+    hostElement = this;
+
     constructor() {
       super();
       injectStyles(this.attachShadow({ mode: 'open' }), styles);
       Object.entries(props)
-        .filter(([key, value]) => value)
-        .forEach(([key, value]) => {
+        .filter(([_, value]) => value !== undefined)
+        .forEach(([prop, value]) => {
           if (isObject(value)) {
             Object.assign(
-              (this as any)[key],
+              (this as any)[prop],
               Object.entries(value)
-                .filter(([k, v]) => v)
-                .reduce((acc, [k, v]) => ({ ...acc, [k]: acc[k] ?? v }), (this as any)[key] ?? {})
+                .filter(([_, val]) => val)
+                .reduce((acc, [key, val]) => ({ ...acc, [key]: acc[key] ?? val }), (this as any)[prop] ?? {})
             );
           } else {
-            (this as any)[key] ??= value;
+            (this as any)[prop] ??= value;
           }
         });
     }

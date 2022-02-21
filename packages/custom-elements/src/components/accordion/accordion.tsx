@@ -37,7 +37,7 @@ define<Props>('ui-accordion', {
             xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
           </svg>
-          <slot name="header"/>
+          <slot name="header" />
         </summary>
         <div>
           <slot />
