@@ -1,23 +1,16 @@
 # You ~~may~~ don't need a javascript library for your components
 
-## What to expect
+Have you ever asked yourself how many times you wrote a Button component using different libraries or frameworks? Components are the base block of any Web project, and it is hard to reuse our components with all modern frameworks or keep updated with new releases. As a result, it increases the development time.
 
-- Learn how to create a native Web Component without using a framework
-- Explanation of all steps to create a Web Component.
-
-Have you ever asked yourself how many times you wrote a Button component using different libraries or frameworks? Components are the base block of any Web project, and it is hard to reuse our components with all modern frameworks or keep updated with new release changes. As a result, it increases the development time.
-
-To solve this problem, native Web Components can simplify the integration since they work with any of them and reduce work by avoiding duplications. This series will explore the different aspects of building web components.
+To solve this problem, Web Components can simplify this process since they work natively and can also be integrated with any js library. This series will explore the different aspects of building web components.
 
 ## What is a Web Component?
 
-Web Components are composed by three parts:
+A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page. The main features you need to understand to start creating your own components are:
 
 - HTML Templates
 - Custom Elements
 - Shadow DOM
-
-Using these, it is possible to develop native Web Components.
 
 ## Create your Web Component
 
@@ -102,7 +95,7 @@ Shadow DOM allows hidden DOM trees to be attached to elements in the regular DOM
 
 ![Custom Element Lifecycle](./assets/images/shadow_dom_high_level.svg)
 
-Another important feature from Shadow DOM is that it enable us to use a `<slot>` tag inside our markup and easily append the children elements inside our component.
+Another essential feature of Shadow DOM is that it enables us to use a `<slot>` tag inside our markup and easily append the children elements inside our component.
 
 ##### The Element Lifecycle
 
@@ -150,13 +143,13 @@ The updates are all handled by the life cycle callbacks, which are placed inside
 
 #### Define attributes and properties
 
-Attributes and properties works a little different from what we used to understand in a JS library/framework. Attributes are what you declare inside the HTML tag, and properties are part of the [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) class we extended, so when we define a new component it already contains a set of properties defined. So, to sync attribute and properties it can be achieved by manually declare them. Let's demonstrate that with our example:
+Attributes and properties work slightly differently from what we used to understand in a JS library/framework. Attributes are what you declare inside the HTML tag, and properties are part of the [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) class we extended, and when we define a new component, it already contains a set of properties defined. So sync attributes and properties can be achieved by reflecting properties to attributes. Let's demonstrate that with our example:
 
 ```html
 <ce-alert color="red"></ce-alert>
  ```
 
-Important to notice that attribute are **always** string, you cannot define a method or if you need other type you have to cast it later.
+It is crucial to notice that attributes are **always** strings. Therefore, you cannot define a method, object, or number. But, in case you need another type, you have to cast it later or declare it directly inside the element object.
 
 Now to sync the attribute with the property in the class:
 
@@ -179,7 +172,7 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-Although, this approach works it can become verbose/tedious, but there is an alternative which does not require declaring all properties manually. The [HTMLElement.datasets](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) interface provides read/write access to custom data attributes (data-*) on elements. It exposes a map of strings (DOMStringMap) with an entry for each data-* attribute. Updating our example with the dataset declaration:
+Although this approach works, it can become verbose or tedious as more and more properties our components have. Still, there is an alternative that does not require declaring all properties manually: The [HTMLElement.datasets](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) interface provides read/write access to custom data attributes (`data-*`) on elements. It exposes a map of strings (DOMStringMap) with each `data-*` attribute entry. Updating our example with the dataset declaration:
 
 ```html
 <ce-alert data-color="red"></ce-alert>
@@ -198,7 +191,7 @@ export class Alert extends HTMLElement {
 
 ### Browser Integration
 
-With our Custom Element defined, we can use it in our HTML file. To add it and use it, we must import the JavaScript file as a [module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#applying_the_module_to_your_html).
+We can now use our Custom Element in our HTML file. To integrate, we must import the js file as a [module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#applying_the_module_to_your_html).
 
 ```html
 <html>
@@ -211,3 +204,27 @@ With our Custom Element defined, we can use it in our HTML file. To add it and u
 </body>
 </html>
 ```
+
+### Problems and Issues
+
+There are good aspects of using Web Components like it can work everywhere, it is small and runs faster as it uses built-in platform APIs. But it is not only flowers, there are some things which might not work as you expected.
+
+#### Attributes vs Properties
+
+A downside of using attributes in a custom element is that it accepts only strings, and syncing the properties with the attributes requires manual declaration.
+
+#### Component Update
+
+Custom elements can detect if an attribute changes, but what happens next is up to the developer to define.
+
+#### Styling
+
+Styling can be problematic and tricky since the component is encapsulated. It can not rely on the global style or share its classes with children's elements, for example, a button group, in which the parent needs to override the children's styles like border-radius, spacing, etc.
+
+#### Forms
+
+Using forms with custom elements requires some [custom form association](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/attachInternals) to make it work.
+
+#### No SSR Support
+
+Due to the nature of a Web Component, it cannot be used in an SSR page since Web Components rely on browser-specific DOM APIs, and the Shadow DOM cannot be represented declaratively, so it cannot be sent as string format.
