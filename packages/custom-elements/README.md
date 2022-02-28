@@ -22,15 +22,15 @@ With [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/tem
 
 ```html
 <template>
-    <div class="alert">
+  <div class="alert">
     <span class="alert__text">
       <slot></slot>
     </span>
-        <button id="close-button" type="button" class="alert__button">
-            <span class="sr-only">close</span>
-            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">...</svg>
-        </button>
-    </div>
+    <button id="close-button" type="button" class="alert__button">
+      <span class="sr-only">close</span>
+      <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">...</svg>
+    </button>
+  </div>
 </template>
 ```
 
@@ -133,7 +133,7 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-The class constructor is simple — here we attach a shadow DOM to the element. The shadow mode can be **open** or **closed**. In the **open** state, the element can be accessed outside the shadow root or vise-versa. So, for example, we could access the button inside our `ce-alert` component by doing the following query:
+The class constructor is simple — here, we attach a shadow DOM to the element. The shadow mode can be **open** or **closed**. In the **open** state, the element can be accessed outside the shadow root or vise-versa. So, for example, we could access the button inside our `ce-alert` component by doing the following query:
 
 ```javascript
 document.querySelector('ce-alert').shadowRoot.querySelector('#close-button');
@@ -189,25 +189,48 @@ export class Alert extends HTMLElement {
 //...
 ```
 
+### Observe Properties and Attributes
+
+To detect attributes or property changes, we just need to return an array with all values we want using the static method `observedAttributes`. Next, we configure our callback function `attributeChangedCallback` to define what will happen when the defined property changes.
+
+```javascript
+//...
+export class Alert extends HTMLElement {
+//...
+  observedAttributes() {
+    return ['data-color'];
+  }
+  attributeChangedCallback(name, prev, curr) {
+    if (prev !== curr) {
+      this.shadowRoot.querySelector('.alert').classList.remove(prev);
+      this.shadowRoot.querySelector('.alert').classList.add(curr);
+    }
+  }
+}
+//...
+```
+
+We use the dataset property in our example, which is automatically converted into `data-*` attribute.
+
 ### Browser Integration
 
 We can now use our Custom Element in our HTML file. To integrate, we must import the js file as a [module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#applying_the_module_to_your_html).
 
 ```html
 <html>
-<head>
+  <head>
     <!--...-->
     <script type="module" src="./alert.js"></script>
-</head>
-<body>
-<ce-alert></ce-alert>
-</body>
+  </head>
+  <body>
+    <ce-alert></ce-alert>
+  </body>
 </html>
 ```
 
 ### Problems and Issues
 
-There are good aspects of using Web Components like it can work everywhere, it is small and runs faster as it uses built-in platform APIs. But it is not only flowers, there are some things which might not work as you expected.
+There are good aspects of using Web Components as it can work everywhere, is small, and runs faster as it uses built-in platform APIs. But it is not only flowers, and there are also some things which might not work as you expected.
 
 #### Attributes vs Properties
 
