@@ -244,11 +244,9 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-We use the dataset property in our example, which is automatically converted into `data-*` attribute.
-
 ### Final Result
 
-To finish, grouping all the information we have learned so far here is the final result of our new Web Component:
+To complete, here is the final result of our new Web Component:
 
 ```javascript
 const template = document.createElement('template');
@@ -291,6 +289,8 @@ export class Alert extends HTMLElement {
 
 window.customElements.define('ce-alert', Alert);
 ```
+
+As you probably notice, we are still missing the styling of your component, but we will tackle it next.
 
 ### Browser Integration
 
