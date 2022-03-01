@@ -189,6 +189,40 @@ export class Alert extends HTMLElement {
 //...
 ```
 
+#### Sync Properties and Attributes
+
+In case you still want do the manual sync between attributes and properties here is a function that can automate this process:
+
+```javascript
+/**
+ * @param target - the custom element class
+ * @param props - properties which needs to be synced with the attributes
+ */
+const defineProperties = (target, props) => {
+  Object.defineProperties(
+    target,
+    Object.keys(props).reduce((acc, key) => {
+      acc[key] = {
+        enumerable: true,
+        configurable: true,
+        get: () => {
+          const attr = target.getAttribute(getAttrName(key));
+          return (attr === '' ? true : attr) ?? props[key];
+        },
+        set: (val) => {
+          if (val === '' || val) {
+            target.setAttribute(getAttrName(key), val === true ? '' : val);
+          } else {
+            target.removeAttribute(key);
+          }
+        }
+      };
+      return acc;
+    }, {})
+  );
+};
+```
+
 ### Observe Properties and Attributes
 
 To detect attributes or property changes, we just need to return an array with all values we want using the static method `observedAttributes`. Next, we configure our callback function `attributeChangedCallback` to define what will happen when the defined property changes.
@@ -197,7 +231,7 @@ To detect attributes or property changes, we just need to return an array with a
 //...
 export class Alert extends HTMLElement {
 //...
-  observedAttributes() {
+  static observedAttributes() {
     return ['data-color'];
   }
   attributeChangedCallback(name, prev, curr) {
@@ -211,6 +245,52 @@ export class Alert extends HTMLElement {
 ```
 
 We use the dataset property in our example, which is automatically converted into `data-*` attribute.
+
+### Final Result
+
+To finish, grouping all the information we have learned so far here is the final result of our new Web Component:
+
+```javascript
+const template = document.createElement('template');
+template.innerHTML = /*html*/ `
+<div class="alert">
+  <span class="alert__text">
+    <slot></slot>
+  </span>
+  <button id="close-button" type="button" class="alert__button">
+    <span class="sr-only">close</span>
+    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+    </svg>
+  </button>
+</div>`;
+
+export class Alert extends HTMLElement {
+  static observedAttributes() {
+    return ['data-color'];
+  }
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: 'open' });
+    shadow.appendChild(template.content.cloneNode(true));
+  }
+  connectedCallback() {
+    const button = this.shadowRoot.getElementById(`close-button`);
+    button.addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('close'));
+      this.remove();
+    }, { once: true });
+  }
+  attributeChangedCallback(name, prev, curr) {
+    if (prev !== curr) {
+      this.shadowRoot.querySelector('.alert').classList.remove(prev);
+      this.shadowRoot.querySelector('.alert').classList.add(curr);
+    }
+  }
+}
+
+window.customElements.define('ce-alert', Alert);
+```
 
 ### Browser Integration
 
