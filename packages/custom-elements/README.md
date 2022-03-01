@@ -189,9 +189,9 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-#### Sync Properties and Attributes
+#### Sync Properties and Attributes (Bonus)
 
-In case you still want do the manual sync between attributes and properties here is a function that can automate this process:
+In case you want to do the sync between attributes and properties, here is a function that can simplify this process:
 
 ```javascript
 /**
