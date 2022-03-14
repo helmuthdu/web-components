@@ -1,4 +1,4 @@
-import { getAttrName, isArray, isFunction, isObject, isString, valueOf } from './shared';
+import { isArray, isFunction, isObject, isString } from './shared';
 import { injectStyles } from './styling-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
@@ -10,6 +10,7 @@ type CustomElementOptions<Props extends CustomElementProps> = {
   onConnected?: (host: CustomElement<Props>) => void;
   onDisconnected?: (host: CustomElement<Props>) => void;
   props: Props & Partial<Omit<HTMLElement, keyof Props>>;
+  form?: boolean;
   styles?: unknown[];
   template: (host: CustomElement<Props>) => any;
 };
@@ -25,10 +26,27 @@ export type CustomElement<Props extends CustomElementProps> = Omit<HTMLElement, 
     ) => void;
     hostElement: CustomElement<Props>;
     spot: <T extends HTMLElement>(id: string) => T;
+    setValue: (value: string) => void;
     update: () => void;
   };
 
+const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+
+const valueOf = (key: string | symbol, value: any) =>
+  key === 'dataset'
+    ? Object.entries(value).reduce((acc, [k, v]) => ({ ...acc, [k]: v === '' ? true : v }), {} as typeof value)
+    : value;
+
+const createProxyElement = (customElement: HTMLElement) =>
+  new Proxy(customElement, {
+    get(target, key) {
+      const value = Reflect.get(target, key);
+      return isFunction(value) ? value.bind(target) : valueOf(key, value);
+    }
+  });
+
 export const component = <Props extends CustomElementProps>({
+  form = false,
   onAttributeChanged,
   onConnected,
   onDisconnected,
@@ -37,14 +55,9 @@ export const component = <Props extends CustomElementProps>({
   template
 }: CustomElementOptions<Props>) =>
   class extends HTMLElement {
-    #ready = false;
-    #self = new Proxy(this, {
-      get(target, key) {
-        const value = Reflect.get(target, key);
-        return isFunction(value) ? value.bind(target) : valueOf(key, value);
-      }
-    });
-
+    #internals?: ElementInternals;
+    #isConnected = false;
+    #proxyElement = createProxyElement(this);
     hostElement = this;
 
     constructor() {
@@ -64,7 +77,13 @@ export const component = <Props extends CustomElementProps>({
             (this as any)[prop] ??= value;
           }
         });
+      if (form) {
+        this.#internals = this.attachInternals();
+        this.value = '';
+      }
     }
+
+    static formAssociated = form;
 
     static get observedAttributes() {
       return [
@@ -81,25 +100,25 @@ export const component = <Props extends CustomElementProps>({
 
       this.update();
       if (onConnected) {
-        onConnected(this.#self as any);
+        onConnected(this.#proxyElement as any);
       }
-      this.#ready = true;
+      this.#isConnected = true;
     }
 
     disconnectedCallback() {
       if (onDisconnected) {
-        onDisconnected(this.#self as any);
+        onDisconnected(this.#proxyElement as any);
       }
     }
 
     attributeChangedCallback(name: string, prev: string, curr: string) {
-      if (this.#ready && prev !== curr && onAttributeChanged) {
-        onAttributeChanged(name, prev, curr, this.#self as any);
+      if (this.#isConnected && prev !== curr && onAttributeChanged) {
+        onAttributeChanged(name, prev, curr, this.#proxyElement as any);
       }
     }
 
     update() {
-      const tmpl = template ? template(this.#self as any) : '';
+      const tmpl = template ? template(this.#proxyElement as any) : '';
       const shadowRoot = this.shadowRoot as ShadowRoot;
       if (isString(tmpl)) {
         shadowRoot.innerHTML = tmpl;
@@ -125,6 +144,10 @@ export const component = <Props extends CustomElementProps>({
 
     spot(id: string) {
       return this.shadowRoot?.getElementById(id);
+    }
+
+    set value(value: string) {
+      (this.#internals as any)?.setFormValue(value);
     }
   };
 

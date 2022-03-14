@@ -8,8 +8,3 @@ export const isSVG = (tag: string) => {
   const regex = new RegExp(`^${tag}$`, 'i');
   return ['path', 'circle', 'rect', 'svg', 'use', 'g'].some(tag => regex.test(tag));
 };
-export const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
-export const valueOf = (key: string | symbol, value: any) =>
-  key === 'dataset'
-    ? Object.entries(value).reduce((acc, [k, v]) => ({ ...acc, [k]: v === '' ? true : v }), {} as typeof value)
-    : value;
