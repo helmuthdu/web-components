@@ -1,5 +1,6 @@
 import { isArray, isFunction, isObject, isString } from './shared';
 import { injectStyles } from './styling-element';
+import { configureFormElement } from './form-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
@@ -26,8 +27,8 @@ export type CustomElement<Props extends CustomElementProps> = Omit<HTMLElement, 
     ) => void;
     hostElement: CustomElement<Props>;
     spot: <T extends HTMLElement>(id: string) => T;
-    setValue: (value: string) => void;
     update: () => void;
+    value?: string;
   };
 
 const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
@@ -55,7 +56,6 @@ export const component = <Props extends CustomElementProps>({
   template
 }: CustomElementOptions<Props>) =>
   class extends HTMLElement {
-    #internals?: ElementInternals;
     #isConnected = false;
     #proxyElement = createProxyElement(this);
     hostElement = this;
@@ -78,8 +78,7 @@ export const component = <Props extends CustomElementProps>({
           }
         });
       if (form) {
-        this.#internals = this.attachInternals();
-        this.value = '';
+        configureFormElement(this)
       }
     }
 
@@ -117,6 +116,10 @@ export const component = <Props extends CustomElementProps>({
       }
     }
 
+    formStateRestoreCallback(state: string) {
+      if (form) this.setAttribute('value', state);
+    }
+
     update() {
       const tmpl = template ? template(this.#proxyElement as any) : '';
       const shadowRoot = this.shadowRoot as ShadowRoot;
@@ -144,10 +147,6 @@ export const component = <Props extends CustomElementProps>({
 
     spot(id: string) {
       return this.shadowRoot?.getElementById(id);
-    }
-
-    set value(value: string) {
-      (this.#internals as any)?.setFormValue(value);
     }
   };
 
