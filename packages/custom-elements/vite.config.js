@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/main.ts',
-      name: 'tailwind-components',
-      fileName: format => `tailwind-components.${format}.js`
+      name: 'web-components',
+      fileName: format => `web-components.${format}.js`
     }
   },
   plugins: []

@@ -5,12 +5,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/tailwind-components.umd.js",
-  "module": "./dist/tailwind-components.es.js",
+  "main": "./dist/web-components.umd.js",
+  "module": "./dist/web-components.es.js",
   "exports": {
     ".": {
-      "import": "./dist/tailwind-components.es.js",
-      "require": "./dist/tailwind-components.umd.js"
+      "import": "./dist/web-components.es.js",
+      "require": "./dist/web-components.umd.js"
     }
   },
   "engines": {

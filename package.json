@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/helmuthdu/tailwind-components.git"
+    "url": "git+https://github.com/helmuthdu/web-components.git"
   },
   "keywords": [
     "tailwind"
@@ -16,9 +16,9 @@
   "author": "Helmuth Saatkamp",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/helmuthdu/tailwind-components/issues"
+    "url": "https://github.com/helmuthdu/web-components/issues"
   },
-  "homepage": "https://github.com/helmuthdu/tailwind-components#readme",
+  "homepage": "https://github.com/helmuthdu/web-components#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
