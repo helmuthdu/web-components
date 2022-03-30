@@ -22,15 +22,15 @@ With [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/tem
 
 ```html
 <template>
-  <div class="alert">
+    <div class="alert">
     <span class="alert__text">
       <slot></slot>
     </span>
-    <button id="close-button" type="button" class="alert__button">
-      <span class="sr-only">close</span>
-      <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">...</svg>
-    </button>
-  </div>
+        <button id="close-button" type="button" class="alert__button">
+            <span class="sr-only">close</span>
+            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">...</svg>
+        </button>
+    </div>
 </template>
 ```
 
@@ -83,9 +83,9 @@ export class Alert extends HTMLElement {
 window.customElements.define('ce-alert', Alert);
 ```
 
-#### Add behaviour to the new Custom Element
+#### Add behavior to the new Custom Element
 
-Before we move forward we need to understand some key concepts:
+Before we move forward, we need to understand some key concepts:
 
 ##### The Shadow DOM
 
@@ -95,7 +95,7 @@ Shadow DOM allows hidden DOM trees to be attached to elements in the regular DOM
 
 ![Custom Element Lifecycle](./assets/images/shadow_dom_high_level.svg)
 
-Another essential feature of Shadow DOM is that it enables us to use a `<slot>` tag inside our markup and easily append the children elements inside our component.
+Another essential feature of Shadow DOM is that it enables us to use a [`<slot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) tag inside our markup and easily append the children elements inside our component.
 
 ##### The Element Lifecycle
 
@@ -322,7 +322,7 @@ Custom elements can detect if an attribute changes, but what happens next is up 
 
 #### Styling
 
-Styling can be problematic and tricky since the component is encapsulated. It can not rely on the global style or share its classes with children's elements, for example, a button group, in which the parent needs to override the children's styles like border-radius, spacing, etc.
+Styling can be problematic and tricky since the component is encapsulated.
 
 #### Forms
 
@@ -331,3 +331,17 @@ Using forms with custom elements requires some [custom form association](https:/
 #### No SSR Support
 
 Due to the nature of a Web Component, it cannot be used in an SSR page since Web Components rely on browser-specific DOM APIs, and the Shadow DOM cannot be represented declaratively, so it cannot be sent as string format.
+
+## Styling your Components
+
+In a Web Component, there are 3 ways of defining a style:
+
+* **Inline Style**
+* **CSS Import**
+* **Link Reference**
+
+In addition to the conventional [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), Web Components supports the following ones:
+
+* [:host/:host(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host) -> Selects the shadow host element or if it has a certain class.
+* [:host-context(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) -> Selects the shadow host element only if the selector given as the function's parameter matches the shadow host's ancestor(s) in the place it sits inside the DOM hierarchy.
+* [::slotted()](https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted) -> Selects a slotted element if it matches the selector.
