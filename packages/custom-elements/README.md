@@ -1,8 +1,12 @@
 # You ~~may~~ don't need a javascript library for your components
 
-Have you ever asked yourself how many times you wrote a Button component using different libraries or frameworks? Components are the base block of any Web project, and it is hard to reuse our components with all modern frameworks or keep updated with new releases. As a result, it increases the development time.
+Have you ever asked yourself how many times you wrote a Button component using different libraries or frameworks? Components are the base block of any Web project, but with all the changes and new frameworks appearing, it can be hard to reuse or keep them updated. As result, increasing the development time.
 
-To solve this problem, Web Components can simplify this process since they work natively and can also be integrated with any js library. This series will explore the different aspects of building web components.
+To solve this problem, Web Components can simplify this process since they work natively with the Browsers and can also be integrated into any JS Framework/Library.
+
+We will explore the different aspects of building Web Components.
+
+It is recommended to have prior experience with HTML, CSS, and Javascript.
 
 ## What is a Web Component?
 
@@ -345,3 +349,11 @@ In addition to the conventional [CSS selectors](https://developer.mozilla.org/en
 * [:host/:host(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host) -> Selects the shadow host element or if it has a certain class.
 * [:host-context(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) -> Selects the shadow host element only if the selector given as the function's parameter matches the shadow host's ancestor(s) in the place it sits inside the DOM hierarchy.
 * [::slotted()](https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted) -> Selects a slotted element if it matches the selector.
+
+## Conclusion
+
+In this article, we have looked into the world of Web Components, which consists of three blocks: **HTML Template**, **Shadow DOM**, and **Custom Elements**. Combining them makes it possible to create our Custom HTML Elements that can be reused in many other applications.
+
+To get a little more information about building Web Components, you can check the [webcomponents.dev](https://webcomponents.dev/) website, where you can discover and play with different ways of making Web Components.
+
+Try it out, play with it, and create your first Web Component for your application.
