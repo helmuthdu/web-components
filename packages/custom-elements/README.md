@@ -10,19 +10,27 @@ It is recommended to have prior experience with HTML, CSS, and Javascript.
 
 ## What is a Web Component?
 
-A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page. The main features you need to understand to start creating your own components are:
+A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page. 
+
+## Building Blocks of a Web Component
+
+The main features you need to understand to start creating your own components are:
 
 - HTML Templates
-- Custom Elements
 - Shadow DOM
+- Custom Elements
 
-## Create your Web Component
+For this tutorial you are going to build an alert component. 
 
-![Custom Element Lifecycle](./assets/images/alert_component.png)
+![Custom Alert Element](./assets/images/alert_component.png)
 
-### HTML Template
+## HTML Templates
 
-With [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/template), you can create your template markup. However, you have to write your markup inside the <template> tag to use a template. The different aspect of the template is that it will be parsed but not rendered, so your template will appear in the DOM but not be presented on the page. To understand it better, let's look at the example below.
+The [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/template) is where you create and add your HTML markup and the CSS. You just have to write your markup inside the <template> tag to use it.
+
+### HTML Content
+
+The different aspect of the template is that it will be parsed but not rendered, so your template will appear in the DOM but not be presented on the page. To understand it better, let's look at the example below.
 
 ```html
 <template>
@@ -38,7 +46,7 @@ With [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/tem
 </template>
 ```
 
-We add a template tag via code in this JavaScript file and assign the HTML content to the innerHTML property.
+Since we don't have a native support to import html file into the JavaScript code, the easier way to achieve this is to add a template tag via code in the JavaScript file and assign the HTML content to the innerHTML property.
 
 ```javascript
 const template = document.createElement('template');
@@ -55,6 +63,61 @@ template.innerHTML = /*html*/ `
   </button>
 </div>`;
 ```
+
+### Element Styling
+
+In a Web Component, there are 3 ways of defining a style:
+
+* **Inline Style**
+* **CSS Import**
+* **Link Reference**
+
+In addition to the conventional [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), Web Components supports the following ones:
+
+* [:host/:host(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host) -> Selects the shadow host element or if it has a certain class.
+* [:host-context(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) -> Selects the shadow host element only if the selector given as the function's parameter matches the shadow host's ancestor(s) in the place it sits inside the DOM hierarchy.
+* [::slotted()](https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted) -> Selects a slotted element if it matches the selector.
+* [::part()](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) -> Selects any element within a shadow tree that has a matching **part** attribute.
+
+#### Inline Style
+
+The initial way you could start styling your component is to declare your styles inside the template. 
+
+```html
+<template id="alert-custom-element">
+  <style>
+    :host {
+      display: block;
+    }
+    .alert {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 4rem;
+      font-size: small;
+      border: 1px solid #c1c1c1;
+    }
+  </style>
+  <div class="alert">
+    <span class="alert__text">
+      <slot></slot>
+    </span>
+    ...
+  </div>`
+</template>
+
+<tabbed-custom-element></tabbed-custom-element>
+```
+
+## The Shadow DOM
+
+A key aspect of web components is encapsulation — keeping the markup structure, style, and behavior hidden and separate from other code on the page so that different parts do not clash and the code can be kept nice and clean. The [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) API is a crucial part of this, providing a way to attach a hidden separated DOM to an element.
+
+Shadow DOM allows hidden DOM trees to be attached to elements in the regular DOM tree — this shadow DOM tree starts with a shadow root, underneath which can be attached to any elements you want, in the same way as the standard DOM.
+
+![Custom Element Lifecycle](./assets/images/shadow_dom_high_level.svg)
+
+Another essential feature of Shadow DOM is that it enables us to use a [`<slot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) tag inside our markup and easily append the children elements inside our component.
 
 ### Define your Custom Element
 
@@ -86,20 +149,6 @@ export class Alert extends HTMLElement {
 }
 window.customElements.define('ce-alert', Alert);
 ```
-
-#### Add behavior to the new Custom Element
-
-Before we move forward, we need to understand some key concepts:
-
-##### The Shadow DOM
-
-A key aspect of web components is encapsulation — keeping the markup structure, style, and behavior hidden and separate from other code on the page so that different parts do not clash and the code can be kept nice and clean. The [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) API is a crucial part of this, providing a way to attach a hidden separated DOM to an element.
-
-Shadow DOM allows hidden DOM trees to be attached to elements in the regular DOM tree — this shadow DOM tree starts with a shadow root, underneath which can be attached to any elements you want, in the same way as the standard DOM.
-
-![Custom Element Lifecycle](./assets/images/shadow_dom_high_level.svg)
-
-Another essential feature of Shadow DOM is that it enables us to use a [`<slot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) tag inside our markup and easily append the children elements inside our component.
 
 ##### The Element Lifecycle
 
@@ -332,23 +381,9 @@ Styling can be problematic and tricky since the component is encapsulated.
 
 Using forms with custom elements requires some [custom form association](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/attachInternals) to make it work.
 
-#### No SSR Support
+#### SSR Support
 
 Due to the nature of a Web Component, it cannot be used in an SSR page since Web Components rely on browser-specific DOM APIs, and the Shadow DOM cannot be represented declaratively, so it cannot be sent as string format.
-
-## Styling your Components
-
-In a Web Component, there are 3 ways of defining a style:
-
-* **Inline Style**
-* **CSS Import**
-* **Link Reference**
-
-In addition to the conventional [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), Web Components supports the following ones:
-
-* [:host/:host(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host) -> Selects the shadow host element or if it has a certain class.
-* [:host-context(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) -> Selects the shadow host element only if the selector given as the function's parameter matches the shadow host's ancestor(s) in the place it sits inside the DOM hierarchy.
-* [::slotted()](https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted) -> Selects a slotted element if it matches the selector.
 
 ## Conclusion
 
