@@ -10,7 +10,7 @@ It is recommended to have prior experience with HTML, CSS, and Javascript.
 
 ## What is a Web Component?
 
-A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page. 
+A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page.
 
 ## Building Blocks of a Web Component
 
@@ -20,7 +20,7 @@ The main features you need to understand to start creating your own components a
 - Shadow DOM
 - Custom Elements
 
-For this tutorial you are going to build an alert component. 
+For this tutorial you are going to build an alert component.
 
 ![Custom Alert Element](./assets/images/alert_component.png)
 
@@ -34,15 +34,12 @@ The different aspect of the template is that it will be parsed but not rendered,
 
 ```html
 <template>
-    <div class="alert">
+  <div class="alert">
     <span class="alert__text">
       <slot></slot>
     </span>
-        <button id="close-button" type="button" class="alert__button">
-            <span class="sr-only">close</span>
-            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">...</svg>
-        </button>
-    </div>
+    <button id="close-button" type="button" class="alert__button">x</button>
+  </div>
 </template>
 ```
 
@@ -55,12 +52,7 @@ template.innerHTML = /*html*/ `
   <span class="alert__text">
     <slot></slot>
   </span>
-  <button id="close-button" type="button" class="alert__button">
-    <span class="sr-only">close</span>
-    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-    </svg>
-  </button>
+  <button id="close-button" type="button" class="alert__button">x</button>
 </div>`;
 ```
 
@@ -68,28 +60,25 @@ template.innerHTML = /*html*/ `
 
 In a Web Component, there are 3 ways of defining a style:
 
-* **Inline Style**
-* **CSS Import**
-* **Link Reference**
+- **Inline Style**
+- **CSS Import**
+- **Link Reference**
 
 In addition to the conventional [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), Web Components supports the following ones:
 
-* [:host/:host(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host) -> Selects the shadow host element or if it has a certain class.
-* [:host-context(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) -> Selects the shadow host element only if the selector given as the function's parameter matches the shadow host's ancestor(s) in the place it sits inside the DOM hierarchy.
-* [::slotted()](https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted) -> Selects a slotted element if it matches the selector.
-* [::part()](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) -> Selects any element within a shadow tree that has a matching **part** attribute.
+- [:host/:host(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host) -> Selects the shadow host element or if it has a certain class.
+- [:host-context(selector-name)](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) -> Selects the shadow host element only if the selector given as the function's parameter matches the shadow host's ancestor(s) in the place it sits inside the DOM hierarchy.
+- [::slotted()](https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted) -> Selects a slotted element if it matches the selector.
+- [::part()](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) -> Selects any element within a shadow tree that has a matching **part** attribute.
 
 #### Inline Style
 
-The initial way you could start styling your component is to declare your styles inside the template. 
+The initial way you could start styling your component is to declare your styles inside the template.
 
 ```html
 <template id="alert-custom-element">
   <style>
     :host {
-      display: block;
-    }
-    :root {
       --bg-color: #ffffff;
       --border-color: #d4d4d8;
       --text-color: #374151;
@@ -109,8 +98,8 @@ The initial way you could start styling your component is to declare your styles
     <span class="alert__text">
       <slot></slot>
     </span>
-    ...
-  </div>`
+    <button id="close-button" type="button" class="alert__button">x</button>
+  </div>
 </template>
 ```
 
@@ -150,7 +139,7 @@ Next, we use the `customElements.define` method to register our new component.
 const template = document.createElement('template');
 //...
 export class Alert extends HTMLElement {
-//...
+  //...
 }
 window.customElements.define('ce-alert', Alert);
 ```
@@ -170,7 +159,7 @@ Let's look at an example of these concepts in use.
 
 ```html
 <ce-alert></ce-alert>
- ```
+```
 
 ```javascript
 //...
@@ -182,10 +171,14 @@ export class Alert extends HTMLElement {
   }
   connectedCallback() {
     const button = this.shadowRoot.getElementById(`close-button`);
-    button.addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('close'));
-      this.remove();
-    }, { once: true });
+    button.addEventListener(
+      'click',
+      () => {
+        this.dispatchEvent(new CustomEvent('close'));
+        this.remove();
+      },
+      { once: true }
+    );
   }
 }
 //...
@@ -205,7 +198,7 @@ Attributes and properties work slightly differently from what we used to underst
 
 ```html
 <ce-alert color="red"></ce-alert>
- ```
+```
 
 It is crucial to notice that attributes are **always** strings. Therefore, you cannot define a method, object, or number. But, in case you need another type, you have to cast it later or declare it directly inside the element object.
 
@@ -214,7 +207,7 @@ Now to sync the attribute with the property in the class:
 ```javascript
 //...
 export class Alert extends HTMLElement {
-//...
+  //...
   set color(value) {
     this.setAttribute('color', value);
   }
@@ -234,12 +227,12 @@ Although this approach works, it can become verbose or tedious as more and more 
 
 ```html
 <ce-alert data-color="red"></ce-alert>
- ```
+```
 
 ```javascript
 //...
 export class Alert extends HTMLElement {
-//...
+  //...
   connectedCallback() {
     console.log(this.dataset.color); // outputs: "red"
   }
@@ -267,7 +260,7 @@ const defineProperties = (target, props) => {
           const attr = target.getAttribute(getAttrName(key));
           return (attr === '' ? true : attr) ?? props[key];
         },
-        set: (val) => {
+        set: val => {
           if (val === '' || val) {
             target.setAttribute(getAttrName(key), val === true ? '' : val);
           } else {
@@ -288,8 +281,8 @@ To detect attributes or property changes, we just need to return an array with a
 ```javascript
 //...
 export class Alert extends HTMLElement {
-//...
-  static observedAttributes() {
+  //...
+  static get observedAttributes() {
     return ['data-color'];
   }
   attributeChangedCallback(name, prev, curr) {
@@ -313,29 +306,28 @@ template.innerHTML = /*html*/ `
   <span class="alert__text">
     <slot></slot>
   </span>
-  <button id="close-button" type="button" class="alert__button">
-    <span class="sr-only">close</span>
-    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-    </svg>
-  </button>
+  <button id="close-button" type="button" class="alert__button">x</button>
 </div>`;
 
 export class Alert extends HTMLElement {
-  static observedAttributes() {
+  static get observedAttributes() {
     return ['data-color'];
   }
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
+    this.shadow = this.attachShadow({ mode: 'open' });
     shadow.appendChild(template.content.cloneNode(true));
   }
   connectedCallback() {
     const button = this.shadowRoot.getElementById(`close-button`);
-    button.addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('close'));
-      this.remove();
-    }, { once: true });
+    button.addEventListener(
+      'click',
+      () => {
+        this.dispatchEvent(new CustomEvent('close'));
+        this.remove();
+      },
+      { once: true }
+    );
   }
   attributeChangedCallback(name, prev, curr) {
     if (prev !== curr) {
