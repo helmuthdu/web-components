@@ -89,13 +89,20 @@ The initial way you could start styling your component is to declare your styles
     :host {
       display: block;
     }
+    :root {
+      --bg-color: #ffffff;
+      --border-color: #d4d4d8;
+      --text-color: #374151;
+    }
     .alert {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 2rem 4rem;
       font-size: small;
-      border: 1px solid #c1c1c1;
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      background-color: var(--background-color);
     }
   </style>
   <div class="alert">
@@ -105,8 +112,6 @@ The initial way you could start styling your component is to declare your styles
     ...
   </div>`
 </template>
-
-<tabbed-custom-element></tabbed-custom-element>
 ```
 
 ## The Shadow DOM
