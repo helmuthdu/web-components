@@ -1,6 +1,6 @@
 # You ~~may~~ don't need a javascript library for your components
 
-Have you ever asked yourself how many times you wrote a Button component using different libraries or frameworks? Components are the base block of any Web project, but with all the changes and new frameworks appearing, it can be hard to reuse or keep them updated. As result, increasing the development time.
+Have you ever asked yourself how many times you wrote a Button component using different libraries or frameworks? Components are the base block of any Web project, but with all the changes and new frameworks appearing, it can be hard to reuse or keep them updated. As a result, increasing the development time.
 
 To solve this problem, Web Components can simplify this process since they work natively with the Browsers and can also be integrated into any JS Framework/Library.
 
@@ -20,13 +20,13 @@ The main features you need to understand to start creating your own components a
 - Shadow DOM
 - Custom Elements
 
-For this tutorial you are going to build an alert component.
+For this tutorial, you are going to build an alert component.
 
 ![Custom Alert Element](./assets/images/alert_component.png)
 
 ## HTML Templates
 
-The [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/template) is where you create and add your HTML markup and the CSS. You just have to write your markup inside the <template> tag to use it.
+The [HTML Templates](https://developer.mozilla.org/de/docs/Web/HTML/Element/template) is where you create and add your HTML markup and the CSS. To use it, you just have to write your markup inside the `<template>` tag.
 
 ### HTML Content
 
@@ -43,7 +43,7 @@ The different aspect of the template is that it will be parsed but not rendered,
 </template>
 ```
 
-Since we don't have a native support to import html file into the JavaScript code, the easier way to achieve this is to add a template tag via code in the JavaScript file and assign the HTML content to the innerHTML property.
+Since we don't have native support to import HTML files into the JavaScript code, the easier way to achieve this is to add a template tag via code in the JavaScript file and assign the HTML content to the innerHTML property.
 
 ```javascript
 const template = document.createElement('template');
@@ -58,10 +58,10 @@ template.innerHTML = /*html*/ `
 
 ### Element Styling
 
-In a Web Component, there are 3 ways of defining a style:
+In a Web Component, there are three ways of defining a style:
 
 - **Inline Style**
-- **CSS Import**
+- **CSS Inject**
 - **Link Reference**
 
 In addition to the conventional [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors), Web Components supports the following ones:
@@ -76,7 +76,7 @@ In addition to the conventional [CSS selectors](https://developer.mozilla.org/en
 The initial way you could start styling your component is to declare your styles inside the template.
 
 ```html
-<template id="alert-custom-element">
+<template>
   <style>
     :host {
       --bg-color: #ffffff;
@@ -84,14 +84,30 @@ The initial way you could start styling your component is to declare your styles
       --text-color: #374151;
     }
     .alert {
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 2rem 4rem;
-      font-size: small;
+      padding: 0.5rem 1.25rem;
       color: var(--text-color);
-      border: 1px solid var(--border-color);
       background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+    }
+    .alert__text {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .alert__button {
+      -webkit-appearance: button;
+      cursor: pointer;
+      color: var(--text-color);
+      background-color: transparent;
+      background-image: none;
+      border: none;
+      height: 2rem;
+      width: 2rem;
+      margin-left: 0.25rem;
     }
   </style>
   <div class="alert">
@@ -102,6 +118,120 @@ The initial way you could start styling your component is to declare your styles
   </div>
 </template>
 ```
+
+It is also possible to use the `::part` selector to customize your component from the outside. You just need to add the `part` attribute to the elements you want to customize, for example `<div part="foo">`, then CSS from the outside can reach in like `ce-alert::part(foo) {}`.
+
+### CSS Inject
+
+Another way to customize your elements is to inject your styles inside the Web Component. First, you must create a [CSSStyleSheet](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet) object that represents a single CSS stylesheet, then replace the styles **as string** and finally apply them to the shadow root.
+
+```javascript
+const stylesheet = new CSSStyleSheet();
+
+stylesheet
+  .replace('body { font-size: 1rem };p { color: gray; };')
+  .then(() => {
+    console.log('Styles added successfully');
+  })
+  .catch(err => {
+    console.error('Failed to replace styles:', err);
+  });
+
+this.shadowRoot.adoptedStyleSheets = stylesheet;
+```
+
+You can combine it with your bundler and enable PostCSS features. You need to configure it to load the CSS files as a string. In case you are using Webpack, this can be achieved like this:
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['raw-loader', 'postcss-loader']
+      }
+    ]
+  }
+};
+```
+
+The main problem with using the `CSSStyleSheet` is that it requires a polyfill to work with safari. You can [click here](https://github.com/calebdwilliams/construct-style-sheets) for more information.
+
+### Link Reference
+
+Link Reference is my preferred solution because you can load external CSS files without having to duplicate any code and can even be used to integrate your Web Component with a popular CSS Framework like [Tailwind](https://tailwindcss.com/), [Bulma](https://bulma.io/) or [Bootstrap](https://getbootstrap.com/).
+
+For this example, you will integrate [Tailwind](https://tailwindcss.com/) with [Vite](https://vitejs.dev/). After follow the [setup instructions](https://tailwindcss.com/docs/installation) and create a `tailwind.css` file in the root level of your project:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Configure your package.json:
+
+```json
+{
+  "name": "vite-starter",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail \"npm:dev\" \"npm:tailwind\"",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tailwind": "tailwindcss -i ./tailwind.css -o ./public/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.2",
+    "autoprefixer": "^10.4.5",
+    "concurrently": "^7.1.0",
+    "postcss": "^8.4.12",
+    "postcss-import": "^14.1.0",
+    "postcss-nesting": "^10.1.4",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.6"
+  }
+}
+```
+
+After that, update the `index.html`:
+
+```HTML
+...
+<head>
+ ...
+ <link href="/tailwind.css" rel="stylesheet" />
+ ...
+</head>
+<body>
+ ...
+ <script src="/src/main.ts" type="module"></script>
+</body>
+```
+
+Now, inside our Web Component we can link the CSS library:
+
+```html
+<template>
+  <link rel="stylesheet" href="/tailwind.css" />
+  <div
+    class="flex items-center justify-between rounded-xl border border-contrast-300 bg-canvas py-2 pl-4 pr-3 text-sm text-content shadow-sm">
+    <span class="text-sm">
+      <slot></slot>
+    </span>
+    <button
+      id="close-button"
+      type="button"
+      class="ml-1 -mr-1 inline-flex h-8 w-8 items-center justify-center p-0.5 text-current">
+      x
+    </button>
+  </div>
+</template>
+```
+
+You can [click here](https://stackblitz.com/edit/vitejs-vite-swbd8t?terminal=start) to play around it.
 
 ## The Shadow DOM
 
@@ -133,7 +263,7 @@ export class Alert extends HTMLElement {
 
 #### Register a new Custom Element
 
-Next, we use the `customElements.define` method to register our new component.
+Next, we use the `customElements.define` method to register our new component. Note that custom element names **must contain a hyphen**.
 
 ```javascript
 const template = document.createElement('template');
@@ -141,7 +271,7 @@ const template = document.createElement('template');
 export class Alert extends HTMLElement {
   //...
 }
-window.customElements.define('ce-alert', Alert);
+customElements.define('ce-alert', Alert);
 ```
 
 ##### The Element Lifecycle
@@ -247,7 +377,7 @@ In case you want to do the sync between attributes and properties, here is a fun
 ```javascript
 /**
  * @param target - the custom element class
- * @param props - properties which needs to be synced with the attributes
+ * @param props - properties that need to be synced with the attributes
  */
 const defineProperties = (target, props) => {
   Object.defineProperties(
@@ -276,7 +406,7 @@ const defineProperties = (target, props) => {
 
 ### Observe Properties and Attributes
 
-To detect attributes or property changes, we just need to return an array with all values we want using the static method `observedAttributes`. Next, we configure our callback function `attributeChangedCallback` to define what will happen when the defined property changes.
+To detect attributes or property changes, we need to return an array with all values we want using the static method `observedAttributes`. Next, we configure our callback function `attributeChangedCallback` to define what will happen when the defined property changes.
 
 ```javascript
 //...
@@ -302,6 +432,39 @@ To complete, here is the final result of our new Web Component:
 ```javascript
 const template = document.createElement('template');
 template.innerHTML = /*html*/ `
+<style>
+  :host {
+    --bg-color: #ffffff;
+    --border-color: #d4d4d8;
+    --text-color: #374151;
+  }
+  .alert {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1.25rem;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+  }
+  .alert__text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .alert__button {
+    -webkit-appearance: button;
+    cursor: pointer;
+    color: var(--text-color);
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    height: 2rem;
+    width: 2rem;
+    margin-left: 0.25rem;
+  }
+</style>
 <div class="alert">
   <span class="alert__text">
     <slot></slot>
@@ -337,10 +500,10 @@ export class Alert extends HTMLElement {
   }
 }
 
-window.customElements.define('ce-alert', Alert);
+customElements.define('ce-alert', Alert);
 ```
 
-As you probably notice, we are still missing the styling of your component, but we will tackle it next.
+In case you want to play around it you can check this [link](https://stackblitz.com/edit/web-platform-vm7bbr).
 
 ### Browser Integration
 
@@ -350,7 +513,7 @@ We can now use our Custom Element in our HTML file. To integrate, we must import
 <html>
   <head>
     <!--...-->
-    <script type="module" src="./alert.js"></script>
+    <script type="module" src="./index.js"></script>
   </head>
   <body>
     <ce-alert></ce-alert>
