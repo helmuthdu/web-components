@@ -161,7 +161,7 @@ The main problem with using the `CSSStyleSheet` is that it requires a polyfill t
 
 Link Reference is my preferred solution because you can load external CSS files without having to duplicate any code and can even be used to integrate your Web Component with a popular CSS Framework like [Tailwind](https://tailwindcss.com/), [Bulma](https://bulma.io/) or [Bootstrap](https://getbootstrap.com/).
 
-For this example, you will integrate [Tailwind](https://tailwindcss.com/) with [Vite](https://vitejs.dev/). After follow the [setup instructions](https://tailwindcss.com/docs/installation) and create a `tailwind.css` file in the root level of your project:
+For this example, you will integrate [Tailwind](https://tailwindcss.com/) with [Vite](https://vitejs.dev/). After follow the [setup instructions](https://tailwindcss.com/docs/installation), create a `tailwind.css` file in the root level of your project:
 
 ```css
 @tailwind base;
@@ -169,7 +169,7 @@ For this example, you will integrate [Tailwind](https://tailwindcss.com/) with [
 @tailwind utilities;
 ```
 
-Configure your package.json:
+Configure your package.json to run the tailwind compiler together with the dev server:
 
 ```json
 {
