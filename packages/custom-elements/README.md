@@ -196,7 +196,7 @@ Configure your package.json to run the tailwind compiler together with the dev s
 }
 ```
 
-After that, update the `index.html`:
+After that, update the `index.html` to include our styles and load our script as _module_:
 
 ```HTML
 ...
@@ -239,7 +239,7 @@ A key aspect of web components is encapsulation — keeping the markup structure
 
 Shadow DOM allows hidden DOM trees to be attached to elements in the regular DOM tree — this shadow DOM tree starts with a shadow root, underneath which can be attached to any elements you want, in the same way as the standard DOM.
 
-![Custom Element Lifecycle](./assets/images/shadow_dom_high_level.svg)
+![ShadowDOM Abstraction](./assets/images/shadow_dom_high_level.svg)
 
 Another essential feature of Shadow DOM is that it enables us to use a [`<slot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) tag inside our markup and easily append the children elements inside our component.
 
