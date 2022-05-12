@@ -70,23 +70,23 @@ You probably notice a new tag called `<slot>` which is an important feature of t
 
 The **`<slot>`** [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) element is a placeholder inside a web component that you can fill with your own markup, which lets you create separate DOM trees and present them together, **and can only be utilized with the Shadow DOM**. The `name` attribute can be used to specify the target of content you want to place.
 
-Let's look into this example (you don't need to implement it now, just understand how it works). You have created a new Web Component called `ce-article` and it contains the following markup:
+Let's look into this example. You have created a new Web Component called `ce-article` and it contains the following markup:
 
 ```html
-<template>
-  <article>
-    <header>
-      <slot name="header"></slot>
-    </header>
-    <p>
-      <slot></slot>
-    </p>
-    <footer>
-      <slot name="footer"></slot>
-    </footer>
-  </article>
-</template>
+<article>
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <p>
+    <slot></slot>
+  </p>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</article>
 ```
+
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-d9geot?file=script.js)</sup>
 
 To make use of this component you could declare it as following:
 
@@ -97,6 +97,8 @@ To make use of this component you could declare it as following:
   <a href="#" slot="footer">Read more</a>
 </ce-article>
 ```
+
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-d9geot?file=index.html)</sup>
 
 Then all the content will be placed in the position you declare inside your Web Component.
 
@@ -135,9 +137,9 @@ customElements.define('ce-alert', Alert);
 
 <sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
 
-### The Element Lifecycle
+### Custom Element Lifecycle
 
-You can define several different callbacks inside a custom element's class definition, which fire at other points in the element's lifecycle:
+From the moment you create, update, or remove a custom element it fires specific methods to define each stage.
 
 ![Custom Element Lifecycle](./assets/images/custom_element_lifecycle.svg)
 
@@ -224,7 +226,7 @@ Although this approach works, it can become lengthy or tedious as more and more 
 //...
 export class Alert extends HTMLElement {
   //...
-  connectedCallback() {
+  attributeChangedCallback() {
     console.log(this.dataset.color); // outputs: "red"
   }
 }
