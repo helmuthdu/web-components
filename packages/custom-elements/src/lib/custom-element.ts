@@ -1,6 +1,6 @@
+import { configureFormElement } from './form-element';
 import { isArray, isFunction, isObject, isString } from './shared';
 import { injectStyles } from './styling-element';
-import { configureFormElement } from './form-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
@@ -78,7 +78,7 @@ export const component = <Props extends CustomElementProps>({
           }
         });
       if (form) {
-        configureFormElement(this)
+        configureFormElement(this);
       }
     }
 
@@ -98,9 +98,11 @@ export const component = <Props extends CustomElementProps>({
       setTimeout(() => (this.style.visibility = ''), 100);
 
       this.update();
+
       if (onConnected) {
         onConnected(this.#proxyElement as any);
       }
+
       this.#isConnected = true;
     }
 

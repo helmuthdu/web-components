@@ -10,9 +10,9 @@ In the end, you will comprehend how to create and integrate a Web Component. I w
 
 ## What is a Web Component?
 
-A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page. It works by utilizing a native browser API, so you don't have to worry about dependencies, compatibility, or updates.
+A Web Component is a way to create an encapsulated, single-responsibility code block that can be reused on any page.
 
-The Web Component technology is older and more used than most people know. The `<audio>`, `<textarea>`, `<video>`, `<input>` and many more complex HTML tags are implemented in each Browser with Web Component (like) technology. But, that technology was not available externally. So, what we now call "Web Components" (Custom Elements API, Templates, Shadow DOM) is that very same technology available to us all.
+The Web Component technology is older and more used than most people know. The `<audio>`, `<meter>`, `<video>`, and many other HTML tags are implemented in each Browser with Web Component (like) technology. But, that technology was not available externally. So, what we now call "Web Components" (Custom Elements API, Templates, Shadow DOM) is that very same technology available to us all.
 
 ## Building Blocks of a Web Component
 
@@ -33,6 +33,8 @@ A key aspect of web components is encapsulation — keeping the markup structure
 Shadow DOM allows hidden DOM trees to be attached to elements in the regular DOM tree — this shadow DOM tree starts with a shadow root, underneath which can be attached to any elements you want, in the same way as the standard DOM.
 
 ![ShadowDOM Abstraction](./assets/images/shadow_dom_high_level.svg)
+
+In simple terms, shadow DOMs are self-contained, encapsulated blocks of code within a regular DOM that have their own scope.
 
 ## HTML Templates
 
@@ -64,18 +66,33 @@ template.innerHTML = /*html*/ `
 </div>`;
 ```
 
-You probably notice a new tag called `<slot>` which is an important feature of the Web Component technology.
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-fqxgnj?file=script.js)</sup>
+
+This is the draft of the component you will build and this is the result after registering and importing it:
+
+![ce-alert preview](./assets/images/ce-alert.png)
+
+```html
+<ce-alert>Hello there!</ce-alert>
+```
+
+I will explain the details on how to register and import it later and also how to add CSS styles. Furthermore, you probably notice a new tag called `<slot>` which is an important feature of the Web Component technology, so let's check it out.
 
 ### The `<slot>` element
 
-The **`<slot>`** [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) element is a placeholder inside a web component that you can fill with your own markup, which lets you create separate DOM trees and present them together, **and can only be utilized with the Shadow DOM**. The `name` attribute can be used to specify the target of content you want to place.
+The [`<slot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) element is a placeholder inside a web component that you can fill with your own markup, which lets you create separate DOM trees and present them together, **and can only be used with the Shadow DOM**. The `name` attribute can be used to specify the target of content you want to place.
 
 Let's look into this example. You have created a new Web Component called `ce-article` and it contains the following markup:
 
 ```html
 <article>
   <header>
-    <slot name="header"></slot>
+    <slot name="header">
+      <h1>title</h2>
+    </slot>
+    <slot name="subheader">
+      <h2>subtitle</h2>
+    </slot>
   </header>
   <p>
     <slot></slot>
@@ -88,7 +105,7 @@ Let's look into this example. You have created a new Web Component called `ce-ar
 
 <sup>[Show code in action](https://stackblitz.com/edit/web-platform-d9geot?file=script.js)</sup>
 
-To make use of this component you could declare it as following:
+To make use of this component you could declare it as follows:
 
 ```html
 <ce-article>
@@ -100,7 +117,9 @@ To make use of this component you could declare it as following:
 
 <sup>[Show code in action](https://stackblitz.com/edit/web-platform-d9geot?file=index.html)</sup>
 
-Then all the content will be placed in the position you declare inside your Web Component.
+Then all the content will be placed in the position you declare inside your Web Component as you can see in the image below.
+
+![ce-article preview](./assets/images/ce-article.png)
 
 ## Custom Element
 
@@ -120,7 +139,7 @@ export class Alert extends HTMLElement {
 }
 ```
 
-<sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-fqxgnj?file=script.js)</sup>
 
 ### Register a new Custom Element
 
@@ -135,7 +154,7 @@ export class Alert extends HTMLElement {
 customElements.define('ce-alert', Alert);
 ```
 
-<sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-fqxgnj?file=script.js)</sup>
 
 ### Custom Element Lifecycle
 
@@ -151,37 +170,54 @@ From the moment you create, update, or remove a custom element it fires specific
 Let's look at an example of these concepts in use.
 
 ```javascript
+// https://github.com/mdn/web-components-examples/tree/main/life-cycle-callbacks
 //...
-export class Alert extends HTMLElement {
+class Square extends HTMLElement {
+  // Specify observed attributes so that attributeChangedCallback will work
+  static get observedAttributes() {
+    return ['c', 'l'];
+  }
   constructor() {
     super();
     const shadow = this.attachShadow({ mode: 'open' });
-    shadow.appendChild(template.content.cloneNode(true));
+    const div = document.createElement('div');
+    const style = document.createElement('style');
+    shadow.appendChild(style);
+    shadow.appendChild(div);
   }
   connectedCallback() {
-    const button = this.shadowRoot.getElementById(`close-button`);
-    button.addEventListener(
-      'click',
-      () => {
-        this.dispatchEvent(new CustomEvent('close'));
-        this.remove();
-      },
-      { once: true }
-    );
+    console.log('Custom square element added to page.');
+    updateStyle(this);
+  }
+  disconnectedCallback() {
+    console.log('Custom square element removed from page.');
+  }
+  adoptedCallback() {
+    console.log('Custom square element moved to new page.');
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log('Custom square element attributes changed.');
+    updateStyle(this);
   }
 }
 //...
 ```
 
-<sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-qmvvbq?file=script.js,index.html)</sup>
 
-The class constructor is simple — here, you attach a shadow DOM to the element. The shadow mode can be **open** or **closed**. In the **open** state, the element can be accessed outside the shadow root or vise-versa. So, for example, you could access the button inside the `ce-alert` component by doing the following query:
+The class constructor is simple - here, just attach a shadow DOM to the custom element then you can append your template inside of it. The shadow mode can be **open** or **closed**. In the **open** state, the element can be accessed outside the shadow root or vise-versa.
+
+To access an element inside a custom element, you need to do query select using the custom element name, use the `shadowRoot` prop, then query again for the element you want.
 
 ```javascript
 document.querySelector('ce-alert').shadowRoot.querySelector('#close-button');
 ```
 
-The updates are all handled by the life cycle callbacks, which are placed inside the class definition as methods. The `connectedCallback()` runs each time the element is added to the DOM — here, you add the click event function to remove the element when clicked.
+> NOTE: This is only possible when the mode is set to open while attaching the shadow root to your custom element.
+
+To recap, the updates are all handled by the life cycle callbacks, which are placed inside the class definition as methods. The connectedCallback() runs each time the element is added to the DOM. The disconnectedCallback runs when the element is removed and the attributeChangedCallback() is called when an attribute (which is mapped in the static get observedAttributes() method) is changed.
+
+> TIP: To check whether a component is connected to the DOM, you can use `this.isConnected`
 
 ### Define attributes and properties
 
@@ -214,7 +250,7 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-<sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-fqxgnj?file=script.js)</sup>
 
 Although this approach works, it can become lengthy or tedious as more and more properties your components have. But, there is an alternative that does not require declaring all properties manually: The [HTMLElement.datasets](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) interface provides read/write access to custom data attributes (`data-*`) on elements. It exposes a map of strings (DOMStringMap) with each `data-*` attribute entry, you can also combine it with the `get/set` properties to have even more flexibility. But for now, update the example with the dataset declaration:
 
@@ -233,7 +269,7 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-<sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-fqxgnj?file=script.js)</sup>
 
 #### Sync Properties and Attributes (Bonus)
 
@@ -290,7 +326,7 @@ export class Alert extends HTMLElement {
 //...
 ```
 
-<sup>[Show code in action](https://stackblitz.com/edit/web-platform-vm7bbr?file=script.js)</sup>
+<sup>[Show code in action](https://stackblitz.com/edit/web-platform-fqxgnj?file=script.js)</sup>
 
 ## Browser Integration
 
@@ -404,7 +440,7 @@ Let's take a look at this example, you could update the template and change the 
 
 <sup>[Show code in action](https://stackblitz.com/edit/web-platform-6ikrsj)</sup>
 
-Then, create a new CSS file and move all the style blocks into it and update the selectors to match the `ce-alert` component. Note that this selector only accepts one parameter.
+Then, create a new CSS file and move all the style blocks into it and update the selectors to match the `ce-alert` component.
 
 ```css
 :root {
@@ -444,6 +480,8 @@ ce-alert::part(button) {
 ```
 
 <sup>[Show code in action](https://stackblitz.com/edit/web-platform-6ikrsj)</sup>
+
+> NOTE: The `::part` selector only accepts one parameter.
 
 To finalize, update the `index.html` file to import this new CSS file and that's it.
 
@@ -508,7 +546,11 @@ For this example, you will integrate [Tailwind](https://tailwindcss.com/) with [
 @tailwind utilities;
 ```
 
-Configure the package.json to run the tailwind compiler together with the dev server:
+Install [concurrently](https://github.com/open-cli-tools/concurrently) and configure the package.json to run the tailwind compiler together with the dev server:
+
+```shell
+npm install --save-dev concurrently
+```
 
 ```json
 {
