@@ -20,14 +20,11 @@ type ElementDraft = {
 
 const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (element instanceof DocumentFragment) return;
-
   if (attr === 'innerHTML' || attr === 'dangerouslySetInnerHTML') {
     element.innerHTML = value.__html ?? value;
   } else if (isFunction(value)) {
-    const event = attr.toLowerCase();
-    const regexp = /^(on[a-z]+)$/i;
-    if (regexp.test(event)) {
-      (element as any)[event] = value;
+    if (/^(on[a-z]+)$/i.test(attr.toLowerCase())) {
+      (element as any)[attr.toLowerCase()] = value;
     }
   } else if (isObject(value)) {
     Object.assign((element as any)[attr], value);
@@ -64,7 +61,7 @@ const define = (draft: ElementDraft) => {
 export const fragment = (...children: any[]) => define({ tag: 'fragment', props: {}, children });
 
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
-  define({ tag, props, children }) as any;
+  define({ tag, props, children });
 
 export const rawHTML = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
