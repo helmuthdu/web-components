@@ -2,6 +2,7 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
+import style from './button-group.css';
 
 export type Props = {
   dataset: {
@@ -9,7 +10,7 @@ export type Props = {
   };
 };
 
-const getClassName = ({ dataset }: Props) => classMap('inline-flex rounded-md shadow-sm', dataset.append);
+const getClassName = ({ dataset }: Props) => classMap('button-group', dataset.append);
 
 define<Props>('ui-button-group', {
   props: {
@@ -25,6 +26,7 @@ define<Props>('ui-button-group', {
       children[idx].setAttribute('data-group', idx === 0 ? 'first' : idx === children.length - 1 ? 'last' : '');
     }
   },
+  styles: [style],
   template: ({ dataset }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />

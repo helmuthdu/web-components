@@ -1,0 +1,240 @@
+:host {
+  content-visibility: auto;
+}
+
+.btn {
+  @apply inline-flex flex-wrap items-center justify-center gap-2 border-transparent text-center font-semibold;
+
+  &:not(.btn-text) {
+    @apply shadow-sm;
+  }
+
+  &.btn-rounded {
+    @apply rounded-full;
+  }
+
+  &:not(.btn-rounded):not(.btn-group) {
+    @apply rounded-lg;
+  }
+
+  &.btn-block {
+    @apply w-full;
+  }
+
+  &.btn-group {
+    &.btn-outline {
+      @apply -mx-px;
+    }
+
+    &.btn-group-first:not(.btn-rounded) {
+      @apply rounded-l-lg;
+    }
+
+    &.btn-group-last:not(.btn-rounded) {
+      @apply rounded-r-lg;
+    }
+
+    &.btn-group-first {
+      @apply rounded-l-full;
+    }
+
+    &.btn-group-last {
+      @apply rounded-r-full;
+    }
+  }
+
+  &.btn-xs {
+    @apply px-4 py-1 text-xs;
+
+    & > svg {
+      @apply h-3 w-3;
+    }
+  }
+
+  &.btn-sm {
+    @apply px-4 py-2 text-sm;
+
+    & > svg {
+      @apply h-4 w-4;
+    }
+  }
+
+  &.btn-md {
+    @apply px-5 py-3 text-base;
+
+    & > svg {
+      @apply h-5 w-5;
+    }
+  }
+
+  &.btn-lg {
+    @apply px-5 py-4 text-lg;
+
+    & > svg {
+      @apply h-6 w-6;
+    }
+  }
+
+  &.btn-xl {
+    @apply px-6 py-4 text-xl;
+
+    & > svg {
+      @apply h-7 w-7;
+    }
+  }
+
+  &.btn-circle:not(.btn-group) {
+    @apply rounded-full p-0;
+
+    &.btn-xs {
+      @apply h-8 w-8;
+    }
+
+    &.btn-sm {
+      @apply h-10 w-10;
+    }
+
+    &.btn-md {
+      @apply h-12 w-12;
+    }
+
+    &.btn-lg {
+      @apply h-14 w-14;
+    }
+
+    &.btn-xl {
+      @apply h-16 w-16;
+    }
+  }
+
+  &.btn-outline:not(.btn-text):not(.btn-disabled) {
+    @apply border-2 bg-transparent;
+
+    &.btn-primary,
+    &.btn-primary > svg {
+      @apply border-primary text-primary ring-primary-focus hover:ring-4 focus:ring-4;
+    }
+
+    &.btn-error,
+    &.btn-error > svg {
+      @apply border-error text-error ring-error-focus hover:ring-4 focus:ring-4;
+    }
+
+    &.btn-success,
+    &.btn-success > svg {
+      @apply border-success text-success ring-success-focus hover:ring-4 focus:ring-4;
+    }
+
+    &.btn-xs {
+      @apply mt-0.5 text-xs;
+
+      &:not(.btn-circle) {
+        @apply px-4 py-0.5;
+      }
+    }
+
+    &.btn-sm {
+      @apply text-sm;
+
+      &:not(.btn-circle) {
+        @apply px-4 py-1.5;
+      }
+    }
+
+    &.btn-md {
+      @apply text-base;
+
+      &:not(.btn-circle) {
+        @apply px-5 py-2.5;
+      }
+    }
+
+    &.btn-lg {
+      @apply text-lg;
+
+      &:not(.btn-circle) {
+        @apply px-5 py-3.5;
+      }
+    }
+
+    &.btn-xl {
+      @apply text-xl;
+
+      &:not(.btn-circle) {
+        @apply px-6 py-3.5;
+      }
+    }
+
+    &.btn-loading {
+      @apply text-transparent hover:text-transparent;
+    }
+  }
+
+  &.btn-loading {
+    @apply text-transparent hover:text-transparent;
+
+    & > svg {
+      @apply absolute animate-spin text-white;
+    }
+
+    & > svg > circle {
+      @apply opacity-25;
+    }
+
+    & > svg > path {
+      @apply opacity-75;
+    }
+  }
+
+  &.btn-text:not(.btn-outline):not(.btn-disabled) {
+    @apply bg-transparent;
+
+    &.btn-primary {
+      @apply text-primary hover:text-primary-focus;
+    }
+
+    &.btn-error {
+      @apply text-error hover:text-error-focus;
+    }
+
+    &.btn-success {
+      @apply text-success hover:text-success-focus;
+    }
+
+    &.btn-loading {
+      @apply text-transparent;
+    }
+  }
+
+  &:not(.btn-text):not(.btn-outline):not(.btn-disabled) {
+    @apply border-none;
+
+    &.btn-primary {
+      @apply bg-primary text-primary-contrast ring-primary-focus hover:ring-4 focus:ring-4;
+    }
+
+    &.btn-error {
+      @apply bg-error text-error-contrast ring-error-focus hover:ring-4 focus:ring-4;
+    }
+
+    &.btn-success {
+      @apply bg-success text-success-contrast ring-success-focus hover:ring-4 focus:ring-4;
+    }
+
+    &.btn-loading {
+      @apply text-transparent;
+    }
+  }
+
+  &.btn-disabled {
+    @apply border-opacity-0 bg-neutral-500 bg-opacity-20 text-content-disabled;
+
+    &.btn-loading {
+      @apply text-transparent;
+
+      & > svg {
+        @apply text-neutral-600/25;
+      }
+    }
+  }
+}
