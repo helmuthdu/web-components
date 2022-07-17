@@ -19,6 +19,7 @@
     "jsxFactory": "dom",
     "jsxFragmentFactory": "fragment",
     "useDefineForClassFields": true,
+    "types": ["vite/client", "vitest/globals"],
   },
   "include": ["./src"]
 }

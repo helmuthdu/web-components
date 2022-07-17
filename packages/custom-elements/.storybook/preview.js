@@ -1,4 +1,4 @@
-import '!style-loader!css-loader!postcss-loader!../tailwind.css';
+import '../tailwind.css?raw';
 import theme from './theme';
 
 export const parameters = {
