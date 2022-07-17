@@ -23,8 +23,7 @@
     "@typescript-eslint/parser": "^5.30.6",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
+    "lefthook": "^1.0.4",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.12",
     "stylelint": "^14.9.1",
@@ -38,10 +37,5 @@
   },
   "workspaces": [
     "packages/custom-elements"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  }
+  ]
 }
