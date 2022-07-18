@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isFunction, isObject, isSVG } from './shared';
+import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './shared';
 
 type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 
@@ -36,7 +36,7 @@ const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGEle
 };
 
 const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFragment) => {
-  if ([undefined, null].every(t => child !== t)) {
+  if (!isNil(child)) {
     if (isArray(child)) {
       child.forEach(c => appendChild(c, element));
     } else if (isObject(child)) {
