@@ -2,6 +2,10 @@
   content-visibility: auto;
 }
 
+.loading slot {
+  visibility: hidden;
+}
+
 .btn {
   @apply inline-flex flex-wrap items-center justify-center gap-2 border-transparent text-center font-semibold;
 
@@ -13,7 +17,7 @@
     @apply rounded-full;
   }
 
-  &:not(.btn-rounded):not(.btn-group) {
+  &:not(.btn-rounded, .btn-group) {
     @apply rounded-lg;
   }
 
@@ -26,20 +30,20 @@
       @apply -mx-px;
     }
 
-    &.btn-group-first:not(.btn-rounded) {
-      @apply rounded-l-lg;
-    }
-
-    &.btn-group-last:not(.btn-rounded) {
-      @apply rounded-r-lg;
-    }
-
     &.btn-group-first {
       @apply rounded-l-full;
     }
 
     &.btn-group-last {
       @apply rounded-r-full;
+    }
+
+    &.btn-group-first:not(.btn-rounded) {
+      @apply rounded-l-lg;
+    }
+
+    &.btn-group-last:not(.btn-rounded) {
+      @apply rounded-r-lg;
     }
   }
 
@@ -107,7 +111,35 @@
     }
   }
 
-  &.btn-outline:not(.btn-text):not(.btn-disabled) {
+  &.btn-loading {
+    @apply text-transparent hover:text-transparent;
+
+    & > svg {
+      @apply absolute animate-spin text-white;
+    }
+
+    & > svg > circle {
+      @apply opacity-25;
+    }
+
+    & > svg > path {
+      @apply opacity-75;
+    }
+  }
+
+  &.btn-disabled {
+    @apply border-opacity-0 bg-neutral-500 bg-opacity-20 text-content-disabled;
+
+    &.btn-loading {
+      @apply text-transparent;
+
+      & > svg {
+        @apply text-neutral-600/25;
+      }
+    }
+  }
+
+  &.btn-outline:not(.btn-text, .btn-disabled) {
     @apply border-2 bg-transparent;
 
     &.btn-primary,
@@ -170,23 +202,7 @@
     }
   }
 
-  &.btn-loading {
-    @apply text-transparent hover:text-transparent;
-
-    & > svg {
-      @apply absolute animate-spin text-white;
-    }
-
-    & > svg > circle {
-      @apply opacity-25;
-    }
-
-    & > svg > path {
-      @apply opacity-75;
-    }
-  }
-
-  &.btn-text:not(.btn-outline):not(.btn-disabled) {
+  &.btn-text:not(.btn-outline, .btn-disabled) {
     @apply bg-transparent;
 
     &.btn-primary {
@@ -206,7 +222,7 @@
     }
   }
 
-  &:not(.btn-text):not(.btn-outline):not(.btn-disabled) {
+  &:not(.btn-text, .btn-outline, .btn-disabled) {
     @apply border-none;
 
     &.btn-primary {
@@ -223,18 +239,6 @@
 
     &.btn-loading {
       @apply text-transparent;
-    }
-  }
-
-  &.btn-disabled {
-    @apply border-opacity-0 bg-neutral-500 bg-opacity-20 text-content-disabled;
-
-    &.btn-loading {
-      @apply text-transparent;
-
-      & > svg {
-        @apply text-neutral-600/25;
-      }
     }
   }
 }

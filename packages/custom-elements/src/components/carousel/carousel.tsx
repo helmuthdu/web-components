@@ -1,7 +1,9 @@
+/** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { define } from '../../lib/custom-element';
+import styles from './carousel.css';
 
 let slideIndex = 0;
 let timeout: any;
@@ -48,14 +50,10 @@ define<Props>('ui-carousel', {
   onConnected: ({ children, dataset, shadowRoot }) => {
     showSlides(slideIndex, children, Array.from(shadowRoot?.querySelectorAll('li') ?? []), +dataset.timeout);
   },
+  styles: [styles],
   template: ({ children, dataset, shadowRoot }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `.carousel { -ms-overflow-style: none; scrollbar-width: none; } .carousel::-webkit-scrollbar { display: none; }`
-        }}
-      />
       <div id="root" className="relative w-full">
         <div className="carousel relative flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth">
           <slot />

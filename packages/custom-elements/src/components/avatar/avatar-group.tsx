@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';

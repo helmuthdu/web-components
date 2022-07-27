@@ -1,0 +1,11 @@
+details svg {
+  transition: transform 0.3s ease-in-out;
+}
+
+details[open] svg {
+  transform: rotate(90deg);
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}

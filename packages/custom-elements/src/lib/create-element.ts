@@ -20,16 +20,16 @@ type ElementDraft = {
 
 const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (element instanceof DocumentFragment) return;
-  if (attr === 'innerHTML' || attr === 'dangerouslySetInnerHTML') {
-    element.innerHTML = value.__html ?? value;
+  if (attr === 'className') {
+    element.setAttribute('class', value);
   } else if (isFunction(value)) {
     if (/^(on[a-z]+)$/i.test(attr.toLowerCase())) {
       (element as any)[attr.toLowerCase()] = value;
     }
   } else if (isObject(value)) {
-    Object.assign((element as any)[attr], value);
-  } else if (attr === 'className') {
-    element.setAttribute('class', value);
+    if ((element as any)[attr]) {
+      Object.assign((element as any)[attr], value);
+    }
   } else {
     element.setAttribute(attr, value);
   }

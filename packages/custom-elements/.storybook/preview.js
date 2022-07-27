@@ -1,4 +1,4 @@
-import '../tailwind.css?raw';
+import './public/tailwind.css';
 import theme from './theme';
 
 export const parameters = {
@@ -21,7 +21,7 @@ export const parameters = {
       opacity: 0.4,
       cellAmount: 5,
       offsetX: 0,
-      offsetY: -1,
+      offsetY: -1
     }
   }
 };

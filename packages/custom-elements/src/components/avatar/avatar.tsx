@@ -1,7 +1,9 @@
+/** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
+import styles from './avatar.css';
 
 export type Props = {
   dataset: {
@@ -30,14 +32,10 @@ define<Props>('ui-avatar', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
+  styles: [styles],
   template: ({ dataset, fire, remove }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `::slotted(:first-child) { display: flex; justify-content: center; align-items: center; }`
-        }}
-      />
       <div id="root" className={getClassName({ dataset })}>
         <span className="text-sm">
           <slot />

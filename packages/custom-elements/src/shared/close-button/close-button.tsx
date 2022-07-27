@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx dom */
 import { dom } from '../../lib/create-element';
 import { classMap } from '../../lib/styling-element';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const plugins = [
   require('postcss-import'),
   require('tailwindcss/nesting')(require('postcss-nesting')),

@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
@@ -66,7 +67,6 @@ define<Props>('ui-button', {
       color: 'primary'
     }
   },
-  styles: [styles],
   onAttributeChanged: (name, prev, curr, { classList, dataset, spot, update }) => {
     const root = spot<HTMLButtonElement>('root');
     switch (name) {
@@ -102,10 +102,10 @@ define<Props>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
+  styles: [styles],
   template: ({ dataset, children, type }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
-      <style dangerouslySetInnerHTML={{ __html: '.loading slot { visibility: hidden; }' }} />
       <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
         {dataset.loading && <LoadingIcon dataset={dataset} />}
         <slot />

@@ -1,6 +1,6 @@
 import { configureFormElement } from './form-element';
 import { isArray, isFunction, isObject, isString } from './shared';
-import { injectStyles } from './styling-element';
+import { applyStyles } from './styling-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
@@ -62,7 +62,7 @@ export const component = <Props extends CustomElementProps>({
 
     constructor() {
       super();
-      injectStyles(this.attachShadow({ mode: 'open' }), styles);
+      applyStyles(this.attachShadow({ mode: 'open' }), styles);
       Object.entries(props)
         .filter(([_, value]) => value !== undefined)
         .forEach(([prop, value]) => {

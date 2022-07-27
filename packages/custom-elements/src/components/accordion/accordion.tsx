@@ -1,7 +1,9 @@
+/** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
+import styles from './accordion.css';
 
 export type Props = {
   dataset: { append?: string; header: string };
@@ -19,14 +21,10 @@ define<Props>('ui-accordion', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
+  styles: [styles],
   template: ({ dataset }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `details svg { transition: transform 0.3s ease-in-out; } details[open] svg { transform: rotate(90deg); } details summary::-webkit-details-marker { display: none; }`
-        }}
-      />
       <details id="root" className={getClassName({ dataset })}>
         <summary className="flex cursor-pointer items-center gap-2 py-1">
           <svg

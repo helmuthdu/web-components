@@ -16,7 +16,7 @@ export const classMap = (...classes: unknown[]) =>
     }, '')
     .trim();
 
-export const injectStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
+export const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
   if ((styles ?? []).length > 0) {
     Promise.all(
       styles.map(style => {
