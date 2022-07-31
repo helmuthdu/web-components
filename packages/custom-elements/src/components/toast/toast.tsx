@@ -3,7 +3,7 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import { CloseButton } from '../../shared/close-button/close-button';
+import '../../common/close-button/close-button';
 
 export type Props = {
   dataset: {
@@ -109,7 +109,7 @@ define<Props>('ui-toast', {
                   )}>
                   <slot name="meta" />
                 </span>
-                <CloseButton
+                <ui-close-button
                   onClick={() => {
                     fire('close');
                     remove();
@@ -140,8 +140,7 @@ define<Props>('ui-toast', {
                 <div className="grow">
                   <slot />
                 </div>
-                <CloseButton
-                  className=""
+                <ui-close-button
                   onClick={() => {
                     fire('close');
                     remove();

@@ -13,6 +13,9 @@ declare global {
       ['ui-avatar']: CustomElement<any>;
       ['ui-avatar-group']: CustomElement<any>;
       ['ui-badge']: CustomElement<any>;
+      ['ui-box']: CustomElement<any>;
+      ['ui-button']: CustomElement<any>;
+      ['ui-button-group']: CustomElement<any>;
       ['ui-card']: CustomElement<any>;
       ['ui-card-body']: CustomElement<any>;
       ['ui-card-footer']: CustomElement<any>;
@@ -21,10 +24,8 @@ declare global {
       ['ui-card-meta']: CustomElement<any>;
       ['ui-carousel']: CustomElement<any>;
       ['ui-carousel-item']: CustomElement<any>;
+      ['ui-close-button']: CustomElement<any>;
       ['ui-toast']: CustomElement<any>;
-      ['ui-box']: CustomElement<any>;
-      ['ui-button']: CustomElement<any>;
-      ['ui-button-group']: CustomElement<any>;
     }
   }
   interface ShadowRoot {
