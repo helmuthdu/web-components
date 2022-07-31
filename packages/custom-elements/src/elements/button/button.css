@@ -2,10 +2,6 @@
   content-visibility: auto;
 }
 
-.loading slot {
-  visibility: hidden;
-}
-
 .btn {
   @apply inline-flex flex-wrap items-center justify-center gap-2 border-transparent text-center font-semibold;
 

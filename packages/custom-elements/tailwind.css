@@ -3,83 +3,73 @@
 @tailwind utilities;
 
 :root {
-  --color-canvas: theme('colors.gray.50');
-
-  --color-contrast-50: theme('colors.zinc.50');
-  --color-contrast-100: theme('colors.zinc.100');
-  --color-contrast-200: theme('colors.zinc.200');
-  --color-contrast-300: theme('colors.zinc.300');
-  --color-contrast-400: theme('colors.zinc.400');
-  --color-contrast-500: theme('colors.zinc.500');
-  --color-contrast-600: theme('colors.zinc.600');
-  --color-contrast-700: theme('colors.zinc.700');
-  --color-contrast-800: theme('colors.zinc.800');
-  --color-contrast-900: theme('colors.zinc.900');
-
-  --color-primary-backdrop: theme('colors.blue.200');
-  --color-primary-focus: theme('colors.blue.300');
-  --color-primary: theme('colors.blue.600');
-  --color-primary-content: theme('colors.blue.800');
+  --color-canvas: theme("colors.gray.50");
+  --color-contrast-50: theme("colors.zinc.50");
+  --color-contrast-100: theme("colors.zinc.100");
+  --color-contrast-200: theme("colors.zinc.200");
+  --color-contrast-300: theme("colors.zinc.300");
+  --color-contrast-400: theme("colors.zinc.400");
+  --color-contrast-500: theme("colors.zinc.500");
+  --color-contrast-600: theme("colors.zinc.600");
+  --color-contrast-700: theme("colors.zinc.700");
+  --color-contrast-800: theme("colors.zinc.800");
+  --color-contrast-900: theme("colors.zinc.900");
+  --color-primary-backdrop: theme("colors.blue.200");
+  --color-primary-focus: theme("colors.blue.300");
+  --color-primary: theme("colors.blue.600");
+  --color-primary-content: theme("colors.blue.800");
   --color-primary-contrast: #fff;
-
-  --color-error-backdrop: theme('colors.red.200');
-  --color-error-focus: theme('colors.red.300');
-  --color-error: theme('colors.red.500');
-  --color-error-content: theme('colors.red.800');
+  --color-error-backdrop: theme("colors.red.200");
+  --color-error-focus: theme("colors.red.300");
+  --color-error: theme("colors.red.500");
+  --color-error-content: theme("colors.red.800");
   --color-error-contrast: #fff;
-
-  --color-success-backdrop: theme('colors.green.200');
-  --color-success-focus: theme('colors.green.300');
-  --color-success: theme('colors.green.500');
-  --color-success-content: theme('colors.green.800');
+  --color-success-backdrop: theme("colors.green.200");
+  --color-success-focus: theme("colors.green.300");
+  --color-success: theme("colors.green.500");
+  --color-success-content: theme("colors.green.800");
   --color-success-contrast: #fff;
-
-  --color-content-heading: theme('colors.gray.900');
-  --color-content-body: theme('colors.gray.800');
-  --color-content-secondary: theme('colors.gray.700');
-  --color-content-tertiary: theme('colors.gray.500');
-  --color-content-disabled: theme('colors.gray.400');
-  --color-content-contrast: theme('colors.gray.300');
+  --color-content-heading: theme("colors.gray.900");
+  --color-content-body: theme("colors.gray.800");
+  --color-content-secondary: theme("colors.gray.700");
+  --color-content-tertiary: theme("colors.gray.500");
+  --color-content-disabled: theme("colors.gray.400");
+  --color-content-contrast: theme("colors.gray.300");
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-canvas: theme('colors.zinc.800');
-
-    --color-contrast-50: theme('colors.zinc.900');
-    --color-contrast-100: theme('colors.zinc.800');
-    --color-contrast-200: theme('colors.zinc.700');
-    --color-contrast-300: theme('colors.zinc.600');
-    --color-contrast-400: theme('colors.zinc.500');
-    --color-contrast-500: theme('colors.zinc.400');
-    --color-contrast-600: theme('colors.zinc.300');
-    --color-contrast-700: theme('colors.zinc.200');
-    --color-contrast-800: theme('colors.zinc.100');
-    --color-contrast-900: theme('colors.zinc.50');
-
-    --color-primary-backdrop: theme('colors.blue.300');
-    --color-primary-focus: theme('colors.blue.500');
-    --color-primary: theme('colors.blue.600');
-    --color-primary-content: theme('colors.blue.800');
+    --color-canvas: theme("colors.zinc.800");
+    --color-contrast-50: theme("colors.zinc.900");
+    --color-contrast-100: theme("colors.zinc.800");
+    --color-contrast-200: theme("colors.zinc.700");
+    --color-contrast-300: theme("colors.zinc.600");
+    --color-contrast-400: theme("colors.zinc.500");
+    --color-contrast-500: theme("colors.zinc.400");
+    --color-contrast-600: theme("colors.zinc.300");
+    --color-contrast-700: theme("colors.zinc.200");
+    --color-contrast-800: theme("colors.zinc.100");
+    --color-contrast-900: theme("colors.zinc.50");
+    --color-primary-backdrop: theme("colors.blue.300");
+    --color-primary-focus: theme("colors.blue.500");
+    --color-primary: theme("colors.blue.600");
+    --color-primary-content: theme("colors.blue.800");
     --color-primary-contrast: #fff;
-
-    --color-error-backdrop: theme('colors.red.300');
-    --color-error-focus: theme('colors.red.500');
-    --color-error: theme('colors.red.600');
-    --color-error-content: theme('colors.red.800');
+    --color-error-backdrop: theme("colors.red.300");
+    --color-error-focus: theme("colors.red.500");
+    --color-error: theme("colors.red.600");
+    --color-error-content: theme("colors.red.800");
     --color-error-contrast: #fff;
-
-    --color-success-backdrop: theme('colors.green.300');
-    --color-success-focus: theme('colors.green.500');
-    --color-success: theme('colors.green.600');
-    --color-success-content: theme('colors.green.800');
+    --color-success-backdrop: theme("colors.green.300");
+    --color-success-focus: theme("colors.green.500");
+    --color-success: theme("colors.green.600");
+    --color-success-content: theme("colors.green.800");
     --color-success-contrast: #fff;
-
-    --color-content-heading: theme('colors.gray.50');
-    --color-content-body: theme('colors.gray.200');
-    --color-content-secondary: theme('colors.gray.300');
-    --color-content-tertiary: theme('colors.gray.500');
-    --color-content-disabled: theme('colors.gray.600');
-    --color-content-contrast: theme('colors.gray.700');
+    --color-content-heading: theme("colors.gray.50");
+    --color-content-body: theme("colors.gray.200");
+    --color-content-secondary: theme("colors.gray.300");
+    --color-content-tertiary: theme("colors.gray.500");
+    --color-content-disabled: theme("colors.gray.600");
+    --color-content-contrast: theme("colors.gray.700");
   }
 }
