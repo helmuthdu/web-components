@@ -9,7 +9,7 @@ export type Props = {
   dataset: { append?: string; header: string };
 };
 
-const getClassName = ({ dataset }: Props) => classMap('block text-content p-4', dataset.append);
+const getClassName = ({ dataset }: Props) => classMap('accordion', dataset.append);
 
 define<Props>('ui-accordion', {
   props: {
@@ -26,13 +26,8 @@ define<Props>('ui-accordion', {
     <>
       <link rel="stylesheet" href="/tailwind.css" />
       <details id="root" className={getClassName({ dataset })}>
-        <summary className="flex cursor-pointer items-center gap-2 py-1">
-          <svg
-            fill="none"
-            className="h-4 w-4"
-            stroke="currentColor"
-            viewBox="0 0 23 23"
-            xmlns="http://www.w3.org/2000/svg">
+        <summary className="accordion-header">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
           </svg>
           <slot name="header" />

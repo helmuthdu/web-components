@@ -1,0 +1,24 @@
+.accordion-group {
+  @apply block rounded-lg px-2 py-1;
+
+  &-primary {
+    @apply border border-contrast-200 bg-canvas;
+  }
+
+  &-secondary,
+  &-tertiary {
+    @apply bg-transparent;
+  }
+
+  .accordion-primary {
+    @apply block border-b border-contrast-200;
+  }
+
+  .accordion-secondary {
+    @apply mb-2 block rounded-lg border border-contrast-200 bg-canvas;
+  }
+
+  .accordion-tertiary {
+    @apply block border-b border-contrast-200;
+  }
+}

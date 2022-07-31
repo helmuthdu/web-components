@@ -3,6 +3,7 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
+import styles from './accordion-group.css';
 
 export type Props = {
   dataset: {
@@ -13,18 +14,17 @@ export type Props = {
 
 const getClassName = ({ dataset }: Props) =>
   classMap(
-    'block rounded-lg px-2 py-1',
+    'accordion-group',
     {
-      'bg-canvas border border-contrast-200': dataset.variant === 'primary',
-      'bg-transparent': dataset.variant === 'secondary' || dataset.variant === 'tertiary'
+      [`accordion-group-${dataset.variant}`]: dataset.variant
     },
     dataset.append
   );
 
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
-  const primary = ['block', 'border-b', 'border-contrast-200'];
-  const secondary = ['block', 'mb-2', 'rounded-lg', 'bg-canvas', 'border', 'border-contrast-200'];
-  const tertiary = ['block', 'border-b', 'border-contrast-200'];
+  const primary = ['accordion-primary'];
+  const secondary = ['accordion-secondary'];
+  const tertiary = ['accordion-tertiary'];
   [...children].forEach((el, idx) => {
     el.classList.remove(...primary, ...secondary, ...tertiary);
     if (dataset.variant === 'secondary') {
@@ -56,6 +56,7 @@ define<Props>('ui-accordion-group', {
   onConnected: ({ dataset, children }) => {
     updateChildren(children, { dataset });
   },
+  styles: [styles],
   template: ({ dataset }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />
