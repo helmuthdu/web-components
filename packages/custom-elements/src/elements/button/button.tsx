@@ -67,7 +67,7 @@ define<Props>('ui-button', {
       color: 'primary'
     }
   },
-  onAttributeChanged: (name, prev, curr, { classList, dataset, spot, update }) => {
+  onAttributeChanged: (name, prev, curr, { classList, dataset, spot, render }) => {
     const root = spot<HTMLButtonElement>('root');
     switch (name) {
       case 'data-append':
@@ -96,7 +96,7 @@ define<Props>('ui-button', {
         root.className = getClassName({ dataset });
         break;
       default:
-        update();
+        render();
     }
   },
   onConnected({ classList, dataset }) {

@@ -13,23 +13,26 @@ type CustomElementOptions<Props extends CustomElementProps> = {
   props: Props & Partial<Omit<HTMLElement, keyof Props>>;
   form?: boolean;
   styles?: unknown[];
-  template: (host: CustomElement<Props>) => any;
+  template: (host: CustomElement<Props>) => any | string;
+};
+
+type CustomElementClass<Props extends CustomElementProps> = {
+  fire: (event: string | HTMLTags, { detail }?: CustomEventInit) => void;
+  event: (
+    id: string | HTMLElement | CustomElement<Props>,
+    event: string | HTMLTags,
+    callback: EventListener,
+    options?: boolean | AddEventListenerOptions
+  ) => void;
+  hostElement: CustomElement<Props>;
+  spot: <T extends HTMLElement>(id: string) => T;
+  render: () => void;
+  value?: string;
 };
 
 export type CustomElement<Props extends CustomElementProps> = Omit<HTMLElement, keyof Props> &
-  Props & {
-    fire: (event: string | HTMLTags, { detail }?: CustomEventInit) => void;
-    event: (
-      id: string | HTMLElement | CustomElement<Props>,
-      event: string | HTMLTags,
-      callback: EventListener,
-      options?: boolean | AddEventListenerOptions
-    ) => void;
-    hostElement: CustomElement<Props>;
-    spot: <T extends HTMLElement>(id: string) => T;
-    update: () => void;
-    value?: string;
-  };
+  Props &
+  CustomElementClass<Props>;
 
 const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
 
@@ -46,6 +49,23 @@ const createProxyElement = (customElement: HTMLElement) =>
     }
   });
 
+const updateProps = <T extends HTMLElement>(target: T, props: CustomElementProps) =>
+  props &&
+  Object.entries(props)
+    .filter(([_, value]) => value !== undefined)
+    .forEach(([prop, value]) => {
+      if (isObject(value)) {
+        Object.assign(
+          (target as any)[prop],
+          Object.entries(value)
+            .filter(([_, val]) => val)
+            .reduce((acc, [key, val]) => ({ ...acc, [key]: acc[key] ?? val }), (target as any)[prop] ?? {})
+        );
+      } else {
+        (target as any)[prop] ??= value;
+      }
+    });
+
 export const component = <Props extends CustomElementProps>({
   form = false,
   onAttributeChanged,
@@ -55,28 +75,15 @@ export const component = <Props extends CustomElementProps>({
   styles = [],
   template
 }: CustomElementOptions<Props>) =>
-  class extends HTMLElement {
+  class extends HTMLElement implements CustomElementClass<Props> {
     #isConnected = false;
-    #proxyElement = createProxyElement(this);
-    hostElement = this;
+    #proxy = createProxyElement(this) as unknown as CustomElement<Props>;
+    hostElement = this as unknown as CustomElement<Props>;
 
     constructor() {
       super();
       applyStyles(this.attachShadow({ mode: 'open' }), styles);
-      Object.entries(props)
-        .filter(([_, value]) => value !== undefined)
-        .forEach(([prop, value]) => {
-          if (isObject(value)) {
-            Object.assign(
-              (this as any)[prop],
-              Object.entries(value)
-                .filter(([_, val]) => val)
-                .reduce((acc, [key, val]) => ({ ...acc, [key]: acc[key] ?? val }), (this as any)[prop] ?? {})
-            );
-          } else {
-            (this as any)[prop] ??= value;
-          }
-        });
+      updateProps(this, props);
       if (form) {
         configureFormElement(this);
       }
@@ -93,28 +100,25 @@ export const component = <Props extends CustomElementProps>({
     }
 
     connectedCallback() {
-      // workaround to avoid FOUC
       this.style.visibility = 'hidden';
       setTimeout(() => (this.style.visibility = ''), 100);
 
-      this.update();
-
-      if (onConnected) {
-        onConnected(this.#proxyElement as any);
-      }
-
+      this.render();
       this.#isConnected = true;
+      if (onConnected) {
+        onConnected(this.#proxy);
+      }
     }
 
     disconnectedCallback() {
       if (onDisconnected) {
-        onDisconnected(this.#proxyElement as any);
+        onDisconnected(this.#proxy);
       }
     }
 
     attributeChangedCallback(name: string, prev: string, curr: string) {
       if (this.#isConnected && prev !== curr && onAttributeChanged) {
-        onAttributeChanged(name, prev, curr, this.#proxyElement as any);
+        onAttributeChanged(name, prev, curr, this.#proxy);
       }
     }
 
@@ -122,14 +126,16 @@ export const component = <Props extends CustomElementProps>({
       if (form) this.setAttribute('value', state);
     }
 
-    update() {
-      const tmpl = template ? template(this.#proxyElement as any) : '';
-      const shadowRoot = this.shadowRoot as ShadowRoot;
-      if (isString(tmpl)) {
-        shadowRoot.innerHTML = tmpl;
-      } else {
-        shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
-      }
+    render() {
+      requestAnimationFrame(() => {
+        const tmpl = isFunction(template) ? template(this.#proxy) : template;
+        const shadowRoot = this.shadowRoot as ShadowRoot;
+        if (isString(tmpl)) {
+          shadowRoot.innerHTML = tmpl;
+        } else {
+          shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
+        }
+      });
     }
 
     fire(event: string | HTMLTags, options?: CustomEventInit) {
@@ -142,13 +148,13 @@ export const component = <Props extends CustomElementProps>({
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = (isString(id) ? this.shadowRoot?.getElementById(`${id}`) : id) as HTMLElement | CustomElement<Props>;
+      const el = (isString(id) ? this.spot(`${id}`) : id) as HTMLElement | CustomElement<Props>;
       if (!el) throw new Error(`element with id="${id}" not found`);
       el.addEventListener(event, callback, options);
     }
 
-    spot(id: string) {
-      return this.shadowRoot?.getElementById(id);
+    spot<T extends HTMLElement>(id: string): T {
+      return this.shadowRoot?.getElementById(id) as T;
     }
   };
 

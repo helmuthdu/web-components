@@ -24,3 +24,9 @@ export const configureFormElement = (target: HTMLElement) => {
     }
   });
 };
+
+export const createSubmitFormEvent = (handler: <T>(data: T) => void) => (event: SubmitEvent) => {
+  event.preventDefault();
+  const formData = new FormData(event.target as HTMLFormElement);
+  handler(Object.fromEntries(formData));
+};

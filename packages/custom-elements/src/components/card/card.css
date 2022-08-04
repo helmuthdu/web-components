@@ -1,0 +1,3 @@
+ui-card:not(:defined) {
+  visibility: hidden;
+}

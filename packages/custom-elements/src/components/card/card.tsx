@@ -3,6 +3,7 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
+import styles from './card.css';
 
 export type Props = {
   dataset: { append?: string; horizontal?: boolean };
@@ -22,6 +23,7 @@ define<Props>('ui-card', {
       horizontal: undefined
     }
   },
+  styles: [styles],
   template: ({ dataset }) => (
     <>
       <link rel="stylesheet" href="/tailwind.css" />

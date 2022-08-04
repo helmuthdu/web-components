@@ -1,27 +1,27 @@
 .alert {
   @apply flex items-center justify-between rounded-xl border py-2 pl-4 pr-3 text-sm shadow-sm;
+}
 
-  &:not(.alert-info, .alert-error, .alert-success, .alert-contrast) {
-    @apply border-contrast-300 bg-canvas text-content;
-  }
+.alert:not(.alert-info, .alert-error, .alert-success, .alert-contrast) {
+  @apply border-contrast-300 bg-canvas text-content;
+}
 
-  &-info {
-    @apply border-primary-focus bg-primary-backdrop text-primary-content;
-  }
+.alert-info {
+  @apply border-primary-focus bg-primary-backdrop text-primary-content;
+}
 
-  &-error {
-    @apply border-error-focus bg-error-backdrop text-error-content;
-  }
+.alert-error {
+  @apply border-error-focus bg-error-backdrop text-error-content;
+}
 
-  &-success {
-    @apply border-success-focus bg-success-backdrop text-success-content;
-  }
+.alert-success {
+  @apply border-success-focus bg-success-backdrop text-success-content;
+}
 
-  &-contrast {
-    @apply border-contrast-600 bg-contrast-700 text-content-contrast;
-  }
+.alert-contrast {
+  @apply border-contrast-600 bg-contrast-700 text-content-contrast;
+}
 
-  & > span {
-    @apply text-sm;
-  }
+.alert > span {
+  @apply text-sm;
 }

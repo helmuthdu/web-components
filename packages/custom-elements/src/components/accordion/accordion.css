@@ -2,7 +2,7 @@ details svg {
   transition: transform 0.3s ease-in-out;
 }
 
-details summary svg {
+details > summary > svg {
   @apply h-4 w-4;
 }
 
@@ -16,8 +16,8 @@ details summary::-webkit-details-marker {
 
 .accordion {
   @apply block text-content p-4;
+}
 
-  &-header {
-    @apply flex cursor-pointer items-center gap-2 py-1;
-  }
+.accordion-header {
+  @apply flex cursor-pointer items-center gap-2 py-1;
 }
