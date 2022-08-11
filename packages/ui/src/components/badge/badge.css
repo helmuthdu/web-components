@@ -1,0 +1,51 @@
+.badge {
+  @apply inline-flex flex-wrap items-center justify-center whitespace-nowrap py-0.5 px-2 text-center align-middle font-semibold;
+}
+
+.badge:not(.badge-pill) {
+  @apply rounded-lg;
+}
+
+.badge-pill {
+  @apply rounded-full;
+}
+
+.badge-xs {
+  @apply text-xs;
+}
+
+.badge-sm {
+  @apply text-sm;
+}
+
+.badge-base {
+  @apply text-base;
+}
+
+.badge-lg {
+  @apply text-lg;
+}
+
+.badge-xl {
+  @apply text-xl;
+}
+
+.badge:not(.badge-info, .badge-error, .badge-success, .badge-contrast) {
+  @apply border-contrast-200 bg-contrast-50 text-content;
+}
+
+.badge-info {
+  @apply border-primary-focus bg-primary text-primary-contrast;
+}
+
+.badge-error {
+  @apply border-error-focus bg-error text-error-contrast;
+}
+
+.badge-success {
+  @apply border-success-focus bg-success text-success-contrast;
+}
+
+.badge-contrast {
+  @apply border-contrast-800 bg-contrast-700 text-content-contrast;
+}

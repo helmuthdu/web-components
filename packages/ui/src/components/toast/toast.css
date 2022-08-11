@@ -1,0 +1,87 @@
+.toast-wrapper {
+  @apply absolute top-0 right-0 flex max-h-screen flex-col gap-2 overflow-hidden p-4;
+}
+
+.toast {
+  @apply pointer-events-auto w-96 max-w-full animate-fade-in-down overflow-clip rounded-lg border border-neutral-400/25 text-sm shadow-lg;
+}
+
+.toast-header {
+  @apply flex items-center justify-between py-1 px-3;
+}
+
+.toast-header:not(.toast-info, .toast-error, .toast-success, .toast-contrast) {
+  @apply bg-canvas;
+}
+
+.toast-header:not(.toast-info, .toast-error, .toast-success) {
+  @apply border-b border-neutral-400/25;
+}
+
+.toast-header-content {
+  @apply flex flex-row items-center justify-between gap-2 font-bold;
+}
+
+.toast-header-content:not(.toast-text-info, .toast-text-error, .toast-text-success, .toast-text-contrast) {
+  @apply text-content-heading;
+}
+
+.toast-header-panel {
+  @apply flex items-center;
+}
+
+.toast-header-panel:not(.toast-info, .toast-error, .toast-success, .toast-contrast) {
+  @apply text-content;
+}
+
+.toast-header-meta {
+  @apply text-xs;
+}
+
+.toast-header-meta:not(.toast-info, .toast-error, .toast-success) {
+  @apply text-content-tertiary;
+}
+
+.toast-content {
+  @apply break-words p-3;
+}
+
+.toast-content-headless {
+  @apply flex flex-row items-center justify-between gap-3;
+}
+
+.toast-content:not(.toast-info, .toast-error, .toast-success, .toast-contrast) {
+  @apply bg-canvas text-content;
+}
+
+.toast-info {
+  @apply bg-primary;
+}
+
+.toast-error {
+  @apply bg-error;
+}
+
+.toast-success {
+  @apply bg-success;
+}
+
+.toast-contrast {
+  @apply bg-contrast-700;
+}
+
+.toast-text-info {
+  @apply text-primary-contrast;
+}
+
+.toast-text-error {
+  @apply text-error-contrast;
+}
+
+.toast-text-success {
+  @apply text-success-contrast;
+}
+
+.toast-text-contrast {
+  @apply text-content-contrast;
+}

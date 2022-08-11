@@ -1,0 +1,11 @@
+.card {
+  @apply flex max-w-sm justify-center overflow-hidden rounded-lg border border-contrast-200 bg-white shadow-lg dark:bg-canvas;
+}
+
+.card:not(.card-horizontal) {
+  @apply flex-col;
+}
+
+.card-horizontal {
+  @apply flex-row;
+}

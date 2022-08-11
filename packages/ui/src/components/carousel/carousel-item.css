@@ -1,0 +1,31 @@
+.carousel-image {
+  @apply absolute w-full transition-opacity duration-1000 ease-in first:relative;
+}
+
+.carousel-item {
+  @apply absolute inset-0 flex flex-col py-8 px-12;
+}
+
+.carousel-item-text-position-top {
+  @apply justify-start;
+}
+
+.carousel-item-text-position-middle {
+  @apply justify-center;
+}
+
+.carousel-item-text-position-bottom {
+  @apply justify-end;
+}
+
+.carousel-item-text-align-left {
+  @apply text-left;
+}
+
+.carousel-item-text-align-center {
+  @apply text-center;
+}
+
+.carousel-item-text-align-right {
+  @apply text-right;
+}

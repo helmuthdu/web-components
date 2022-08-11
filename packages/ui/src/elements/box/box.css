@@ -1,0 +1,3 @@
+.box {
+  @apply block rounded-lg border border-contrast-200 bg-canvas p-5 text-content;
+}

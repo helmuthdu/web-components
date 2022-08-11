@@ -1,0 +1,3 @@
+.card-meta {
+  @apply block text-sm text-content-tertiary;
+}

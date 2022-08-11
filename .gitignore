@@ -4,5 +4,5 @@
 *.local
 build
 node_modules
-packages/custom-elements/.storybook/public
+packages/ui/.storybook/public
 package-lock.json

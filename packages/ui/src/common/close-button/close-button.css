@@ -1,0 +1,11 @@
+.close-button {
+  @apply ml-1 -mr-1 inline-flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0.5 text-current;
+}
+
+.close-button > span {
+  @apply sr-only;
+}
+
+.close-button > svg {
+  @apply h-5 w-5;
+}
