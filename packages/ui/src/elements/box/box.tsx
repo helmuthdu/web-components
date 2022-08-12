@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './box.css';
 
 export type Props = {
   dataset: {
@@ -22,10 +21,9 @@ define<Props>('ui-box', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./box.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <div id="root" className={getClassName({ dataset })}>
         <slot />
       </div>

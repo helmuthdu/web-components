@@ -4,7 +4,6 @@
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import '../../common/close-button/close-button';
-import styles from './toast.css';
 
 export type Props = {
   dataset: {
@@ -45,12 +44,12 @@ define<Props>('ui-toast', {
       setTimeout(remove, dataset.timeout);
     }
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./toast.css')],
   template: ({ children, dataset, fire, remove }) => {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (
       <>
-        <link rel="stylesheet" href="/tailwind.css" />
+        <link rel="stylesheet" href="/styles.css" />
         <div className={classMap('toast')}>
           {hasHeader && (
             <div
@@ -75,6 +74,9 @@ define<Props>('ui-toast', {
                   <slot name="meta" />
                 </span>
                 <ui-close-button
+                  className={classMap({
+                    [`toast-text-${dataset.color}`]: dataset.color
+                  })}
                   onClick={() => {
                     fire('close');
                     remove();

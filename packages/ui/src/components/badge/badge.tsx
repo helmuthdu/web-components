@@ -4,7 +4,6 @@
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
-import styles from './badge.css';
 
 export type Props = {
   dataset: {
@@ -45,10 +44,9 @@ define<Props>('ui-badge', {
         break;
     }
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./badge.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <span id="root" className={getClassName({ dataset })}>
         <slot />
       </span>

@@ -1,11 +1,18 @@
 .card {
-  @apply flex max-w-sm justify-center overflow-hidden rounded-lg border border-contrast-200 bg-white shadow-lg dark:bg-canvas;
+  display: flex;
+  max-width: var(--size-sm);
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--rounded-lg);
+  border: var(--border) solid var(--color-contrast-200);
+  background-color: var(--color-canvas);
+  box-shadow: var(--shadow-lg);
 }
 
 .card:not(.card-horizontal) {
-  @apply flex-col;
+  flex-direction: column;
 }
 
 .card-horizontal {
-  @apply flex-row;
+  flex-direction: row;
 }

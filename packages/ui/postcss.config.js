@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const plugins = [
-  require('postcss-import'),
-  require('tailwindcss/nesting')(require('postcss-nesting')),
-  require('tailwindcss'),
-  require('@tailwindcss/typography'),
-  require('autoprefixer')
-];
+const plugins = [require('postcss-import'), require('postcss-mixins'), require('postcss-preset-env')({ stage: 1 })];
 
 if (process.env.NODE_ENV === 'production') {
   plugins.push(require('cssnano'));

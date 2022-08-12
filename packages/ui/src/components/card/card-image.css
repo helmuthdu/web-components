@@ -1,3 +1,9 @@
+:host {
+  overflow: hidden;
+}
+
 .card-image {
-  @apply h-full w-auto object-cover;
+  height: var(--size-full);
+  width: var(--size-auto);
+  object-fit: cover;
 }

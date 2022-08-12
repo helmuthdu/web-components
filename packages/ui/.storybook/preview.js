@@ -1,4 +1,4 @@
-import './public/tailwind.css';
+import '../styles.css';
 import theme from './theme';
 
 export const parameters = {

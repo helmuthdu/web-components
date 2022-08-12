@@ -1,3 +1,7 @@
 .card-header {
-  @apply align-middle text-xl font-medium text-content;
+  vertical-align: middle;
+  font-size: var(--text-xl);
+  line-height: var(--line-spacing-xl);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-content-body);
 }

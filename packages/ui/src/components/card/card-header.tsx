@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './card-header.css';
 
 export type Props = {
   dataset: { append?: string };
@@ -17,10 +16,9 @@ define<Props>('ui-card-header', {
       append: undefined
     }
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./card-header.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <header id="root" className={getClassName({ dataset })}>
         <slot />
       </header>

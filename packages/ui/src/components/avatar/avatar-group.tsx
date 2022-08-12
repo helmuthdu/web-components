@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './avatar-group.css';
 
 export type Props = {
   dataset: { append?: string };
@@ -20,10 +19,9 @@ define<Props>('ui-avatar-group', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./avatar-group.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <div id="root" className={getClassName({ dataset })}>
         <slot />
       </div>

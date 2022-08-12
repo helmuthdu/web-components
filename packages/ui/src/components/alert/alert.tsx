@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './alert.css';
 import '../../common/close-button/close-button';
 
 export type Props = {
@@ -29,10 +28,9 @@ define<Props>('ui-alert', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./alert.css')],
   template: ({ dataset, fire, remove }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <div id="root" className={getClassName({ dataset })}>
         <span>
           <slot />

@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import style from './button-group.css';
 
 export type Props = {
   dataset: {
@@ -27,10 +26,9 @@ define<Props>('ui-button-group', {
       children[idx].setAttribute('data-group', idx === 0 ? 'first' : idx === children.length - 1 ? 'last' : '');
     }
   },
-  styles: [style],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./button-group.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <div id="root" className={getClassName({ dataset })}>
         <slot />
       </div>

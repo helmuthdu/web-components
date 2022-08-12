@@ -1,3 +1,5 @@
 .card-footer {
-  @apply inline-flex w-full gap-2;
+  display: inline-flex;
+  width: var(--size-full);
+  gap: var(--size-2);
 }

@@ -56,10 +56,9 @@ define<Props>('ui-accordion-group', {
   onConnected: ({ dataset, children }) => {
     updateChildren(children, { dataset });
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), styles],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <div id="root" className={getClassName({ dataset })}>
         <slot />
       </div>

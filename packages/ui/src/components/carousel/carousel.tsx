@@ -3,19 +3,20 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { define } from '../../lib/custom-element';
-import styles from './carousel.css';
 
 let slideIndex = 0;
-let timeout: any;
+let timeout: NodeJS.Timeout;
 
 const showSlides = (index: number, slides: HTMLCollection, dots: HTMLLIElement[], timer = 8000) => {
   slideIndex = index;
+
   if (slideIndex >= slides.length) {
     slideIndex = 0;
   }
   if (slideIndex < 0) {
     slideIndex = slides.length - 1;
   }
+
   for (let i = 0; i < slides.length; i++) {
     slides[i].classList.remove('carousel-image-visible');
     slides[i].classList.add('carousel-image-hidden');
@@ -49,10 +50,9 @@ define<Props>('ui-carousel', {
   onConnected: ({ children, dataset, shadowRoot }) => {
     showSlides(slideIndex, children, Array.from(shadowRoot?.querySelectorAll('li') ?? []), +dataset.timeout);
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./carousel.css')],
   template: ({ children, dataset, shadowRoot }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <div id="root" className="carousel">
         <div className="carousel-container">
           <slot />

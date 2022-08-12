@@ -4,7 +4,6 @@
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 import type { Sizes } from '../../types';
-import styles from './button.css';
 
 export type Props = {
   type?: 'button' | 'submit' | 'reset';
@@ -102,10 +101,9 @@ define<Props>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./button.css')],
   template: ({ dataset, children, type }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
         {dataset.loading && <LoadingIcon dataset={dataset} />}
         <slot />

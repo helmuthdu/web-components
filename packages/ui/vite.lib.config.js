@@ -2,14 +2,14 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  assetsInclude: ['./tailwindcss.css'],
+  assetsInclude: ['./styles.css'],
   build: {
     outDir: 'lib',
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,
-        chunkFileNames: `[name].js`,
-        assetFileNames: `assets/[name].[ext]`
+        chunkFileNames: `js/[name].js`,
+        assetFileNames: `css/[name].[ext]`
       },
       input: [
         './src/components/accordion/accordion.tsx',

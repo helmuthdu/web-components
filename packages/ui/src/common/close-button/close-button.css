@@ -1,11 +1,31 @@
 .close-button {
-  @apply ml-1 -mr-1 inline-flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0.5 text-current;
+  margin-left: var(--size-1);
+  margin-right: - var(--size-1);
+  display: inline-flex;
+  height: var(--size-8);
+  width: var(--size-8);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  padding: var(--size-1);
+  color: currentColor;
 }
 
 .close-button > span {
-  @apply sr-only;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 .close-button > svg {
-  @apply h-5 w-5;
+  height: var(--size-5);
+  width: var(--size-5);
 }

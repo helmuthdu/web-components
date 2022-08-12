@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './accordion.css';
 
 export type Props = {
   dataset: { append?: string; header: string };
@@ -21,10 +20,9 @@ define<Props>('ui-accordion', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./accordion.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <details id="root" className={getClassName({ dataset })}>
         <summary className="accordion-header">
           <svg fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">

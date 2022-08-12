@@ -1,12 +1,17 @@
 .carousel {
-  @apply relative w-full;
+  position: relative;
+  width: var(--size-full);
 }
 
 .carousel-container {
-  @apply relative flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth;
-
   -ms-overflow-style: none;
   scrollbar-width: none;
+  position: relative;
+  display: flex;
+  width: var(--size-full);
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
 .carousel::-webkit-scrollbar {
@@ -14,37 +19,57 @@
 }
 
 .carousel-image-visible {
-  @apply opacity-100;
+  opacity: 1;
 }
 
 .carousel-image-hidden {
-  @apply opacity-0;
+  opacity: 0;
 }
 
 .carousel-button {
-  @apply absolute inset-y-0 w-12 text-white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--size-12);
+  color: var(--color-content-body);
 }
 
 .carousel-button-left {
-  @apply left-0;
+  left: 0;
 }
 
 .carousel-button-right {
-  @apply right-0;
+  right: 0;
 }
 
 .carousel-navigation {
-  @apply absolute inset-x-0 bottom-0 flex justify-center gap-2 pb-4;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--size-2);
+  padding-bottom: var(--size-4);
 }
 
 .carousel-navigation-item {
-  @apply w-8 border-b-4 border-white/60 transition duration-1000 hover:border-white;
+  width: var(--size-8);
+  border-bottom: var(--border-4) solid rgb(255 255 255/ 60%);
+  cursor: pointer;
+  transition-property: border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 700ms;
 }
 
 .carousel-navigation-item:not(.carousel-navigation-item-selected) {
-  @apply border-white/60;
+  border-color: rgb(255 255 255/ 60%);
 }
 
 .carousel-navigation-item-selected {
-  @apply border-white;
+  border-color: rgb(255 255 255);
+}
+
+.carousel-navigation-item:hover {
+  border-color: rgb(255 255 255);
 }

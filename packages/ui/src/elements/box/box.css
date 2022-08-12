@@ -1,3 +1,8 @@
 .box {
-  @apply block rounded-lg border border-contrast-200 bg-canvas p-5 text-content;
+  display: block;
+  border-radius: var(--rounded-lg);
+  border: var(--border) solid var(--color-contrast-200);
+  background-color: var(--color-canvas);
+  padding: var(--size-5);
+  color: var(--color-content-body);
 }

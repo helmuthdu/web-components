@@ -1,3 +1,6 @@
 .card-meta {
-  @apply block text-sm text-content-tertiary;
+  display: block;
+  font-size: var(--text-sm);
+  line-height: var(--line-spacing-sm);
+  color: var(--color-content-tertiary);
 }

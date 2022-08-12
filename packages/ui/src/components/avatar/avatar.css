@@ -5,13 +5,14 @@
 }
 
 .avatar {
-  @apply overflow-hidden border border-white/30;
+  overflow: hidden;
+  border: var(--border) solid var(--color-contrast-400);
 }
 
 .avatar-circle {
-  @apply rounded-full;
+  border-radius: var(--rounded-full);
 }
 
 .avatar-rounded {
-  @apply rounded-lg;
+  border-radius: var(--rounded-lg);
 }

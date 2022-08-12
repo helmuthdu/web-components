@@ -4,7 +4,6 @@
 import { dom, fragment } from '../../lib/create-element';
 import { classMap } from '../../lib/styling-element';
 import { define } from '../../lib/custom-element';
-import styles from './close-button.css';
 
 export type Props = { dataset: { append?: string } };
 
@@ -14,7 +13,7 @@ define<Props>('ui-close-button', {
       append: undefined
     }
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./close-button.css')],
   template: ({ dataset }) => (
     <>
       <button id="close-button" type="button" className={classMap('close-button', dataset.append)}>

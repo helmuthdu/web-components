@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './carousel-item.css';
 
 export type Props = {
   dataset: {
@@ -35,11 +34,10 @@ define<Props>('ui-carousel-item', {
   onConnected: ({ classList }) => {
     classList.add('carousel-image');
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./carousel-item.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
-      <img id="root" className="relative block w-full" src={dataset.src} alt="" />
+      <img id="root" className="carousel-item-wrapper" src={dataset.src} alt="" />
       <div className={getClassName({ dataset })}>
         <slot />
       </div>

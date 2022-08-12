@@ -3,7 +3,6 @@
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import styles from './card-image.css';
 
 export type Props = {
   dataset: { append?: string; src?: string };
@@ -18,10 +17,9 @@ define<Props>('ui-card-image', {
       src: undefined
     }
   },
-  styles: [styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./card-image.css')],
   template: ({ dataset }) => (
     <>
-      <link rel="stylesheet" href="/tailwind.css" />
       <img id="root" className={getClassName({ dataset })} src={dataset.src} alt="" />
     </>
   )

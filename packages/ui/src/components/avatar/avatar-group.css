@@ -1,3 +1,5 @@
 .avatar-group {
-  @apply inline-flex flex-wrap items-center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
 }

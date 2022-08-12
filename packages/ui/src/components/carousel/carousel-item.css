@@ -1,31 +1,52 @@
+.carousel-image-wrapper {
+  position: relative;
+  display: block;
+  width: var(--size-full);
+}
+
 .carousel-image {
-  @apply absolute w-full transition-opacity duration-1000 ease-in first:relative;
+  position: absolute;
+  width: var(--size-full);
+  transition-property: opacity;
+  transition-timing-function: ease-in;
+  transition-duration: 700ms;
+}
+
+.carousel-image:first-child {
+  position: relative;
 }
 
 .carousel-item {
-  @apply absolute inset-0 flex flex-col py-8 px-12;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--size-8) var(--size-12);
 }
 
 .carousel-item-text-position-top {
-  @apply justify-start;
+  justify-content: start;
 }
 
 .carousel-item-text-position-middle {
-  @apply justify-center;
+  justify-content: center;
 }
 
 .carousel-item-text-position-bottom {
-  @apply justify-end;
+  justify-content: end;
 }
 
 .carousel-item-text-align-left {
-  @apply text-left;
+  text-align: left;
 }
 
 .carousel-item-text-align-center {
-  @apply text-center;
+  text-align: center;
 }
 
 .carousel-item-text-align-right {
-  @apply text-right;
+  text-align: right;
 }

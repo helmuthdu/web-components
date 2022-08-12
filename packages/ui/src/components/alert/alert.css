@@ -1,27 +1,46 @@
 .alert {
-  @apply flex items-center justify-between rounded-xl border py-2 pl-4 pr-3 text-sm shadow-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rounded-xl);
+  border-width: var(--border);
+  padding: var(--size-2) var(--size-3) var(--size-2) var(--size-4);
+  font-size: var(--text-xs);
+  line-height: var(--line-spacing-xs);
+  box-shadow: var(--shadow-sm);
 }
 
 .alert:not(.alert-info, .alert-error, .alert-success, .alert-contrast) {
-  @apply border-contrast-300 bg-canvas text-content;
+  border-color: var(--color-contrast-300);
+  background-color: var(--color-canvas);
+  color: var(--color-content-body);
 }
 
 .alert-info {
-  @apply border-primary-focus bg-primary-backdrop text-primary-content;
+  border-color: var(--color-primary-focus);
+  background-color: var(--color-primary-backdrop);
+  color: var(--color-primary-content);
 }
 
 .alert-error {
-  @apply border-error-focus bg-error-backdrop text-error-content;
+  border-color: var(--color-error-focus);
+  background-color: var(--color-error-backdrop);
+  color: var(--color-error-content);
 }
 
 .alert-success {
-  @apply border-success-focus bg-success-backdrop text-success-content;
+  border-color: var(--color-success-focus);
+  background-color: var(--color-success-backdrop);
+  color: var(--color-success-content);
 }
 
 .alert-contrast {
-  @apply border-contrast-600 bg-contrast-700 text-content-contrast;
+  border-color: var(--color-contrast-600);
+  background-color: var(--color-contrast-700);
+  color: var(--color-content-contrast);
 }
 
 .alert > span {
-  @apply text-sm;
+  font-size: var(--text-sm);
+  line-height: var(--line-spacing-sm);
 }
