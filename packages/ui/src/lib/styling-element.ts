@@ -16,18 +16,21 @@ export const classMap = (...classes: unknown[]) =>
     }, '')
     .trim();
 
-export const applyStyles = (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
+export const applyStyles = async (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
   if ((styles ?? []).length > 0) {
     Promise.all(
-      styles.map(style => {
-        if (isString(style)) {
-          const sheet = new CSSStyleSheet(); // @ts-ignore
-          return sheet.replace(style);
-        } else if (style instanceof CSSStyleSheet) {
-          return Promise.resolve(style);
-        }
-        throw new Error(`invalid css in styles`);
-      })
+      styles.map(source =>
+        Promise.resolve(source).then((style: any) => {
+          const _style = style.default ?? style;
+          if (isString(_style)) {
+            const sheet = new CSSStyleSheet(); // @ts-ignore
+            return sheet.replace(_style);
+          } else if (_style instanceof CSSStyleSheet) {
+            return Promise.resolve(_style);
+          }
+          throw new Error(`invalid css in styles`);
+        })
+      )
     ).then((sheets: CSSStyleSheet[]) => {
       // @ts-ignore
       shadowRoot.adoptedStyleSheets = sheets;
