@@ -5,12 +5,10 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/web-components.umd.js",
   "module": "./dist/web-components.es.js",
   "exports": {
     ".": {
-      "import": "./dist/web-components.es.js",
-      "require": "./dist/web-components.umd.js"
+      "import": "./dist/web-components.es.js"
     }
   },
   "engines": {
