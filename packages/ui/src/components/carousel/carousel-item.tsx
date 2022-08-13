@@ -15,10 +15,10 @@ export type Props = {
 
 const getClassName = ({ dataset }: Props) =>
   classMap(
-    'carousel-item',
+    'carousel-text',
     {
-      [`carousel-item-text-position-${dataset.textPosition}`]: dataset.textPosition,
-      [`carousel-item-text-align-${dataset.textAlign}`]: dataset.textAlign
+      [`is-${dataset.textPosition}`]: dataset.textPosition,
+      [`is-${dataset.textAlign}`]: dataset.textAlign
     },
     dataset.append
   );
@@ -37,7 +37,7 @@ define<Props>('ui-carousel-item', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel-item.css')],
   template: ({ dataset }) => (
     <>
-      <img id="root" className="carousel-item-wrapper" src={dataset.src} alt="" />
+      <img id="root" className="carousel-content" src={dataset.src} alt="" />
       <div className={getClassName({ dataset })}>
         <slot />
       </div>

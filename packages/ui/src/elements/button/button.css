@@ -8,50 +8,50 @@
   text-align: center;
   font-weight: var(--font-weight-semibold);
 
-  &:not(.btn-text) {
+  &:not(.is-text) {
     box-shadow: var(--shadow-sm);
   }
 
-  &.btn-rounded {
+  &.is-rounded {
     border-radius: var(--rounded-full);
   }
 
-  &:not(.btn-rounded, .btn-group) {
+  &:not(.is-rounded, .is-group) {
     border-radius: var(--rounded-lg);
   }
 
-  &.btn-block {
+  &.is-block {
     width: var(--size-full);
   }
 
-  &.btn-group {
-    &.btn-outline {
+  &.is-group {
+    &.is-outline {
       margin-left: -1px;
       margin-right: 0;
     }
 
-    &.btn-group-first {
+    &.is-first {
       border-top-left-radius: var(--rounded-full);
       border-bottom-left-radius: var(--rounded-full);
     }
 
-    &.btn-group-last {
+    &.is-last {
       border-top-right-radius: var(--rounded-full);
       border-bottom-right-radius: var(--rounded-full);
     }
 
-    &.btn-group-first:not(.btn-rounded) {
+    &.is-first:not(.is-rounded) {
       border-top-left-radius: var(--rounded-lg);
       border-bottom-left-radius: var(--rounded-lg);
     }
 
-    &.btn-group-last:not(.btn-rounded) {
+    &.is-last:not(.is-rounded) {
       border-top-right-radius: var(--rounded-lg);
       border-bottom-right-radius: var(--rounded-lg);
     }
   }
 
-  &.btn-xs {
+  &.is-xs {
     padding: var(--size-1) var(--size-4);
     font-size: var(--text-xs);
     line-height: var(--line-spacing-xs);
@@ -62,7 +62,7 @@
     }
   }
 
-  &.btn-sm {
+  &.is-sm {
     padding: var(--size-2) var(--size-4);
     font-size: var(--text-sm);
     line-height: var(--line-spacing-sm);
@@ -73,7 +73,7 @@
     }
   }
 
-  &.btn-md {
+  &.is-md {
     padding: var(--size-3) var(--size-5);
     font-size: var(--text-md);
     line-height: var(--line-spacing-md);
@@ -84,7 +84,7 @@
     }
   }
 
-  &.btn-lg {
+  &.is-lg {
     padding: var(--size-4) var(--size-5);
     font-size: var(--text-lg);
     line-height: var(--line-spacing-lg);
@@ -95,7 +95,7 @@
     }
   }
 
-  &.btn-xl {
+  &.is-xl {
     padding: var(--size-4) var(--size-6);
     font-size: var(--text-xl);
     line-height: var(--line-spacing-xl);
@@ -106,37 +106,37 @@
     }
   }
 
-  &.btn-circle:not(.btn-group) {
+  &.is-circle:not(.is-group) {
     border-radius: var(--rounded-full);
     padding: 0;
 
-    &.btn-xs {
+    &.is-xs {
       height: var(--size-8);
       width: var(--size-8);
     }
 
-    &.btn-sm {
+    &.is-sm {
       height: var(--size-10);
       width: var(--size-10);
     }
 
-    &.btn-md {
+    &.is-md {
       height: var(--size-12);
       width: var(--size-12);
     }
 
-    &.btn-lg {
+    &.is-lg {
       height: var(--size-14);
       width: var(--size-14);
     }
 
-    &.btn-xl {
+    &.is-xl {
       height: var(--size-16);
       width: var(--size-16);
     }
   }
 
-  &.btn-loading {
+  &.is-loading {
     color: transparent;
 
     &:hover {
@@ -158,12 +158,12 @@
     }
   }
 
-  &.btn-disabled {
+  &.is-disabled {
     border: var(--border) solid transparent;
     background-color: rgb(115 115 115/20%);
     color: var(--color-content-disabled);
 
-    &.btn-loading {
+    &.is-loading {
       color: transparent;
 
       & > svg {
@@ -172,161 +172,161 @@
     }
   }
 
-  &.btn-outline:not(.btn-text, .btn-disabled) {
+  &.is-outline:not(.is-text, .is-disabled) {
     border-width: var(--border-2);
     background-color: transparent;
 
-    &.btn-primary,
-    &.btn-primary > svg {
+    &.is-primary,
+    &.is-primary > svg {
       border-color: var(--color-primary);
       color: var(--color-primary);
     }
 
-    &.btn-primary:hover,
-    &.btn-primary:focus {
+    &.is-primary:hover,
+    &.is-primary:focus {
       box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
-    &.btn-error,
-    &.btn-error > svg {
+    &.is-error,
+    &.is-error > svg {
       border-color: var(--color-error);
       color: var(--color-error);
     }
 
-    &.btn-error:hover,
-    &.btn-error:focus {
+    &.is-error:hover,
+    &.is-error:focus {
       box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
-    &.btn-success,
-    &.btn-success > svg {
+    &.is-success,
+    &.is-success > svg {
       border-color: var(--color-success);
       color: var(--color-success);
     }
 
-    &.btn-success:hover,
-    &.btn-success:focus {
+    &.is-success:hover,
+    &.is-success:focus {
       box-shadow: var(--ring-4) var(--color-success-focus);
     }
 
-    &.btn-xs {
+    &.is-xs {
       margin-top: var(--size-1);
       font-size: var(--text-xs);
       line-height: var(--line-spacing-xs);
 
-      &:not(.btn-circle) {
+      &:not(.is-circle) {
         padding: var(--size-0-5) var(--size-4);
       }
     }
 
-    &.btn-sm {
+    &.is-sm {
       font-size: var(--text-sm);
       line-height: var(--line-spacing-sm);
 
-      &:not(.btn-circle) {
+      &:not(.is-circle) {
         padding: var(--size-1-5) var(--size-4);
       }
     }
 
-    &.btn-md {
+    &.is-md {
       font-size: var(--text-md);
       line-height: var(--line-spacing-md);
 
-      &:not(.btn-circle) {
+      &:not(.is-circle) {
         padding: var(--size-2-5) var(--size-5);
       }
     }
 
-    &.btn-lg {
+    &.is-lg {
       font-size: var(--text-lg);
       line-height: var(--line-spacing-lg);
 
-      &:not(.btn-circle) {
+      &:not(.is-circle) {
         padding: var(--size-3-5) var(--size-5);
       }
     }
 
-    &.btn-xl {
+    &.is-xl {
       font-size: var(--text-xl);
       line-height: var(--line-spacing-xl);
 
-      &:not(.btn-circle) {
+      &:not(.is-circle) {
         padding: var(--size-3-5) var(--size-6);
       }
     }
 
-    &.btn-loading,
-    &.btn-loading:hover {
+    &.is-loading,
+    &.is-loading:hover {
       color: transparent;
     }
   }
 
-  &.btn-text:not(.btn-outline, .btn-disabled) {
+  &.is-text:not(.is-outline, .is-disabled) {
     background-color: transparent;
 
-    &.btn-primary {
+    &.is-primary {
       color: var(--color-primary);
     }
 
-    &.btn-primary:hover {
+    &.is-primary:hover {
       box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
-    &.btn-error {
+    &.is-error {
       color: var(--color-error);
     }
 
-    &.btn-error:hover {
+    &.is-error:hover {
       box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
-    &.btn-success {
+    &.is-success {
       color: var(--color-success);
     }
 
-    &.btn-success:hover {
+    &.is-success:hover {
       box-shadow: var(--ring-4) var(--color-success-focus);
     }
 
-    &.btn-loading {
+    &.is-loading {
       color: transparent;
     }
   }
 
-  &:not(.btn-text, .btn-outline, .btn-disabled) {
+  &:not(.is-text, .is-outline, .is-disabled) {
     border: none;
 
-    &.btn-primary {
+    &.is-primary {
       background-color: var(--color-primary);
       color: var(--color-primary-contrast);
     }
 
-    &.btn-primary:hover,
-    &.btn-primary:focus {
+    &.is-primary:hover,
+    &.is-primary:focus {
       box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
-    &.btn-error {
+    &.is-error {
       background-color: var(--color-error);
       color: var(--color-error-contrast);
     }
 
-    &.btn-error:hover,
-    &.btn-error:focus {
+    &.is-error:hover,
+    &.is-error:focus {
       box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
-    &.btn-success {
+    &.is-success {
       background-color: var(--color-success);
       color: var(--color-success-contrast);
     }
 
-    &.btn-success:hover,
-    &.btn-success:focus {
+    &.is-success:hover,
+    &.is-success:focus {
       box-shadow: var(--ring-4) var(--color-success-focus);
     }
 
-    &.btn-loading {
+    &.is-loading {
       color: transparent;
     }
   }

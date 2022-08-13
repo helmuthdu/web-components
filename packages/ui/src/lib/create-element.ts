@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './shared';
+import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './utils';
 
 type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 

@@ -1,4 +1,4 @@
-import { isObject, isString } from './shared';
+import { isObject, isString } from './utils';
 
 export const classMap = (...classes: unknown[]) =>
   classes

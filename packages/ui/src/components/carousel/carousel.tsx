@@ -18,16 +18,16 @@ const showSlides = (index: number, slides: HTMLCollection, dots: HTMLLIElement[]
   }
 
   for (let i = 0; i < slides.length; i++) {
-    slides[i].classList.remove('carousel-image-visible');
-    slides[i].classList.add('carousel-image-hidden');
+    slides[i].classList.remove('is-visible');
+    slides[i].classList.add('carousel-image', 'is-hidden');
   }
-  slides[slideIndex].classList.replace('carousel-image-hidden', 'carousel-image-visible');
+  slides[slideIndex].classList.replace('is-hidden', 'is-visible');
 
   if (dots.length > 0) {
     for (let i = 0; i < dots.length; i++) {
-      dots[i].classList.remove('carousel-navigation-item-selected');
+      dots[i].classList.remove('is-selected');
     }
-    dots[slideIndex].classList.add('carousel-navigation-item-selected');
+    dots[slideIndex].classList.add('is-selected');
   }
 
   if (timer === 0) return;
@@ -48,7 +48,11 @@ define<Props>('ui-carousel', {
     }
   },
   onConnected: ({ children, dataset, shadowRoot }) => {
-    showSlides(slideIndex, children, Array.from(shadowRoot?.querySelectorAll('li') ?? []), +dataset.timeout);
+    const observer = new MutationObserver(() => {
+      showSlides(slideIndex, children, Array.from(shadowRoot?.querySelectorAll('li') ?? []), +dataset.timeout);
+      observer.disconnect();
+    });
+    observer.observe(shadowRoot as ShadowRoot, { childList: true });
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel.css')],
   template: ({ children, dataset, shadowRoot }) => (
@@ -60,7 +64,7 @@ define<Props>('ui-carousel', {
         {dataset.buttons && (
           <>
             <button
-              className="carousel-button carousel-button-left"
+              className="carousel-button is-left"
               onClick={() =>
                 showSlides(
                   slideIndex - 1,
@@ -72,7 +76,7 @@ define<Props>('ui-carousel', {
               ❮
             </button>
             <button
-              className="carousel-button carousel-button-right"
+              className="carousel-button is-right"
               onClick={() =>
                 showSlides(
                   slideIndex + 1,

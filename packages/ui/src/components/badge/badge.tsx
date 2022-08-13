@@ -18,9 +18,9 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'badge',
     {
-      'badge-pill': dataset.pill,
-      [`badge-${dataset.size}`]: dataset.size,
-      [`badge-${dataset.color}`]: dataset.color
+      'is-pill': dataset.pill,
+      [`is-${dataset.size}`]: dataset.size,
+      [`is-${dataset.color}`]: dataset.color
     },
     dataset.append
   );

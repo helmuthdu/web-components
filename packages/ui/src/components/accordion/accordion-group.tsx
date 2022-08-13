@@ -16,15 +16,15 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'accordion-group',
     {
-      [`accordion-group-${dataset.variant}`]: dataset.variant
+      [`is-${dataset.variant}`]: dataset.variant
     },
     dataset.append
   );
 
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
-  const primary = ['accordion-primary'];
-  const secondary = ['accordion-secondary'];
-  const tertiary = ['accordion-tertiary'];
+  const primary = ['accordion-group-item', 'is-primary'];
+  const secondary = ['accordion-group-item', 'is-secondary'];
+  const tertiary = ['accordion-group-item', 'is-tertiary'];
   [...children].forEach((el, idx) => {
     el.classList.remove(...primary, ...secondary, ...tertiary);
     if (dataset.variant === 'secondary') {

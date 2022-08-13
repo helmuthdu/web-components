@@ -35,17 +35,17 @@ const getClassName = ({ dataset }: Props) => {
   return classMap(
     'btn',
     {
-      'btn-block': dataset.block,
-      'btn-circle': dataset.circle,
-      'btn-disabled': dataset.disabled,
-      'btn-group': dataset.group,
-      'btn-group-first': dataset.group === 'first',
-      'btn-group-last': dataset.group === 'last',
-      'btn-loading': dataset.loading,
-      'btn-rounded': dataset.rounded,
-      [`btn-${dataset.color}`]: dataset.color,
-      [`btn-${dataset.size}`]: dataset.size,
-      [`btn-${dataset.variant}`]: dataset.variant
+      'is-block': dataset.block,
+      'is-circle': dataset.circle,
+      'is-disabled': dataset.disabled,
+      'is-group': dataset.group,
+      'is-first': dataset.group === 'first',
+      'is-last': dataset.group === 'last',
+      'is-loading': dataset.loading,
+      'is-rounded': dataset.rounded,
+      [`is-${dataset.color}`]: dataset.color,
+      [`is-${dataset.size}`]: dataset.size,
+      [`is-${dataset.variant}`]: dataset.variant
     },
     dataset.append
   );

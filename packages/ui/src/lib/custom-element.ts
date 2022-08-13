@@ -1,5 +1,5 @@
 import { configureFormElement } from './form-element';
-import { isArray, isFunction, isObject, isString } from './shared';
+import { isArray, isFunction, isObject, isString } from './utils';
 import { applyStyles } from './styling-element';
 
 type HTMLTags = keyof HTMLElementEventMap;

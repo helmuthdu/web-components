@@ -7,12 +7,12 @@
 .avatar {
   overflow: hidden;
   border: var(--border) solid var(--color-contrast-400);
-}
 
-.avatar-circle {
-  border-radius: var(--rounded-full);
-}
+  &.is-circle {
+    border-radius: var(--rounded-full);
+  }
 
-.avatar-rounded {
-  border-radius: var(--rounded-lg);
+  &.is-rounded {
+    border-radius: var(--rounded-lg);
+  }
 }

@@ -8,67 +8,67 @@
   text-align: center;
   vertical-align: middle;
   font-weight: var(--font-weight-semibold);
-}
 
-.badge:not(.badge-pill) {
-  border-radius: var(--rounded-lg);
-}
+  &:not(&.is-pill) {
+    border-radius: var(--rounded-lg);
+  }
 
-.badge-pill {
-  border-radius: var(--rounded-full);
-}
+  &.is-pill {
+    border-radius: var(--rounded-full);
+  }
 
-.badge-xs {
-  font-size: var(--text-xs);
-  line-height: var(--line-spacing-xs);
-}
+  &.is-xs {
+    font-size: var(--text-xs);
+    line-height: var(--line-spacing-xs);
+  }
 
-.badge-sm {
-  font-size: var(--text-sm);
-  line-height: var(--line-spacing-sm);
-}
+  &.is-sm {
+    font-size: var(--text-sm);
+    line-height: var(--line-spacing-sm);
+  }
 
-.badge-md {
-  font-size: var(--text-md);
-  line-height: var(--line-spacing-md);
-}
+  &.is-md {
+    font-size: var(--text-md);
+    line-height: var(--line-spacing-md);
+  }
 
-.badge-lg {
-  font-size: var(--text-lg);
-  line-height: var(--line-spacing-lg);
-}
+  &.is-lg {
+    font-size: var(--text-lg);
+    line-height: var(--line-spacing-lg);
+  }
 
-.badge-xl {
-  font-size: var(--text-xl);
-  line-height: var(--line-spacing-xl);
-}
+  &.is-xl {
+    font-size: var(--text-xl);
+    line-height: var(--line-spacing-xl);
+  }
 
-.badge:not(.badge-info, .badge-error, .badge-success, .badge-contrast) {
-  border: var(--border) solid var(--color-contrast-200);
-  background-color: var(--color-contrast-50);
-  color: var(--color-content-body);
-}
+  &:not(.is-info, .is-error, .is-success, .is-contrast) {
+    border: var(--border) solid var(--color-contrast-200);
+    background-color: var(--color-contrast-50);
+    color: var(--color-content-body);
+  }
 
-.badge-info {
-  border: var(--border) solid var(--color-primary-focus);
-  background-color: var(--color-primary);
-  color: var(--color-primary-contrast);
-}
+  &.is-info {
+    border: var(--border) solid var(--color-primary-focus);
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
 
-.badge-error {
-  border: var(--border) solid var(--color-error-focus);
-  background-color: var(--color-error);
-  color: var(--color-error-contrast);
-}
+  &.is-error {
+    border: var(--border) solid var(--color-error-focus);
+    background-color: var(--color-error);
+    color: var(--color-error-contrast);
+  }
 
-.badge-success {
-  border: var(--border) solid var(--color-success-focus);
-  background-color: var(--color-success);
-  color: var(--color-success-contrast);
-}
+  &.is-success {
+    border: var(--border) solid var(--color-success-focus);
+    background-color: var(--color-success);
+    color: var(--color-success-contrast);
+  }
 
-.badge-contrast {
-  border: var(--border) solid var(--color-contrast-800);
-  background-color: var(--color-contrast-700);
-  color: var(--color-content-contrast);
+  &.is-contrast {
+    border: var(--border) solid var(--color-contrast-800);
+    background-color: var(--color-contrast-700);
+    color: var(--color-content-contrast);
+  }
 }

@@ -13,7 +13,7 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'alert',
     {
-      [`alert-${dataset.color}`]: dataset.color
+      [`is-${dataset.color}`]: dataset.color
     },
     dataset.append
   );

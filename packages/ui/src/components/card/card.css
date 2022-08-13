@@ -7,12 +7,12 @@
   border: var(--border) solid var(--color-contrast-200);
   background-color: var(--color-canvas);
   box-shadow: var(--shadow-lg);
-}
 
-.card:not(.card-horizontal) {
-  flex-direction: column;
-}
+  &:not(.is-horizontal) {
+    flex-direction: column;
+  }
 
-.card-horizontal {
-  flex-direction: row;
+  .is-horizontal {
+    flex-direction: row;
+  }
 }

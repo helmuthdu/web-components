@@ -12,7 +12,7 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'card',
     {
-      'card-horizontal': dataset.horizontal
+      'is-horizontal': dataset.horizontal
     },
     dataset.append
   );

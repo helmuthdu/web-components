@@ -2,28 +2,30 @@
   display: block;
   border-radius: var(--rounded-lg);
   padding: var(--size-2) var(--size-1);
+
+  &.is-primary {
+    border: var(--border) solid var(--color-contrast-200);
+    background-color: var(--color-canvas);
+  }
+
+  &.is-secondary,
+  &.is-tertiary {
+    background-color: transparent;
+  }
 }
 
-.accordion-group-primary {
-  border: var(--border) solid var(--color-contrast-200);
-  background-color: var(--color-canvas);
-}
+.accordion-group-item {
+  &.is-primary,
+  &.is-tertiary {
+    display: block;
+    border-bottom: var(--border) solid var(--color-contrast-200);
+  }
 
-.accordion-group-secondary,
-.accordion-group-tertiary {
-  background-color: transparent;
-}
-
-.accordion-primary,
-.accordion-tertiary {
-  display: block;
-  border-bottom: var(--border) solid var(--color-contrast-200);
-}
-
-.accordion-secondary {
-  margin-bottom: var(--size-2);
-  display: block;
-  border-radius: var(--rounded-lg);
-  border: var(--border) solid var(--color-contrast-200);
-  background-color: var(--color-canvas);
+  &.is-secondary {
+    margin-bottom: var(--size-2);
+    display: block;
+    border-radius: var(--rounded-lg);
+    border: var(--border) solid var(--color-contrast-200);
+    background-color: var(--color-canvas);
+  }
 }

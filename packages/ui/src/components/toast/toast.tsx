@@ -54,28 +54,28 @@ define<Props>('ui-toast', {
           {hasHeader && (
             <div
               className={classMap('toast-header', {
-                [`toast-${dataset.color}`]: dataset.color
+                [`is-${dataset.color}`]: dataset.color
               })}>
               <span
                 className={classMap('toast-header-content', {
-                  [`toast-text-${dataset.color}`]: dataset.color
+                  [`is-text-${dataset.color}`]: dataset.color
                 })}>
                 <slot name="icon" />
                 <slot name="header" />
               </span>
               <div
-                className={classMap('toast-header-panel', {
-                  [`toast-text-${dataset.color}`]: dataset.color
+                className={classMap('toast-header-extra', {
+                  [`is-text-${dataset.color}`]: dataset.color
                 })}>
                 <span
                   className={classMap('toast-header-meta', {
-                    [`toast-text-${dataset.color}`]: dataset.color
+                    [`is-text-${dataset.color}`]: dataset.color
                   })}>
                   <slot name="meta" />
                 </span>
                 <ui-close-button
                   className={classMap({
-                    [`toast-text-${dataset.color}`]: dataset.color
+                    [`is-text-${dataset.color}`]: dataset.color
                   })}
                   onClick={() => {
                     fire('close');
@@ -87,9 +87,9 @@ define<Props>('ui-toast', {
           )}
           <div
             className={classMap('toast-content', {
-              'toast-content-headless': !hasHeader,
-              [`toast-${dataset.color}`]: dataset.color,
-              [`toast-text-${dataset.color}`]: dataset.color
+              'is-headless': !hasHeader,
+              [`is-${dataset.color}`]: dataset.color,
+              [`is-text-${dataset.color}`]: dataset.color
             })}>
             {!hasHeader ? (
               <>

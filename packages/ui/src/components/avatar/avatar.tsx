@@ -15,7 +15,7 @@ const getClassName = ({ dataset }: Props) =>
   classMap(
     'avatar',
     {
-      [`avatar-${dataset.variant}`]: dataset.variant
+      [`is-${dataset.variant}`]: dataset.variant
     },
     dataset.append
   );
