@@ -10,7 +10,7 @@
   border: none;
   background-color: transparent;
   padding: var(--size-1);
-  color: currentColor;
+  color: currentcolor;
 }
 
 .close-button > span {

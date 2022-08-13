@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  assetsInclude: ['./styles.css'],
+  assetsInclude: ['./src/styles/styles.css'],
   build: {
     outDir: 'lib',
     rollupOptions: {

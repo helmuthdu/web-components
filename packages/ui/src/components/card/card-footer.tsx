@@ -16,7 +16,7 @@ define<Props>('ui-card-footer', {
       append: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./card-foot.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-foot.css')],
   template: ({ dataset }) => (
     <>
       <footer id="root" className={getClassName({ dataset })}>

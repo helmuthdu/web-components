@@ -56,7 +56,7 @@ define<Props>('ui-accordion-group', {
   onConnected: ({ dataset, children }) => {
     updateChildren(children, { dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), styles],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), styles],
   template: ({ dataset }) => (
     <>
       <div id="root" className={getClassName({ dataset })}>

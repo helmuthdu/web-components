@@ -3,7 +3,7 @@
   top: 0;
   right: 0;
   display: flex;
-  max-height: var(--size-width);
+  max-height: var(--size-screen-height);
   flex-direction: column;
   gap: var(--size-2);
   overflow: hidden;

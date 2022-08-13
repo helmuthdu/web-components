@@ -44,7 +44,7 @@ define<Props>('ui-toast', {
       setTimeout(remove, dataset.timeout);
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./toast.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./toast.css')],
   template: ({ children, dataset, fire, remove }) => {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (

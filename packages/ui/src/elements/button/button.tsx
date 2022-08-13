@@ -101,7 +101,7 @@ define<Props>('ui-button', {
   onConnected({ classList, dataset }) {
     classList[dataset.block ? 'add' : 'remove']('w-full');
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./button.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./button.css')],
   template: ({ dataset, children, type }) => (
     <>
       <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>

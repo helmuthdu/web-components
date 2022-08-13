@@ -19,7 +19,7 @@ define<Props>('ui-avatar-group', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./avatar-group.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./avatar-group.css')],
   template: ({ dataset }) => (
     <>
       <div id="root" className={getClassName({ dataset })}>

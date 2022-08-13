@@ -21,7 +21,7 @@ define<Props>('ui-box', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./box.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./box.css')],
   template: ({ dataset }) => (
     <>
       <div id="root" className={getClassName({ dataset })}>

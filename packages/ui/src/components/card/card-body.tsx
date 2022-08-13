@@ -16,7 +16,7 @@ define<Props>('ui-card-body', {
       append: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./card-body.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-body.css')],
   template: ({ dataset }) => (
     <>
       <section id="root" className={getClassName({ dataset })}>

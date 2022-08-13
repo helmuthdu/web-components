@@ -16,7 +16,7 @@ define<Props>('ui-card-header', {
       append: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./card-header.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-header.css')],
   template: ({ dataset }) => (
     <>
       <header id="root" className={getClassName({ dataset })}>

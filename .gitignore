@@ -4,5 +4,7 @@
 *.local
 build
 node_modules
-packages/ui/.storybook/public
+packages/*/.storybook/public
+packages/*/lib
+packages/*/dist
 package-lock.json

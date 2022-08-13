@@ -20,7 +20,7 @@ define<Props>('ui-accordion', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./accordion.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./accordion.css')],
   template: ({ dataset }) => (
     <>
       <details id="root" className={getClassName({ dataset })}>

@@ -13,7 +13,7 @@ define<Props>('ui-close-button', {
       append: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./close-button.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./close-button.css')],
   template: ({ dataset }) => (
     <>
       <button id="close-button" type="button" className={classMap('close-button', dataset.append)}>

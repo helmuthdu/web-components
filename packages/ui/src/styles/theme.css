@@ -44,14 +44,14 @@
   --size-6xl: 72rem; /* 1152px */
   --size-7xl: 80rem; /* 1280px */
   --size-full: 100%;
-  --size-width: 100vw;
-  --size-height: 100vh;
   --size-fit: fit-content;
   --size-min: min-content;
   --size-max: max-content;
   --size-auto: auto;
   --size-none: none;
   --size-prose: 65ch;
+  --size-screen-width: 100vw;
+  --size-screen-height: 100vh;
   --size-screen-xs: 480px;
   --size-screen-sm: 640px;
   --size-screen-md: 768px;
@@ -63,10 +63,10 @@
   --border-2: 2px;
   --border-4: 4px;
   --border-8: 8px;
-  --focus: 0 0 0 var(--border);
-  --focus-2: 0 0 0 var(--border-2);
-  --focus-4: 0 0 0 var(--border-4);
-  --focus-8: 0 0 0 var(--border-8);
+  --ring: 0 0 0 var(--border);
+  --ring-2: 0 0 0 var(--border-2);
+  --ring-4: 0 0 0 var(--border-4);
+  --ring-8: 0 0 0 var(--border-8);
   --rounded: 0.25rem;
   --rounded-sm: 0.125rem;
   --rounded-md: 0.375rem;

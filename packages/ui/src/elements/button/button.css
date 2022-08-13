@@ -184,7 +184,7 @@
 
     &.btn-primary:hover,
     &.btn-primary:focus {
-      box-shadow: var(--focus-4) var(--color-primary-focus);
+      box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
     &.btn-error,
@@ -195,7 +195,7 @@
 
     &.btn-error:hover,
     &.btn-error:focus {
-      box-shadow: var(--focus-4) var(--color-error-focus);
+      box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
     &.btn-success,
@@ -206,7 +206,7 @@
 
     &.btn-success:hover,
     &.btn-success:focus {
-      box-shadow: var(--focus-4) var(--color-success-focus);
+      box-shadow: var(--ring-4) var(--color-success-focus);
     }
 
     &.btn-xs {
@@ -269,7 +269,7 @@
     }
 
     &.btn-primary:hover {
-      box-shadow: var(--focus-4) var(--color-primary-focus);
+      box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
     &.btn-error {
@@ -277,7 +277,7 @@
     }
 
     &.btn-error:hover {
-      box-shadow: var(--focus-4) var(--color-error-focus);
+      box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
     &.btn-success {
@@ -285,7 +285,7 @@
     }
 
     &.btn-success:hover {
-      box-shadow: var(--focus-4) var(--color-success-focus);
+      box-shadow: var(--ring-4) var(--color-success-focus);
     }
 
     &.btn-loading {
@@ -303,7 +303,7 @@
 
     &.btn-primary:hover,
     &.btn-primary:focus {
-      box-shadow: var(--focus-4) var(--color-primary-focus);
+      box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
     &.btn-error {
@@ -313,7 +313,7 @@
 
     &.btn-error:hover,
     &.btn-error:focus {
-      box-shadow: var(--focus-4) var(--color-error-focus);
+      box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
     &.btn-success {
@@ -323,7 +323,7 @@
 
     &.btn-success:hover,
     &.btn-success:focus {
-      box-shadow: var(--focus-4) var(--color-success-focus);
+      box-shadow: var(--ring-4) var(--color-success-focus);
     }
 
     &.btn-loading {

@@ -34,7 +34,7 @@ define<Props>('ui-carousel-item', {
   onConnected: ({ classList }) => {
     classList.add('carousel-image');
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./carousel-item.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel-item.css')],
   template: ({ dataset }) => (
     <>
       <img id="root" className="carousel-item-wrapper" src={dataset.src} alt="" />

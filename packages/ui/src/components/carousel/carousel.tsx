@@ -50,7 +50,7 @@ define<Props>('ui-carousel', {
   onConnected: ({ children, dataset, shadowRoot }) => {
     showSlides(slideIndex, children, Array.from(shadowRoot?.querySelectorAll('li') ?? []), +dataset.timeout);
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./carousel.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel.css')],
   template: ({ children, dataset, shadowRoot }) => (
     <>
       <div id="root" className="carousel">

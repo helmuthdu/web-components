@@ -16,7 +16,7 @@ define<Props>('ui-card-meta', {
       append: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./card-meta.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-meta.css')],
   template: ({ dataset }) => (
     <>
       <span id="root" className={getClassName({ dataset })}>

@@ -30,7 +30,7 @@ define<Props>('ui-avatar', {
   onAttributeChanged(name, prev, curr, { dataset, spot }) {
     spot('root').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/variables.css'), import('./avatar.css')],
+  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./avatar.css')],
   template: ({ dataset, fire, remove }) => (
     <>
       <div id="root" className={getClassName({ dataset })}>
