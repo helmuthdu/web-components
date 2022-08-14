@@ -176,10 +176,13 @@
     border-width: var(--border-2);
     background-color: transparent;
 
-    &.is-primary,
-    &.is-primary > svg {
+    &.is-primary {
       border-color: var(--color-primary);
       color: var(--color-primary);
+
+      & > svg {
+        color: var(--color-primary);
+      }
     }
 
     &.is-primary:hover,
@@ -187,10 +190,13 @@
       box-shadow: var(--ring-4) var(--color-primary-focus);
     }
 
-    &.is-error,
-    &.is-error > svg {
+    &.is-error {
       border-color: var(--color-error);
       color: var(--color-error);
+
+      & > svg {
+        color: var(--color-error);
+      }
     }
 
     &.is-error:hover,
@@ -198,10 +204,13 @@
       box-shadow: var(--ring-4) var(--color-error-focus);
     }
 
-    &.is-success,
-    &.is-success > svg {
+    &.is-success {
       border-color: var(--color-success);
       color: var(--color-success);
+
+      & > svg {
+        color: var(--color-success);
+      }
     }
 
     &.is-success:hover,
