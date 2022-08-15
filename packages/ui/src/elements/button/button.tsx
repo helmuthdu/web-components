@@ -62,8 +62,8 @@ define<Props>('ui-button', {
       group: undefined,
       loading: undefined,
       rounded: undefined,
-      size: 'md',
-      color: 'primary'
+      size: undefined,
+      color: undefined
     }
   },
   onAttributeChanged: (name, prev, curr, { classList, dataset, spot, render }) => {
@@ -91,15 +91,15 @@ define<Props>('ui-button', {
         root.className = getClassName({ dataset });
         break;
       case 'data-block':
-        classList[dataset.block ? 'add' : 'remove']('w-full');
+        root.style.width = dataset.block ? '100%' : '';
         root.className = getClassName({ dataset });
         break;
       default:
         render();
     }
   },
-  onConnected({ classList, dataset }) {
-    classList[dataset.block ? 'add' : 'remove']('w-full');
+  onConnected({ style, dataset }) {
+    style.width = dataset.block ? '100%' : '';
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./button.css')],
   template: ({ dataset, children, type }) => (
