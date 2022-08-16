@@ -7,7 +7,6 @@ import type { Sizes } from '../../types';
 
 export type Props = {
   dataset: {
-    append?: string;
     color?: 'error' | 'success' | 'info' | 'contrast' | undefined;
     pill?: boolean;
     size?: Sizes;
@@ -15,20 +14,15 @@ export type Props = {
 };
 
 const getClassName = ({ dataset }: Props) =>
-  classMap(
-    'badge',
-    {
-      'is-pill': dataset.pill,
-      [`is-${dataset.size}`]: dataset.size,
-      [`is-${dataset.color}`]: dataset.color
-    },
-    dataset.append
-  );
+  classMap('badge', {
+    'is-pill': dataset.pill,
+    [`is-${dataset.size}`]: dataset.size,
+    [`is-${dataset.color}`]: dataset.color
+  });
 
 define<Props>('ui-badge', {
   props: {
     dataset: {
-      append: undefined,
       pill: undefined,
       size: 'md',
       color: undefined
@@ -36,7 +30,6 @@ define<Props>('ui-badge', {
   },
   onAttributeChanged: (name, prev, curr, { dataset, spot }) => {
     switch (name) {
-      case 'data-append':
       case 'data-color':
       case 'data-pill':
       case 'data-size':

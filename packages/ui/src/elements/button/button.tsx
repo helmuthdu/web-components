@@ -8,7 +8,6 @@ import type { Sizes } from '../../types';
 export type Props = {
   type?: 'button' | 'submit' | 'reset';
   dataset: {
-    append?: string;
     block?: boolean;
     circle?: boolean;
     disabled?: boolean;
@@ -31,31 +30,25 @@ const LoadingIcon = ({ dataset }: Props) => (
   </svg>
 );
 
-const getClassName = ({ dataset }: Props) => {
-  return classMap(
-    'btn',
-    {
-      'is-block': dataset.block,
-      'is-circle': dataset.circle,
-      'is-disabled': dataset.disabled,
-      'is-group': dataset.group,
-      'is-first': dataset.group === 'first',
-      'is-last': dataset.group === 'last',
-      'is-loading': dataset.loading,
-      'is-rounded': dataset.rounded,
-      [`is-${dataset.color}`]: dataset.color,
-      [`is-${dataset.size}`]: dataset.size,
-      [`is-${dataset.variant}`]: dataset.variant
-    },
-    dataset.append
-  );
-};
+const getClassName = ({ dataset }: Props) =>
+  classMap('btn', {
+    'is-block': dataset.block,
+    'is-circle': dataset.circle,
+    'is-disabled': dataset.disabled,
+    'is-group': dataset.group,
+    'is-first': dataset.group === 'first',
+    'is-last': dataset.group === 'last',
+    'is-loading': dataset.loading,
+    'is-rounded': dataset.rounded,
+    [`is-${dataset.color}`]: dataset.color,
+    [`is-${dataset.size}`]: dataset.size,
+    [`is-${dataset.variant}`]: dataset.variant
+  });
 
 define<Props>('ui-button', {
   props: {
     type: 'button',
     dataset: {
-      append: undefined,
       block: undefined,
       circle: undefined,
       disabled: undefined,
@@ -69,7 +62,6 @@ define<Props>('ui-button', {
   onAttributeChanged: (name, prev, curr, { classList, dataset, spot, render }) => {
     const root = spot<HTMLButtonElement>('root');
     switch (name) {
-      case 'data-append':
       case 'data-circle':
       case 'data-color':
       case 'data-group':

@@ -5,22 +5,17 @@ import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
-  dataset: { append?: string; horizontal?: boolean };
+  dataset: { horizontal?: boolean };
 };
 
 const getClassName = ({ dataset }: Props) =>
-  classMap(
-    'card',
-    {
-      'is-horizontal': dataset.horizontal
-    },
-    dataset.append
-  );
+  classMap('card', {
+    'is-horizontal': dataset.horizontal
+  });
 
 define<Props>('ui-card', {
   props: {
     dataset: {
-      append: undefined,
       horizontal: undefined
     }
   },

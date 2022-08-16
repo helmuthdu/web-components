@@ -6,22 +6,17 @@ import { classMap, define } from '../../lib/custom-element';
 import '../../common/close-button/close-button';
 
 export type Props = {
-  dataset: { append?: string; color?: 'error' | 'success' | 'info' | 'contrast' | undefined };
+  dataset: { color?: 'error' | 'success' | 'info' | 'contrast' | undefined };
 };
 
 const getClassName = ({ dataset }: Props) =>
-  classMap(
-    'alert',
-    {
-      [`is-${dataset.color}`]: dataset.color
-    },
-    dataset.append
-  );
+  classMap('alert', {
+    [`is-${dataset.color}`]: dataset.color
+  });
 
 define<Props>('ui-alert', {
   props: {
     dataset: {
-      append: undefined,
       color: undefined
     }
   },

@@ -10,7 +10,7 @@ type CustomElementOptions<Props extends CustomElementProps> = {
   onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<Props>) => void;
   onConnected?: (host: CustomElement<Props>) => void;
   onDisconnected?: (host: CustomElement<Props>) => void;
-  props: Props & Partial<Omit<HTMLElement, keyof Props>>;
+  props?: Props & Partial<Omit<HTMLElement, keyof Props>>;
   form?: boolean;
   styles?: unknown[];
   template: (host: CustomElement<Props>) => any | string;

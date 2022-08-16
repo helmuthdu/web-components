@@ -7,7 +7,6 @@ import '../../common/close-button/close-button';
 
 export type Props = {
   dataset: {
-    append?: string;
     fixed?: boolean;
     color: 'error' | 'success' | 'info' | 'contrast' | undefined;
     timeout: number;
@@ -29,7 +28,6 @@ const getContainer = () => {
 define<Props>('ui-toast', {
   props: {
     dataset: {
-      append: undefined,
       fixed: undefined,
       timeout: 8000,
       color: undefined
@@ -49,7 +47,6 @@ define<Props>('ui-toast', {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (
       <>
-        <link rel="stylesheet" href="/styles.css" />
         <div className={classMap('toast')}>
           {hasHeader && (
             <div

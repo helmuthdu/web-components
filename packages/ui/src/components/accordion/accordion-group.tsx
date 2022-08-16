@@ -7,19 +7,14 @@ import styles from './accordion-group.css';
 
 export type Props = {
   dataset: {
-    append?: string;
     variant?: 'primary' | 'secondary' | 'tertiary';
   };
 };
 
 const getClassName = ({ dataset }: Props) =>
-  classMap(
-    'accordion-group',
-    {
-      [`is-${dataset.variant}`]: dataset.variant
-    },
-    dataset.append
-  );
+  classMap('accordion-group', {
+    [`is-${dataset.variant}`]: dataset.variant
+  });
 
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
   const primary = ['accordion-group-item', 'is-primary'];
@@ -38,15 +33,11 @@ const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
 define<Props>('ui-accordion-group', {
   props: {
     dataset: {
-      append: undefined,
       variant: 'primary'
     }
   },
   onAttributeChanged(name, prev, curr, { children, dataset, spot }) {
     switch (name) {
-      case 'data-append':
-        spot('root').className = getClassName({ dataset });
-        break;
       case 'data-variant':
         spot('root').className = getClassName({ dataset });
         updateChildren(children, { dataset });

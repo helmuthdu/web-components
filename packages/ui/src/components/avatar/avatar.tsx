@@ -6,24 +6,18 @@ import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
   dataset: {
-    append?: string;
     variant?: 'circle' | 'rounded';
   };
 };
 
 const getClassName = ({ dataset }: Props) =>
-  classMap(
-    'avatar',
-    {
-      [`is-${dataset.variant}`]: dataset.variant
-    },
-    dataset.append
-  );
+  classMap('avatar', {
+    [`is-${dataset.variant}`]: dataset.variant
+  });
 
 define<Props>('ui-avatar', {
   props: {
     dataset: {
-      append: undefined,
       variant: undefined
     }
   },

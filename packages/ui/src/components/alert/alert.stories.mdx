@@ -60,7 +60,7 @@ import './alert';
       }
     }}>
     {({ slot, ...props }) => /*html*/ `
-      <ui-alert data-append="mb-4" ${props.color ? `data-color="${props.color}"` : ''} >
+      <ui-alert ${props.color ? `data-color="${props.color}"` : ''} >
         ${slot}
       </ui-alert>
     `}

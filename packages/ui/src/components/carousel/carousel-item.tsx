@@ -6,7 +6,6 @@ import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
   dataset: {
-    append?: string;
     textPosition?: 'top' | 'middle' | 'bottom';
     textAlign?: 'left' | 'center' | 'right';
     src: string;
@@ -14,14 +13,10 @@ export type Props = {
 };
 
 const getClassName = ({ dataset }: Props) =>
-  classMap(
-    'carousel-text',
-    {
-      [`is-${dataset.textPosition}`]: dataset.textPosition,
-      [`is-${dataset.textAlign}`]: dataset.textAlign
-    },
-    dataset.append
-  );
+  classMap('carousel-text', {
+    [`is-${dataset.textPosition}`]: dataset.textPosition,
+    [`is-${dataset.textAlign}`]: dataset.textAlign
+  });
 
 define<Props>('ui-carousel-item', {
   props: {
