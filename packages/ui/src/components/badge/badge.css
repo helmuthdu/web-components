@@ -7,68 +7,64 @@
   padding: var(--size-1) var(--size-2);
   text-align: center;
   vertical-align: middle;
+  font-size: var(--badge-font-size, var(--text-md));
+  line-height: var(--badge-line-height, var(--line-spacing-md));
   font-weight: var(--font-weight-semibold);
-
-  &:not(&.is-pill) {
-    border-radius: var(--rounded-lg);
-  }
+  border: var(--badge-border, var(--border) solid var(--color-contrast-200));
+  border-radius: var(--badge-border-radius, var(--rounded-lg));
+  background-color: var(--badge-background-color, var(--color-contrast-50));
+  color: var(--badge-color, var(--color-content-body));
 
   &.is-pill {
-    border-radius: var(--rounded-full);
+    --badge-border-radius: var(--rounded-full);
   }
 
   &.is-xs {
-    font-size: var(--text-xs);
-    line-height: var(--line-spacing-xs);
+    --badge-font-size: var(--text-xs);
+    --badge-line-height: var(--line-spacing-xs);
   }
 
   &.is-sm {
-    font-size: var(--text-sm);
-    line-height: var(--line-spacing-sm);
+    --badge-font-size: var(--text-sm);
+    --badge-line-height: var(--line-spacing-sm);
   }
 
   &.is-md {
-    font-size: var(--text-md);
-    line-height: var(--line-spacing-md);
+    --badge-font-size: var(--text-md);
+    --badge-line-height: var(--line-spacing-md);
   }
 
   &.is-lg {
-    font-size: var(--text-lg);
-    line-height: var(--line-spacing-lg);
+    --badge-font-size: var(--text-lg);
+    --badge-line-height: var(--line-spacing-lg);
   }
 
   &.is-xl {
-    font-size: var(--text-xl);
-    line-height: var(--line-spacing-xl);
-  }
-
-  &:not(.is-info, .is-error, .is-success, .is-contrast) {
-    border: var(--border) solid var(--color-contrast-200);
-    background-color: var(--color-contrast-50);
-    color: var(--color-content-body);
+    --badge-font-size: var(--text-xl);
+    --badge-line-height: var(--line-spacing-xl);
   }
 
   &.is-info {
-    border: var(--border) solid var(--color-primary-focus);
-    background-color: var(--color-primary);
-    color: var(--color-primary-contrast);
+    --badge-border: var(--border) solid var(--color-primary-focus);
+    --badge-background-color: var(--color-primary);
+    --badge-color: var(--color-primary-contrast);
   }
 
   &.is-error {
-    border: var(--border) solid var(--color-error-focus);
-    background-color: var(--color-error);
-    color: var(--color-error-contrast);
+    --badge-border: var(--border) solid var(--color-error-focus);
+    --badge-background-color: var(--color-error);
+    --badge-color: var(--color-error-contrast);
   }
 
   &.is-success {
-    border: var(--border) solid var(--color-success-focus);
-    background-color: var(--color-success);
-    color: var(--color-success-contrast);
+    --badge-border: var(--border) solid var(--color-success-focus);
+    --badge-background-color: var(--color-success);
+    --badge-color: var(--color-success-contrast);
   }
 
   &.is-contrast {
-    border: var(--border) solid var(--color-contrast-800);
-    background-color: var(--color-contrast-700);
-    color: var(--color-content-contrast);
+    --badge-border: var(--border) solid var(--color-contrast-800);
+    --badge-background-color: var(--color-contrast-700);
+    --badge-color: var(--color-content-contrast);
   }
 }
