@@ -201,3 +201,10 @@
     --color-content-contrast: #374151;
   }
 }
+
+@custom-media --xs (min-width: var(--size-screen-xs));
+@custom-media --sm (min-width: var(--size-screen-sm));
+@custom-media --md (min-width: var(--size-screen-md));
+@custom-media --lg (min-width: var(--size-screen-lg));
+@custom-media --xl (min-width: var(--size-screen-xl));
+@custom-media --xxl (min-width: var(--size-screen-2xl));

@@ -101,7 +101,12 @@ define<Props>('ui-button', {
   onConnected({ style, dataset }) {
     style.width = dataset.block ? '100%' : '';
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./button.css')],
+  styles: [
+    import('../../styles/preflight.css'),
+    import('../../styles/animation.css'),
+    import('../../styles/theme.css'),
+    import('./button.css')
+  ],
   template: ({ dataset, children, type }) => (
     <>
       <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>

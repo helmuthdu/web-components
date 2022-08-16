@@ -1,8 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   assetsInclude: ['./src/styles/styles.css'],
+  css: {
+    postcss: {
+      plugins: [require('postcss-import'), require('postcss-mixins'), require('postcss-preset-env')({ stage: 1 })]
+    }
+  },
   build: {
     outDir: 'lib',
     rollupOptions: {
