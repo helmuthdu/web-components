@@ -63,14 +63,7 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 700ms;
 
-  &:not(.is-selected) {
-    border-color: rgb(255 255 255/ 60%);
-  }
-
-  &.is-selected {
-    border-color: rgb(255 255 255);
-  }
-
+  &.is-selected,
   &:hover {
     border-color: rgb(255 255 255);
   }

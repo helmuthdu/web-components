@@ -29,11 +29,6 @@
     --badge-line-height: var(--line-spacing-sm);
   }
 
-  &.is-md {
-    --badge-font-size: var(--text-md);
-    --badge-line-height: var(--line-spacing-md);
-  }
-
   &.is-lg {
     --badge-font-size: var(--text-lg);
     --badge-line-height: var(--line-spacing-lg);

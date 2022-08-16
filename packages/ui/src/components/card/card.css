@@ -7,10 +7,7 @@
   border: var(--border) solid var(--color-contrast-200);
   background-color: var(--color-canvas);
   box-shadow: var(--shadow-lg);
-
-  &:not(.is-horizontal) {
-    flex-direction: column;
-  }
+  flex-direction: column;
 
   &.is-horizontal {
     flex-direction: row;
