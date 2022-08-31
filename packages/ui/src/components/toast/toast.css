@@ -14,7 +14,7 @@
   pointer-events: auto;
   width: var(--size-96);
   max-width: var(--size-full);
-  animation: fade-in-down 0.5s ease-in;
+  animation: bounce-in-left 0.7s ease-in;
   overflow: clip;
   border-radius: var(--rounded-lg);
   border-width: var(--border);
@@ -120,14 +120,42 @@
   color: var(--color-content-contrast);
 }
 
-@keyframes fade-in-down {
+.is-hidden {
+  animation: bounce-out-left 1s ease-in;
+}
+
+@keyframes bounce-in-left {
   0% {
     opacity: 0;
-    transform: translate3d(0, -100%, 0);
+    transform: translate3d(200%, 0, 0);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translate3d(20px, 0, 0);
+  }
+
+  75% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  90% {
+    transform: translate3d(5px, 0, 0);
   }
 
   100% {
+    transform: none;
+  }
+}
+
+@keyframes bounce-out-left {
+  10% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(-20px, 0, 0);
+  }
+
+  70% {
+    opacity: 0;
+    transform: translate3d(200%, 0, 0);
   }
 }

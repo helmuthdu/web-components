@@ -33,21 +33,24 @@ define<Props>('ui-toast', {
       color: undefined
     }
   },
-  onConnected({ hostElement, dataset, remove }) {
+  onConnected({ hostElement, dataset, remove, spot }) {
     if (!dataset.fixed) {
       const container = getContainer();
       if (hostElement.parentElement !== container) {
         container.appendChild(hostElement);
       }
-      setTimeout(remove, dataset.timeout);
+      setTimeout(() => {
+        spot('root').classList.add('is-hidden');
+        setTimeout(remove, 800);
+      }, dataset.timeout);
     }
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./toast.css')],
-  template: ({ children, dataset, fire, remove }) => {
+  template: ({ children, dataset, fire, remove, spot }) => {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (
       <>
-        <div className={classMap('toast')}>
+        <div id="root" className={classMap('toast')}>
           {hasHeader && (
             <div
               className={classMap('toast-header', {
@@ -76,7 +79,8 @@ define<Props>('ui-toast', {
                   })}
                   onClick={() => {
                     fire('close');
-                    remove();
+                    spot('root').classList.add('is-hidden');
+                    setTimeout(remove, 500);
                   }}
                 />
               </div>
@@ -95,7 +99,8 @@ define<Props>('ui-toast', {
                 <ui-close-button
                   onClick={() => {
                     fire('close');
-                    remove();
+                    spot('root').classList.add('is-hidden');
+                    setTimeout(remove, 500);
                   }}
                 />
               </>

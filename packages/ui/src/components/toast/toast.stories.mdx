@@ -3,7 +3,7 @@ import './toast';
 
 # Toast
 
-<Meta title="Components/Toast" decorators={[story => `<div class="canvas">${story()}</div>`]} />
+<Meta title="Components/Toast" decorators={[story => `<div class="canvas" style="flex-direction: column;">${story()}</div>`]} />
 
 export const truncate = (text, size = 127) => text.slice(0, size) + (text.length > size ? '…' : '');
 
