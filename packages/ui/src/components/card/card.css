@@ -1,13 +1,13 @@
 .card {
   display: flex;
-  max-width: var(--size-sm);
-  justify-content: center;
-  overflow: hidden;
-  border-radius: var(--rounded-lg);
-  border: var(--border) solid var(--color-contrast-200);
-  background-color: var(--color-canvas);
-  box-shadow: var(--shadow-lg);
   flex-direction: column;
+  justify-content: center;
+  max-width: var(--size-sm);
+  overflow: hidden;
+  background-color: var(--color-canvas);
+  border: var(--border) solid var(--color-contrast-200);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-lg);
 
   &.is-horizontal {
     flex-direction: row;

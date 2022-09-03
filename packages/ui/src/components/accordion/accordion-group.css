@@ -1,11 +1,11 @@
 .accordion-group {
   display: block;
-  border-radius: var(--rounded-lg);
   padding: var(--size-2) var(--size-1);
+  border-radius: var(--rounded-lg);
 
   &.is-primary {
-    border: var(--border) solid var(--color-contrast-200);
     background-color: var(--color-canvas);
+    border: var(--border) solid var(--color-contrast-200);
   }
 
   &.is-secondary,
@@ -22,10 +22,10 @@
   }
 
   &.is-secondary {
-    margin-bottom: var(--size-2);
     display: block;
-    border-radius: var(--rounded-lg);
-    border: var(--border) solid var(--color-contrast-200);
+    margin-bottom: var(--size-2);
     background-color: var(--color-canvas);
+    border: var(--border) solid var(--color-contrast-200);
+    border-radius: var(--rounded-lg);
   }
 }

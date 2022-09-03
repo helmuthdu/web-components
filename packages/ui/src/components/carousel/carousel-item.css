@@ -7,9 +7,9 @@
 .carousel-image {
   position: absolute;
   width: var(--size-full);
-  transition-property: opacity;
   transition-timing-function: ease-in;
   transition-duration: 700ms;
+  transition-property: opacity;
 }
 
 .carousel-image:first-child {
@@ -19,9 +19,9 @@
 .carousel-text {
   position: absolute;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   display: flex;
   flex-direction: column;
   padding: var(--size-8) var(--size-12);

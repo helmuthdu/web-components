@@ -3,25 +3,25 @@
   top: 0;
   right: 0;
   display: flex;
-  max-height: var(--size-screen-height);
   flex-direction: column;
   gap: var(--size-2);
-  overflow: hidden;
+  max-height: var(--size-screen-height);
   padding: var(--size-4);
+  overflow: hidden;
 }
 
 .toast {
-  pointer-events: auto;
   width: var(--size-96);
   max-width: var(--size-full);
-  animation: bounce-in-left 0.7s ease-in;
   overflow: clip;
-  border-radius: var(--rounded-lg);
-  border-width: var(--border);
-  border-color: var(--color-contrast-200);
   font-size: var(--text-sm);
   line-height: var(--line-spacing-sm);
+  border-color: var(--color-contrast-200);
+  border-width: var(--border);
+  border-radius: var(--rounded-lg);
   box-shadow: var(--shadow-lg);
+  animation: bounce-in-left 0.7s ease-in;
+  pointer-events: auto;
 }
 
 .toast-header {
@@ -42,9 +42,9 @@
 .toast-header-content {
   display: flex;
   flex-direction: row;
+  gap: var(--size-2);
   align-items: center;
   justify-content: space-between;
-  gap: var(--size-2);
   font-weight: var(--font-weight-bold);
 
   &:not(.is-text-info, .is-text-error, .is-text-success, .is-text-contrast) {
@@ -71,20 +71,20 @@
 }
 
 .toast-content {
-  overflow-wrap: break-word;
   padding: var(--size-3);
+  overflow-wrap: break-word;
 
   &:not(.is-info, .is-error, .is-success, .is-contrast) {
-    background-color: var(--color-canvas);
     color: var(--color-content-body);
+    background-color: var(--color-canvas);
   }
 
   &.is-headless {
     display: flex;
     flex-direction: row;
+    gap: var(--size-3);
     align-items: center;
     justify-content: space-between;
-    gap: var(--size-3);
   }
 }
 
@@ -126,13 +126,13 @@
 
 @keyframes bounce-in-left {
   0% {
-    opacity: 0;
     transform: translate3d(200%, 0, 0);
+    opacity: 0;
   }
 
   55% {
-    opacity: 1;
     transform: translate3d(20px, 0, 0);
+    opacity: 1;
   }
 
   75% {
@@ -150,12 +150,12 @@
 
 @keyframes bounce-out-left {
   10% {
-    opacity: 1;
     transform: translate3d(-20px, 0, 0);
+    opacity: 1;
   }
 
   70% {
-    opacity: 0;
     transform: translate3d(200%, 0, 0);
+    opacity: 0;
   }
 }

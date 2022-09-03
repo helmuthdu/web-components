@@ -23,9 +23,9 @@ details summary::-webkit-details-marker {
 
 .accordion-header {
   display: flex;
-  cursor: pointer;
-  align-items: center;
   gap: var(--size-2);
+  align-items: center;
   padding-top: var(--size-1);
   padding-bottom: var(--size-1);
+  cursor: pointer;
 }

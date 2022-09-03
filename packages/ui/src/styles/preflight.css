@@ -2,16 +2,16 @@
 ::before,
 ::after {
   box-sizing: border-box;
-  border-width: 0;
-  border-style: solid;
   border-color: currentcolor;
+  border-style: solid;
+  border-width: 0;
 }
 
 html {
-  line-height: 1.5;
-  text-size-adjust: 100%;
-  tab-size: 4;
   font-family: system-ui;
+  line-height: 1.5;
+  tab-size: 4;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -35,8 +35,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: inherit;
   font-weight: inherit;
+  font-size: inherit;
 }
 
 a {
@@ -53,6 +53,7 @@ code,
 kbd,
 samp,
 pre {
+  font-size: 1em;
   font-family:
     "fontFamily.mono",
     ui-monospace,
@@ -63,7 +64,6 @@ pre {
     "Liberation Mono",
     "Courier New",
     monospace;
-  font-size: 1em;
 }
 
 small {
@@ -72,9 +72,9 @@ small {
 
 sub,
 sup {
+  position: relative;
   font-size: 75%;
   line-height: 0;
-  position: relative;
   vertical-align: baseline;
 }
 
@@ -97,13 +97,13 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit;
-  font-size: 100%;
-  font-weight: inherit;
-  line-height: inherit;
-  color: inherit;
   margin: 0;
   padding: 0;
+  color: inherit;
+  font-weight: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  line-height: inherit;
 }
 
 button,
@@ -115,9 +115,9 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  appearance: button;
   background-color: transparent;
   background-image: none;
+  appearance: button;
 }
 
 :-moz-focusring {
@@ -138,8 +138,8 @@ progress {
 }
 
 [type="search"] {
-  appearance: textfield;
   outline-offset: -2px;
+  appearance: textfield;
 }
 
 ::-webkit-search-decoration {
@@ -147,8 +147,8 @@ progress {
 }
 
 ::-webkit-file-upload-button {
-  appearance: button;
   font: inherit;
+  appearance: button;
 }
 
 summary {
@@ -183,9 +183,9 @@ legend {
 ol,
 ul,
 menu {
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 textarea {
@@ -194,8 +194,8 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-  opacity: 1;
   color: #9ca3af;
+  opacity: 1;
 }
 
 button,

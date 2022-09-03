@@ -3,7 +3,7 @@
 }
 
 .card-image {
-  height: var(--size-full);
   width: var(--size-auto);
+  height: var(--size-full);
   object-fit: cover;
 }

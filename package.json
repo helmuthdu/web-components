@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Web Components",
   "scripts": {
-    "lint": "eslint packages --ext .jsx,.js,.ts,.tsx,.vue --fix --ignore-path .gitignore"
+    "lint": "eslint packages --ext .jsx,.js,.ts,.tsx,.vue --fix --ignore-path .gitignore",
+    "lint:css": "stylelint --fix \"packages/**/*.css\""
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "stylelint": "^14.11.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-standard": "^28.0.0",
+    "stylelint-config-rational-order-fix": "^0.1.9",
     "typescript": "^4.8.2"
   },
   "engines": {

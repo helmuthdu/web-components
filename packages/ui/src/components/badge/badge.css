@@ -3,17 +3,17 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
   padding: var(--size-1) var(--size-2);
-  text-align: center;
-  vertical-align: middle;
+  color: var(--badge-color, var(--color-content-body));
+  font-weight: var(--font-weight-semibold);
   font-size: var(--badge-font-size, var(--text-md));
   line-height: var(--badge-line-height, var(--line-spacing-md));
-  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  background-color: var(--badge-background-color, var(--color-contrast-50));
   border: var(--badge-border, var(--border) solid var(--color-contrast-200));
   border-radius: var(--badge-border-radius, var(--rounded-lg));
-  background-color: var(--badge-background-color, var(--color-contrast-50));
-  color: var(--badge-color, var(--color-content-body));
 
   &.is-pill {
     --badge-border-radius: var(--rounded-full);

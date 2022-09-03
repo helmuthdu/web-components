@@ -1,8 +1,8 @@
 .box {
   display: block;
-  border-radius: var(--rounded-lg);
-  border: var(--border) solid var(--color-contrast-200);
-  background-color: var(--color-canvas);
   padding: var(--size-5);
   color: var(--color-content-body);
+  background-color: var(--color-canvas);
+  border: var(--border) solid var(--color-contrast-200);
+  border-radius: var(--rounded-lg);
 }

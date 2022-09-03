@@ -1,19 +1,19 @@
 .btn {
   display: inline-flex;
   flex-wrap: wrap;
+  gap: var(--size-2);
   align-items: center;
   justify-content: center;
-  gap: var(--size-2);
-  border: var(--border) solid transparent;
-  text-align: center;
-  font-weight: var(--font-weight-semibold);
   padding: var(--button-padding, var(--size-3) var(--size-5));
+  font-weight: var(--font-weight-semibold);
   font-size: var(--button-font-size, var(--text-md));
   line-height: var(--button-line-height, var(--line-spacing-md));
+  text-align: center;
+  border: var(--border) solid transparent;
 
   & > svg {
-    height: var(--button-icon-size, var(--size-5));
     width: var(--button-icon-size, var(--size-5));
+    height: var(--button-icon-size, var(--size-5));
   }
 
   &.is-rounded {
@@ -30,8 +30,8 @@
 
   &.is-group {
     &.is-outline {
-      margin-left: -1px;
       margin-right: 0;
+      margin-left: -1px;
     }
 
     &.is-first {
@@ -84,10 +84,10 @@
   }
 
   &.is-circle:not(.is-group) {
-    border-radius: var(--rounded-full);
-    padding: 0;
-    height: var(--button-size, var(--size-12));
     width: var(--button-size, var(--size-12));
+    height: var(--button-size, var(--size-12));
+    padding: 0;
+    border-radius: var(--rounded-full);
 
     &.is-xs {
       --button-size: var(--size-8);
@@ -129,9 +129,9 @@
   }
 
   &.is-disabled {
-    border: var(--border) solid transparent;
-    background-color: rgb(115 115 115/20%);
     color: var(--color-content-disabled);
+    background-color: rgb(115 115 115/20%);
+    border: var(--border) solid transparent;
 
     &.is-loading {
       color: transparent;
@@ -146,10 +146,10 @@
     --button-font-size: var(--text-md);
     --button-line-height: var(--line-spacing-md);
 
-    border-width: var(--border-2);
+    color: var(--button-color, var(--color-contrast-300));
     background-color: transparent;
     border-color: var(--button-color, var(--color-contrast-300));
-    color: var(--button-color, var(--color-contrast-300));
+    border-width: var(--border-2);
 
     &:hover,
     &:focus {
@@ -224,8 +224,8 @@
   }
 
   &.is-text:not(.is-outline, .is-disabled) {
-    background-color: transparent;
     color: var(--button-color, var(--color-contrast-300));
+    background-color: transparent;
 
     &:hover {
       box-shadow: var(--ring-4) var(--button-color-ring, var(--color-contrast-400));
@@ -256,9 +256,9 @@
   }
 
   &:not(.is-text, .is-outline, .is-disabled) {
-    border: none;
     color: var(--button-color, var(--color-contrast));
     background-color: var(--button-background-color, var(--color-contrast-300));
+    border: none;
 
     &:hover,
     &:focus {
