@@ -1,6 +1,6 @@
 import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './utils';
 
-type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
+export type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 
 type HtmlOrSvg<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
   ? HTMLElementTagNameMap[Tag]
@@ -8,7 +8,7 @@ type HtmlOrSvg<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
   ? SVGElementTagNameMap[Tag]
   : unknown;
 
-type ElementProps<T extends Markup> = Partial<HtmlOrSvg<T>>;
+export type ElementProps<T extends Markup> = Partial<Omit<HtmlOrSvg<T>, 'part'>> & { part?: string };
 
 type ElementDraft = {
   props: Record<string, any>;
@@ -50,7 +50,7 @@ const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFra
 const createElement = (tag: string) =>
   isSVG(tag) ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
 
-const define = (draft: ElementDraft) => {
+const composeElement = (draft: ElementDraft) => {
   if (isFunction(draft.tag)) return draft.tag(draft.props, draft.children);
   const element = draft.tag === 'fragment' ? new DocumentFragment() : createElement(draft.tag);
   Object.entries(draft.props ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
@@ -58,12 +58,12 @@ const define = (draft: ElementDraft) => {
   return element;
 };
 
-export const fragment = (...children: any[]) => define({ tag: 'fragment', props: {}, children });
+export const fragment = (...children: any[]) => composeElement({ tag: 'fragment', props: {}, children });
 
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
-  define({ tag, props, children });
+  composeElement({ tag, props, children });
 
-export const rawHTML = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
+export const raw = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
 // @ts-ignore
-window.rawHTML = rawHTML;
+window.rawHTML = raw;
