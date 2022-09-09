@@ -5,29 +5,40 @@ import { dom, fragment } from '../../lib/create-element';
 import { define } from '../../lib/custom-element';
 
 export type Props = {
-  dataset: { header: string };
+  dataset: {
+    variant?: 'primary' | 'secondary' | 'tertiary';
+  };
+};
+
+const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
+  [...children].forEach((el, idx) => {
+    el.setAttribute('data-variant', dataset.variant as string);
+  });
 };
 
 define<Props>('ui-accordion', {
   props: {
     dataset: {
-      header: ''
+      variant: 'primary'
     }
+  },
+  onAttributeChanged(name, prev, curr, { children, dataset, spot }) {
+    switch (name) {
+      case 'data-variant':
+        spot('container').setAttribute('part', `container -${dataset.variant}`);
+        updateChildren(children, { dataset });
+        break;
+    }
+  },
+  onConnected: ({ dataset, children }) => {
+    updateChildren(children, { dataset });
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./accordion.css')],
   template: ({ dataset }) => (
     <>
-      <details id="root" className="accordion">
-        <summary className="accordion-header">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-          </svg>
-          <slot name="header" />
-        </summary>
-        <div>
-          <slot />
-        </div>
-      </details>
+      <div id="container" part={`container -${dataset.variant}`}>
+        <slot />
+      </div>
     </>
   )
 });

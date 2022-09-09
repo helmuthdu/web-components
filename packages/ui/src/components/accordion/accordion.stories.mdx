@@ -1,6 +1,6 @@
 import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import './accordion-item';
 import './accordion';
-import './accordion-group';
 
 # Accordion
 
@@ -22,24 +22,24 @@ import './accordion-group';
     }}>
     {({ variant }) => /*html*/ `
       <style>
-         .accordion {
+         .wrapper {
            width: var(--size-96);
          }
       </style>
-      <ui-accordion-group class="accordion" data-variant="${variant}">
-        <ui-accordion>
+      <ui-accordion class="wrapper" data-variant="${variant}">
+        <ui-accordion-item>
           <h2 slot="header">1 item</h2>
           <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-        </ui-accordion>
-        <ui-accordion>
+        </ui-accordion-item>
+        <ui-accordion-item>
           <h2 slot="header">2 item</h2>
           <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-        </ui-accordion>
-        <ui-accordion>
+        </ui-accordion-item>
+        <ui-accordion-item>
           <h2 slot="header">3 item</h2>
           <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>
-        </ui-accordion>
-      </ui-accordion-group>
+        </ui-accordion-item>
+      </ui-accordion>
     `}
   </Story>
 </Canvas>

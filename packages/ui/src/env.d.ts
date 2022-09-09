@@ -4,6 +4,12 @@ import { DOMAttributes } from 'react';
 type CustomEvents<K extends string> = { [key in K]: (event: CustomEvent) => void };
 type CustomElement<T, K extends string> = Partial<T & DOMAttributes<T> & { children: any } & CustomEvents<`on${K}`>>;
 
+declare module 'react' {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    part?: string;
+  }
+}
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {

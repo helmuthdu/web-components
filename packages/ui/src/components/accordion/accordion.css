@@ -1,31 +1,36 @@
-details svg {
-  transition: transform 0.3s ease-in-out;
-}
-
-details > summary > svg {
-  width: var(--size-4);
-  height: var(--size-4);
-}
-
-details[open] svg {
-  transform: rotate(90deg);
-}
-
-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.accordion {
+ui-accordion::part(container) {
   display: block;
-  padding: var(--size-4);
-  color: var(--color-content-body);
+  padding: var(--size-2) var(--size-1);
+  border-radius: var(--rounded-lg);
 }
 
-.accordion-header {
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-  padding-top: var(--size-1);
-  padding-bottom: var(--size-1);
-  cursor: pointer;
+ui-accordion::part(-primary) {
+  background-color: var(--color-canvas);
+  border: var(--border) solid var(--color-contrast-200);
+}
+
+::slotted([data-variant='primary']:not(:last-child)) {
+  display: block;
+  border-bottom: var(--border) solid var(--color-contrast-200) !important;
+}
+
+ui-accordion::part(-secondary) {
+  background-color: transparent;
+}
+
+::slotted([data-variant='secondary']) {
+  display: block;
+  margin-bottom: var(--size-2);
+  background-color: var(--color-canvas);
+  border: var(--border) solid var(--color-contrast-200) !important;
+  border-radius: var(--rounded-lg);
+}
+
+ui-accordion::part(-tertiary) {
+  background-color: transparent;
+}
+
+::slotted([data-variant='tertiary']) {
+  display: block;
+  border-bottom: var(--border) solid var(--color-contrast-200);
 }
