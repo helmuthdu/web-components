@@ -19,7 +19,7 @@ export default defineConfig({
       },
       input: [
         './src/components/accordion/accordion.tsx',
-        './src/components/accordion/accordion-group.tsx',
+        './src/components/accordion/accordion-item.tsx',
         './src/components/alert/alert.tsx',
         './src/components/avatar/avatar.tsx',
         './src/components/avatar/avatar-group.tsx',
