@@ -7,8 +7,7 @@
   font-size: var(--text-xs);
   line-height: var(--line-spacing-xs);
   background-color: var(--alert-background-color, var(--color-canvas));
-  border-color: var(--alert-border-color, var(--color-contrast-300));
-  border-width: var(--border);
+  border: var(--border) solid var(--alert-border-color, var(--color-contrast-300));
   border-radius: var(--rounded-xl);
   box-shadow: var(--shadow-sm);
 

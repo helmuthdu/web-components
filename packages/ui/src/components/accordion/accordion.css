@@ -9,9 +9,10 @@ ui-accordion::part(-primary) {
   border: var(--border) solid var(--color-contrast-200);
 }
 
-::slotted([data-variant='primary']:not(:last-child)) {
+::slotted([data-variant='primary']:not(:last-child)),
+::slotted([data-variant='tertiary']:not(:last-child)) {
   display: block;
-  border-bottom: var(--border) solid var(--color-contrast-200) !important;
+  border-bottom: var(--border) solid var(--color-contrast-200);
 }
 
 ui-accordion::part(-secondary) {
@@ -22,15 +23,10 @@ ui-accordion::part(-secondary) {
   display: block;
   margin-bottom: var(--size-2);
   background-color: var(--color-canvas);
-  border: var(--border) solid var(--color-contrast-200) !important;
+  border: var(--border) solid var(--color-contrast-200);
   border-radius: var(--rounded-lg);
 }
 
 ui-accordion::part(-tertiary) {
   background-color: transparent;
-}
-
-::slotted([data-variant='tertiary']) {
-  display: block;
-  border-bottom: var(--border) solid var(--color-contrast-200);
 }

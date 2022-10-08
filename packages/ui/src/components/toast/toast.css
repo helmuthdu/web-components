@@ -16,12 +16,15 @@
   overflow: clip;
   font-size: var(--text-sm);
   line-height: var(--line-spacing-sm);
-  border-color: var(--color-contrast-200);
-  border-width: var(--border);
+  border: var(--border) solid var(--color-contrast-200);
   border-radius: var(--rounded-lg);
   box-shadow: var(--shadow-lg);
   animation: bounce-in-left 0.7s ease-in;
   pointer-events: auto;
+
+  &.is-hidden {
+    animation: bounce-out-left 1s ease-in;
+  }
 }
 
 .toast-header {
@@ -118,10 +121,6 @@
 
 .is-text-contrast {
   color: var(--color-content-contrast);
-}
-
-.is-hidden {
-  animation: bounce-out-left 1s ease-in;
 }
 
 @keyframes bounce-in-left {
