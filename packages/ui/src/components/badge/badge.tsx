@@ -28,12 +28,12 @@ define<Props>('ui-badge', {
       color: undefined
     }
   },
-  onAttributeChanged: (name, prev, curr, { dataset, spot }) => {
+  onAttributeChanged: (name, prev, curr, { dataset, ref }) => {
     switch (name) {
       case 'data-color':
       case 'data-pill':
       case 'data-size':
-        spot('root').className = getClassName({ dataset });
+        ref('root').className = getClassName({ dataset });
         break;
     }
   },

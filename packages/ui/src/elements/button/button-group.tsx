@@ -18,8 +18,8 @@ define<Props>('ui-button-group', {
       append: undefined
     }
   },
-  onAttributeChanged(name, prev, curr, { dataset, spot }) {
-    spot('root').className = getClassName({ dataset });
+  onAttributeChanged(name, prev, curr, { dataset, ref }) {
+    ref('root').className = getClassName({ dataset });
   },
   onConnected({ children }) {
     for (let idx = 0; idx < (children ?? []).length; idx++) {

@@ -21,11 +21,11 @@ define<Props>('ui-avatar', {
       variant: undefined
     }
   },
-  onAttributeChanged(name, prev, curr, { dataset, spot }) {
-    spot('root').className = getClassName({ dataset });
+  onAttributeChanged(_name, _prev, _curr, { dataset, ref }) {
+    ref('root').className = getClassName({ dataset });
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./avatar.css')],
-  template: ({ dataset, fire, remove }) => (
+  template: ({ dataset }) => (
     <>
       <div id="root" className={getClassName({ dataset })}>
         <span className="text-sm">

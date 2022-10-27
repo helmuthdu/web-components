@@ -20,7 +20,7 @@ export type Props = {
   };
 };
 
-const LoadingIcon = ({ dataset }: Props) => (
+const LoadingIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
     <path
@@ -59,8 +59,8 @@ define<Props>('ui-button', {
       color: undefined
     }
   },
-  onAttributeChanged: (name, prev, curr, { classList, dataset, spot, render }) => {
-    const root = spot<HTMLButtonElement>('root');
+  onAttributeChanged: (name, prev, curr, { dataset, ref, render }) => {
+    const root = ref<HTMLButtonElement>('root');
     switch (name) {
       case 'data-circle':
       case 'data-color':
@@ -74,7 +74,7 @@ define<Props>('ui-button', {
         if (curr === null) {
           root.querySelector('svg')?.remove();
         } else {
-          root.prepend((<LoadingIcon dataset={dataset} />) as any);
+          root.prepend((<LoadingIcon />) as any);
         }
         root.className = getClassName({ dataset });
         break;
@@ -102,7 +102,7 @@ define<Props>('ui-button', {
   template: ({ dataset, children, type }) => (
     <>
       <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
-        {dataset.loading && <LoadingIcon dataset={dataset} />}
+        {dataset.loading && <LoadingIcon />}
         <slot />
       </button>
     </>

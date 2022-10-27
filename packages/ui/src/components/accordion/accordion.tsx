@@ -11,7 +11,7 @@ export type Props = {
 };
 
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
-  [...children].forEach((el, idx) => {
+  [...children].forEach(el => {
     el.setAttribute('data-variant', dataset.variant as string);
   });
 };
@@ -22,10 +22,10 @@ define<Props>('ui-accordion', {
       variant: 'primary'
     }
   },
-  onAttributeChanged(name, prev, curr, { children, dataset, spot }) {
+  onAttributeChanged(name, _prev, _curr, { children, dataset, ref }) {
     switch (name) {
       case 'data-variant':
-        spot('container').setAttribute('part', `container -${dataset.variant}`);
+        ref('container').setAttribute('part', `container -${dataset.variant}`);
         updateChildren(children, { dataset });
         break;
     }

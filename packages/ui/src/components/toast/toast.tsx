@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
+import '../../common/close-button/close-button';
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
-import '../../common/close-button/close-button';
 
 export type Props = {
   dataset: {
@@ -33,20 +33,20 @@ define<Props>('ui-toast', {
       color: undefined
     }
   },
-  onConnected({ hostElement, dataset, remove, spot }) {
+  onConnected({ hostElement, dataset, remove, ref }) {
     if (!dataset.fixed) {
       const container = getContainer();
       if (hostElement.parentElement !== container) {
         container.appendChild(hostElement);
       }
       setTimeout(() => {
-        spot('root').classList.add('is-hidden');
+        ref('root').classList.add('is-hidden');
         setTimeout(remove, 800);
       }, dataset.timeout);
     }
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./toast.css')],
-  template: ({ children, dataset, fire, remove, spot }) => {
+  template: ({ children, dataset, fire, remove, ref }) => {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (
       <>
@@ -79,7 +79,7 @@ define<Props>('ui-toast', {
                   })}
                   onClick={() => {
                     fire('close');
-                    spot('root').classList.add('is-hidden');
+                    ref('root').classList.add('is-hidden');
                     setTimeout(remove, 500);
                   }}
                 />
@@ -99,7 +99,7 @@ define<Props>('ui-toast', {
                 <ui-close-button
                   onClick={() => {
                     fire('close');
-                    spot('root').classList.add('is-hidden');
+                    ref('root').classList.add('is-hidden');
                     setTimeout(remove, 500);
                   }}
                 />
