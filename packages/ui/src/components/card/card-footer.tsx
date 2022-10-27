@@ -8,9 +8,9 @@ export type Props = undefined;
 
 define<Props>('ui-card-footer', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-foot.css')],
-  template: ({ dataset }) => (
+  template: () => (
     <>
-      <footer id="root" className="card-footer">
+      <footer id="host" className="card-footer">
         <slot />
       </footer>
     </>

@@ -8,9 +8,9 @@ export type Props = undefined;
 
 define<Props>('ui-avatar-group', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./avatar-group.css')],
-  template: ({ dataset }) => (
+  template: () => (
     <>
-      <div id="root" className="avatar-group">
+      <div id="host" className="avatar-group">
         <slot />
       </div>
     </>

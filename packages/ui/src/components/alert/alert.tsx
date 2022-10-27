@@ -20,13 +20,13 @@ define<Props>('ui-alert', {
       color: undefined
     }
   },
-  onAttributeChanged(name, prev, curr, { dataset, ref: spot }) {
-    spot('root').className = getClassName({ dataset });
+  onAttributeChanged(name, prev, curr, { dataset, ref }) {
+    ref('host').className = getClassName({ dataset });
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./alert.css')],
   template: ({ dataset, fire, remove }) => (
     <>
-      <div id="root" className={getClassName({ dataset })}>
+      <div id="host" className={getClassName({ dataset })}>
         <span>
           <slot />
         </span>

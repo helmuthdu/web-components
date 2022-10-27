@@ -32,7 +32,7 @@ define<Props>('ui-carousel-item', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel-item.css')],
   template: ({ dataset }) => (
     <>
-      <img id="root" className="carousel-content" src={dataset.src} alt="" />
+      <img className="carousel-content" src={dataset.src} alt="" />
       <div className={getClassName({ dataset })}>
         <slot />
       </div>

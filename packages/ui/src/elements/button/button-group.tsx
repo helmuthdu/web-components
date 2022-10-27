@@ -19,7 +19,7 @@ define<Props>('ui-button-group', {
     }
   },
   onAttributeChanged(name, prev, curr, { dataset, ref }) {
-    ref('root').className = getClassName({ dataset });
+    ref('host').className = getClassName({ dataset });
   },
   onConnected({ children }) {
     for (let idx = 0; idx < (children ?? []).length; idx++) {
@@ -29,7 +29,7 @@ define<Props>('ui-button-group', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./button-group.css')],
   template: ({ dataset }) => (
     <>
-      <div id="root" className={getClassName({ dataset })}>
+      <div id="host" className={getClassName({ dataset })}>
         <slot />
       </div>
     </>

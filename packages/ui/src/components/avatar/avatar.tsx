@@ -22,12 +22,12 @@ define<Props>('ui-avatar', {
     }
   },
   onAttributeChanged(_name, _prev, _curr, { dataset, ref }) {
-    ref('root').className = getClassName({ dataset });
+    ref('host').className = getClassName({ dataset });
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./avatar.css')],
   template: ({ dataset }) => (
     <>
-      <div id="root" className={getClassName({ dataset })}>
+      <div id="host" className={getClassName({ dataset })}>
         <span className="text-sm">
           <slot />
         </span>

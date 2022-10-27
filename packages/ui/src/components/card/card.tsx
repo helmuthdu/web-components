@@ -22,7 +22,7 @@ define<Props>('ui-card', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card.css')],
   template: ({ dataset }) => (
     <>
-      <div id="root" className={getClassName({ dataset })}>
+      <div id="host" className={getClassName({ dataset })}>
         <slot />
       </div>
     </>

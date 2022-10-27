@@ -60,7 +60,7 @@ define<Props>('ui-button', {
     }
   },
   onAttributeChanged: (name, prev, curr, { dataset, ref, render }) => {
-    const root = ref<HTMLButtonElement>('root');
+    const host = ref<HTMLButtonElement>('host');
     switch (name) {
       case 'data-circle':
       case 'data-color':
@@ -68,23 +68,23 @@ define<Props>('ui-button', {
       case 'data-rounded':
       case 'data-size':
       case 'data-variant':
-        root.className = getClassName({ dataset });
+        host.className = getClassName({ dataset });
         break;
       case 'data-loading':
         if (curr === null) {
-          root.querySelector('svg')?.remove();
+          host.querySelector('svg')?.remove();
         } else {
-          root.prepend((<LoadingIcon />) as any);
+          host.prepend((<LoadingIcon />) as any);
         }
-        root.className = getClassName({ dataset });
+        host.className = getClassName({ dataset });
         break;
       case 'data-disabled':
-        root.disabled = curr !== null;
-        root.className = getClassName({ dataset });
+        host.disabled = curr !== null;
+        host.className = getClassName({ dataset });
         break;
       case 'data-block':
-        root.style.width = dataset.block ? '100%' : '';
-        root.className = getClassName({ dataset });
+        host.style.width = dataset.block ? '100%' : '';
+        host.className = getClassName({ dataset });
         break;
       default:
         render();
@@ -101,7 +101,7 @@ define<Props>('ui-button', {
   ],
   template: ({ dataset, children, type }) => (
     <>
-      <button id="root" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
+      <button id="host" type={type} className={getClassName({ dataset })} title={children[0]?.textContent ?? undefined}>
         {dataset.loading && <LoadingIcon />}
         <slot />
       </button>

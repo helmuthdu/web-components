@@ -40,7 +40,7 @@ define<Props>('ui-toast', {
         container.appendChild(hostElement);
       }
       setTimeout(() => {
-        ref('root').classList.add('is-hidden');
+        ref('host').classList.add('is-hidden');
         setTimeout(remove, 800);
       }, dataset.timeout);
     }
@@ -50,7 +50,7 @@ define<Props>('ui-toast', {
     const hasHeader = [...children].some(child => child.slot === 'header');
     return (
       <>
-        <div id="root" className={classMap('toast')}>
+        <div id="host" className={classMap('toast')}>
           {hasHeader && (
             <div
               className={classMap('toast-header', {
@@ -79,7 +79,7 @@ define<Props>('ui-toast', {
                   })}
                   onClick={() => {
                     fire('close');
-                    ref('root').classList.add('is-hidden');
+                    ref('host').classList.add('is-hidden');
                     setTimeout(remove, 500);
                   }}
                 />
@@ -99,7 +99,7 @@ define<Props>('ui-toast', {
                 <ui-close-button
                   onClick={() => {
                     fire('close');
-                    ref('root').classList.add('is-hidden');
+                    ref('host').classList.add('is-hidden');
                     setTimeout(remove, 500);
                   }}
                 />

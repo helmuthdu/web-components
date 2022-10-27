@@ -2,13 +2,18 @@
 /** @jsx dom */
 /** @jsxFrag fragment */
 import { dom, fragment } from '../../lib/create-element';
-import { define } from '../../lib/custom-element';
+import { classMap, define } from '../../lib/custom-element';
 
 export type Props = {
   dataset: {
     variant?: 'primary' | 'secondary' | 'tertiary';
   };
 };
+
+const getClassName = ({ dataset }: Props) =>
+  classMap('accordion', {
+    [`is-${dataset.variant}`]: dataset.variant
+  });
 
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
   [...children].forEach(el => {
@@ -25,7 +30,7 @@ define<Props>('ui-accordion', {
   onAttributeChanged(name, _prev, _curr, { children, dataset, ref }) {
     switch (name) {
       case 'data-variant':
-        ref('root').setAttribute('class', `accordion is-${dataset.variant}`);
+        ref('host').className = getClassName({ dataset });
         updateChildren(children, { dataset });
         break;
     }
@@ -36,7 +41,7 @@ define<Props>('ui-accordion', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./accordion.css')],
   template: ({ dataset }) => (
     <>
-      <div id="root" className={`accordion is-${dataset.variant}`}>
+      <div id="host" className={getClassName({ dataset })}>
         <slot />
       </div>
     </>

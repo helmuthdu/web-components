@@ -57,7 +57,7 @@ define<Props>('ui-carousel', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel.css')],
   template: ({ children, dataset, shadowRoot }) => (
     <>
-      <div id="root" className="carousel">
+      <div id="host" className="carousel">
         <div className="carousel-container">
           <slot />
         </div>

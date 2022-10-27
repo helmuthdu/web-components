@@ -8,9 +8,9 @@ export type Props = undefined;
 
 define<Props>('ui-card-meta', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-meta.css')],
-  template: ({ dataset }) => (
+  template: () => (
     <>
-      <span id="root" className="card-meta">
+      <span id="host" className="card-meta">
         <slot />
       </span>
     </>

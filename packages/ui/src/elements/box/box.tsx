@@ -8,9 +8,9 @@ export type Props = undefined;
 
 define<Props>('ui-box', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./box.css')],
-  template: ({ dataset }) => (
+  template: () => (
     <>
-      <div id="root" className="box">
+      <div id="host" className="box">
         <slot />
       </div>
     </>

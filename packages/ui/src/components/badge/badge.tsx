@@ -33,14 +33,14 @@ define<Props>('ui-badge', {
       case 'data-color':
       case 'data-pill':
       case 'data-size':
-        ref('root').className = getClassName({ dataset });
+        ref('host').className = getClassName({ dataset });
         break;
     }
   },
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./badge.css')],
   template: ({ dataset }) => (
     <>
-      <span id="root" className={getClassName({ dataset })}>
+      <span id="host" className={getClassName({ dataset })}>
         <slot />
       </span>
     </>

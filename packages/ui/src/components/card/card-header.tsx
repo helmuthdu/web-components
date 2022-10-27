@@ -8,9 +8,9 @@ export type Props = undefined;
 
 define<Props>('ui-card-header', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-header.css')],
-  template: ({ dataset }) => (
+  template: () => (
     <>
-      <header id="root" className="card-header">
+      <header id="host" className="card-header">
         <slot />
       </header>
     </>
