@@ -1,6 +1,6 @@
 import { configureFormElement } from './form-element';
-import { applyStyles } from './styling-element';
 import { isArray, isFunction, isObject, isString } from './utils';
+import { applyStyles } from './styling-element';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
@@ -41,6 +41,14 @@ const valueOf = (key: string | symbol, value: any) =>
     ? Object.entries(value).reduce((acc, [k, v]) => ({ ...acc, [k]: v === '' ? true : v }), {} as typeof value)
     : value;
 
+const createProxyElement = (customElement: HTMLElement) =>
+  new Proxy(customElement, {
+    get(target, key) {
+      const value = Reflect.get(target, key);
+      return isFunction(value) ? value.bind(target) : valueOf(key, value);
+    }
+  });
+
 const updateProps = <T extends HTMLElement>(target: T, props: CustomElementProps) =>
   props &&
   Object.entries(props)
@@ -67,96 +75,88 @@ export const component = <Props extends CustomElementProps>({
   styles = [],
   template
 }: CustomElementOptions<Props>) =>
-  new Proxy(
-    class extends HTMLElement implements CustomElementClass<Props> {
-      #isConnected = false;
-      hostElement = this as unknown as CustomElement<Props>;
+  class extends HTMLElement implements CustomElementClass<Props> {
+    #isConnected = false;
+    #proxy = createProxyElement(this) as unknown as CustomElement<Props>;
+    hostElement = this as unknown as CustomElement<Props>;
 
-      constructor() {
-        super();
-        applyStyles(this.attachShadow({ mode: 'open' }), styles);
-        updateProps(this, props);
-        if (form) {
-          configureFormElement(this);
-        }
-      }
-
-      static formAssociated = form;
-
-      static get observedAttributes() {
-        return [
-          ...Object.entries(props)
-            .map(([key, value]) => (key === 'dataset' ? Object.keys(value).map(p => `data-${getAttrName(p)}`) : key))
-            .flat()
-        ];
-      }
-
-      connectedCallback() {
-        this.style.visibility = 'hidden';
-        setTimeout(() => (this.style.visibility = ''), 100);
-
-        this.render();
-        this.#isConnected = true;
-
-        if (onConnected) {
-          onConnected(this as unknown as CustomElement<Props>);
-        }
-      }
-
-      disconnectedCallback() {
-        if (onDisconnected) {
-          onDisconnected(this as unknown as CustomElement<Props>);
-        }
-      }
-
-      attributeChangedCallback(name: string, prev: string, curr: string) {
-        if (this.#isConnected && prev !== curr && onAttributeChanged) {
-          onAttributeChanged(name, prev, curr, this);
-        }
-      }
-
-      formStateRestoreCallback(state: string) {
-        if (form) this.setAttribute('value', state);
-      }
-
-      render() {
-        requestAnimationFrame(() => {
-          const tmpl = isFunction(template) ? template(this as unknown as CustomElement<Props>) : template;
-          const shadowRoot = this.shadowRoot as ShadowRoot;
-          if (isString(tmpl)) {
-            shadowRoot.innerHTML = tmpl;
-          } else {
-            shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
-          }
-        });
-      }
-
-      fire(event: string | HTMLTags, options?: CustomEventInit) {
-        this.dispatchEvent(new CustomEvent(event, options));
-      }
-
-      event(
-        id: string | HTMLElement | CustomElement<Props>,
-        event: string | HTMLTags,
-        callback: EventListener,
-        options?: boolean | AddEventListenerOptions
-      ) {
-        const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElement<Props>;
-        if (!el) throw new Error(`element with id="${id}" not found`);
-        el.addEventListener(event, callback, options);
-      }
-
-      ref<T extends HTMLElement>(id: string): T {
-        return this.shadowRoot?.getElementById(id) as T;
-      }
-    },
-    {
-      get(target, key) {
-        const value = Reflect.get(target, key);
-        return isFunction(value) ? value.bind(target) : valueOf(key, value);
+    constructor() {
+      super();
+      applyStyles(this.attachShadow({ mode: 'open' }), styles);
+      updateProps(this, props);
+      if (form) {
+        configureFormElement(this);
       }
     }
-  );
+
+    static formAssociated = form;
+
+    static get observedAttributes() {
+      return [
+        ...Object.entries(props)
+          .map(([key, value]) => (key === 'dataset' ? Object.keys(value).map(p => `data-${getAttrName(p)}`) : key))
+          .flat()
+      ];
+    }
+
+    connectedCallback() {
+      this.style.visibility = 'hidden';
+      setTimeout(() => (this.style.visibility = ''), 100);
+
+      this.render();
+      this.#isConnected = true;
+      if (onConnected) {
+        onConnected(this.#proxy);
+      }
+    }
+
+    disconnectedCallback() {
+      if (onDisconnected) {
+        onDisconnected(this.#proxy);
+      }
+    }
+
+    attributeChangedCallback(name: string, prev: string, curr: string) {
+      if (this.#isConnected && prev !== curr && onAttributeChanged) {
+        onAttributeChanged(name, prev, curr, this.#proxy);
+      }
+    }
+
+    formStateRestoreCallback(state: string) {
+      if (form) this.setAttribute('value', state);
+    }
+
+    render() {
+      requestAnimationFrame(() => {
+        const tmpl = isFunction(template) ? template(this.#proxy) : template;
+        const shadowRoot = this.shadowRoot as ShadowRoot;
+        if (isString(tmpl)) {
+          shadowRoot.innerHTML = tmpl;
+        } else {
+          shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
+        }
+      });
+    }
+
+    fire(event: string | HTMLTags, options?: CustomEventInit) {
+      this.dispatchEvent(new CustomEvent(event, options));
+    }
+
+    event(
+      id: string | HTMLElement | CustomElement<Props>,
+      event: string | HTMLTags,
+      callback: EventListener,
+      options?: boolean | AddEventListenerOptions
+    ) {
+      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElement<Props>;
+      if (!el) throw new Error(`element with id="${id}" not found`);
+      el.addEventListener(event, callback, options);
+    }
+
+    ref<T extends HTMLElement>(id: string): T {
+      return this.shadowRoot?.getElementById(id) as T;
+    }
+  };
 
 export const define = <Props extends CustomElementProps>(name: string, options: CustomElementOptions<Props>) => {
   if (!window.customElements.get(name)) customElements.define(name, component<Props>(options));
