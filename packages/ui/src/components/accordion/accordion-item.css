@@ -15,17 +15,17 @@ details summary::-webkit-details-marker {
   display: none;
 }
 
-ui-accordion-item::part(container) {
-  display: block;
-  padding: var(--size-4);
-  color: var(--color-content-body);
-}
-
-ui-accordion-item::part(header) {
+summary {
   display: flex;
   gap: var(--size-2);
   align-items: center;
   padding-top: var(--size-1);
   padding-bottom: var(--size-1);
   cursor: pointer;
+}
+
+.accordion-item {
+  display: block;
+  padding: var(--size-4);
+  color: var(--color-content-body);
 }

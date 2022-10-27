@@ -35,7 +35,8 @@ export default defineConfig({
         './src/components/toast/toast.tsx',
         './src/elements/box/box.tsx',
         './src/elements/button/button.tsx',
-        './src/elements/button/button-group.tsx'
+        './src/elements/button/button-group.tsx',
+        './src/elements/close-button/close-button.tsx'
       ]
     }
   },

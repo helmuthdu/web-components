@@ -25,7 +25,7 @@ define<Props>('ui-accordion', {
   onAttributeChanged(name, _prev, _curr, { children, dataset, ref }) {
     switch (name) {
       case 'data-variant':
-        ref('container').setAttribute('part', `container -${dataset.variant}`);
+        ref('root').setAttribute('class', `accordion is-${dataset.variant}`);
         updateChildren(children, { dataset });
         break;
     }
@@ -36,7 +36,7 @@ define<Props>('ui-accordion', {
   styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./accordion.css')],
   template: ({ dataset }) => (
     <>
-      <div id="container" part={`container -${dataset.variant}`}>
+      <div id="root" className={`accordion is-${dataset.variant}`}>
         <slot />
       </div>
     </>

@@ -1,10 +1,10 @@
-ui-accordion::part(container) {
+.accordion {
   display: block;
   padding: var(--size-2) var(--size-1);
   border-radius: var(--rounded-lg);
 }
 
-ui-accordion::part(-primary) {
+.is-primary {
   background-color: var(--color-canvas);
   border: var(--border) solid var(--color-contrast-200);
 }
@@ -15,7 +15,7 @@ ui-accordion::part(-primary) {
   border-bottom: var(--border) solid var(--color-contrast-200);
 }
 
-ui-accordion::part(-secondary) {
+.is-secondary {
   background-color: transparent;
 }
 
@@ -27,6 +27,6 @@ ui-accordion::part(-secondary) {
   border-radius: var(--rounded-lg);
 }
 
-ui-accordion::part(-tertiary) {
+.is-tertiary {
   background-color: transparent;
 }

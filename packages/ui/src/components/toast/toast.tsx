@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
-import '../../common/close-button/close-button';
+import '../../elements/close-button/close-button';
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
