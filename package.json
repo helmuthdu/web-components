@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Web Components",
   "scripts": {
-    "build:storybook": "cd packages/ui && npm run build:storybook",
+    "build:storybook": "cd packages/ui && npm run storybook:build",
     "lint": "eslint packages --ext .jsx,.js,.ts,.tsx,.vue --fix --ignore-path .gitignore",
     "lint:css": "stylelint --fix \"packages/**/*.css\""
   },
