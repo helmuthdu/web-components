@@ -14,10 +14,10 @@ pre-commit:
       run: >
         npx prettier --write {staged_files} && 
         npx eslint --fix {staged_files} && 
-        npx vitest related {staged_files} --passWithNoTests --run
+        npx vitest related {staged_files} --passWithNoTests --run --environment jsdom
     test:unit:
       glob: '*.{spec,test}.{[tj]s,[tj]sx}'
       run: >
         npx prettier --write {staged_files} &&
         npx eslint --fix {staged_files} &&
-        npx vitest {staged_files} --run
+        npx vitest {staged_files} --run --environment jsdom

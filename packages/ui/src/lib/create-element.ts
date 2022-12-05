@@ -66,4 +66,4 @@ export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...ch
 export const raw = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
 
 // @ts-ignore
-window.rawHTML = raw;
+// window.rawHTML = raw;

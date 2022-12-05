@@ -159,7 +159,7 @@ export const component = <Props extends CustomElementProps>({
   };
 
 export const define = <Props extends CustomElementProps>(name: string, options: CustomElementOptions<Props>) => {
-  if (!window.customElements.get(name)) customElements.define(name, component<Props>(options));
+  if (!customElements.get(name)) customElements.define(name, component<Props>(options));
 };
 
 export { classMap } from './styling-element';

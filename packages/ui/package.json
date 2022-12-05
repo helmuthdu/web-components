@@ -21,7 +21,8 @@
     "build:lib": "tsc && vite build -c=vite.lib.config.js",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "build-storybook -o docs-build"
+    "storybook:build": "build-storybook -o docs-build",
+    "test": "vitest"
   },
   "devDependencies": {
     "@mdx-js/react": "^2.1.5",
@@ -34,6 +35,7 @@
     "@storybook/mdx2-csf": "^0.0.3",
     "@storybook/testing-library": "^0.0.13",
     "@storybook/theming": "^6.5.14",
+    "@types/jsdom": "^20.0.1",
     "concurrently": "^7.6.0",
     "cssnano": "^5.1.14",
     "jsdom": "^20.0.3",
@@ -43,6 +45,7 @@
     "postcss-preset-env": "^7.8.3",
     "typescript": "^4.9.3",
     "vite": "^3.2.5",
-    "vitest": "^0.25.3"
+    "vitest": "^0.25.3",
+    "vitest-github-actions-reporter": "^0.9.0"
   }
 }
