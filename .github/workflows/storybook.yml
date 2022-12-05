@@ -2,7 +2,7 @@ name: Build and Deploy Storybook
 
 on:
   push:
-    paths: ["stories/**", "src/components/**"] # Trigger the action only when files change in the folders defined here
+    paths: ['stories/**', 'src/components/**'] # Trigger the action only when files change in the folders defined here
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
