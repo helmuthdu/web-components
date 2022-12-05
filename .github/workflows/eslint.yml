@@ -24,8 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  eslint:
-    name: Run eslint scanning
+  linter:
     runs-on: ubuntu-latest
     permissions:
       contents: read
