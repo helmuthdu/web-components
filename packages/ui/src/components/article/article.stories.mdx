@@ -1,0 +1,44 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import './article';
+
+# Article
+
+<Meta title="Components/Article" decorators={[story => `<div class="canvas">${story()}</div>`]} />
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story
+    name="Playground"
+    args={{
+      slot: /*html*/ `<h2 class="font-medium" slot="title">Article!</h2> Change a few things up and try submitting again.`,
+      color: 'info'
+    }}
+    argTypes={{
+      color: {
+        name: 'data-color',
+        type: { name: 'string', required: true },
+        control: {
+          type: 'select',
+          labels: {
+            [undefined]: 'default',
+            info: 'info',
+            error: 'error',
+            success: 'success',
+            contrast: 'contrast'
+          }
+        },
+        options: [undefined, 'info', 'error', 'success', 'contrast']
+      }
+    }}>
+    {({ slot, ...props }) => /*html*/ `
+      <ui-article ${props.color ? `data-color="${props.color}"` : ''} >
+        ${slot}
+      </ui-article>
+    `}
+  </Story>
+</Canvas>
+
+#### SLOT & PROPS
+
+<ArgsTable story="Playground" />

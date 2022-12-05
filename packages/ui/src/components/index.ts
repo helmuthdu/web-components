@@ -1,6 +1,7 @@
 import './accordion/accordion-item';
 import './accordion/accordion';
 import './alert/alert';
+import './article/article';
 import './avatar/avatar';
 import './avatar/avatar-group';
 import './badge/badge';
