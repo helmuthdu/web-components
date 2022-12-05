@@ -25,6 +25,7 @@ concurrency:
 
 jobs:
   linter:
+    name: Code analysis
     runs-on: ubuntu-latest
     permissions:
       contents: read

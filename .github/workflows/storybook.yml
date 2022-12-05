@@ -20,8 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build job
   build:
+    name: Storybook
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
