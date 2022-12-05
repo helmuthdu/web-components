@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/helmuthdu/web-components#readme",
   "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "8.29.0",
