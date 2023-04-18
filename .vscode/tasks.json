@@ -19,16 +19,7 @@
 			"path": "packages/custom-elements/",
 			"problemMatcher": [],
 			"label": "npm:storybook",
-			"detail": "npm run storybook:update-tailwind && start-storybook -p 6006"
+			"detail": "start-storybook -p 6006"
 		},
-		{
-			"label": "Client Build",
-			"command": "gulp",
-			"args": ["build"],
-			"options": {
-			  "cwd": "${workspaceFolder}/client",
-			  "runtimeVersion": "16.13.1"
-			}
-		}
 	]
 }

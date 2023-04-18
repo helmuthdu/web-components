@@ -1,4 +1,4 @@
-import { create } from '@storybook/theming';
+import { create } from '@storybook/theming/create';
 
 export default create({
   base: 'dark',
@@ -12,5 +12,5 @@ export default create({
   appBorderColor: '#3f3f46',
 
   brandTitle: 'UI Library Kit',
-  brandImage: undefined,
+  brandImage: undefined
 });

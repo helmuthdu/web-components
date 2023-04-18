@@ -1,6 +1,6 @@
 import { configureFormElement } from './form-element';
-import { isArray, isFunction, isObject, isString } from './utils';
 import { applyStyles } from './styling-element';
+import { isArray, isFunction, isObject, isString } from './utils';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
@@ -87,6 +87,7 @@ export const component = <Props extends CustomElementProps>({
       if (form) {
         configureFormElement(this);
       }
+      this.render();
     }
 
     static formAssociated = form;
@@ -103,7 +104,6 @@ export const component = <Props extends CustomElementProps>({
       this.style.visibility = 'hidden';
       setTimeout(() => (this.style.visibility = ''), 100);
 
-      this.render();
       this.#isConnected = true;
       if (onConnected) {
         onConnected(this.#proxy);
