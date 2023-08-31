@@ -54,7 +54,7 @@ define<Props>('ui-carousel', {
     });
     observer.observe(shadowRoot as ShadowRoot, { childList: true });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./carousel.css')],
+  styles: [import('../../styles/styles.css'), import('./carousel.css')],
   template: ({ children, dataset, shadowRoot }) => (
     <>
       <div id="host" className="carousel">

@@ -37,7 +37,7 @@ define<Props>('ui-badge', {
         break;
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./badge.css')],
+  styles: [import('../../styles/styles.css'), import('./badge.css')],
   template: ({ dataset }) => (
     <>
       <span id="host" className={getClassName({ dataset })}>

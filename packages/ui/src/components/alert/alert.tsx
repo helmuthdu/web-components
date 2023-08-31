@@ -23,7 +23,7 @@ define<Props>('ui-alert', {
   onAttributeChanged(name, prev, curr, { dataset, ref }) {
     ref('host').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./alert.css')],
+  styles: [import('../../styles/styles.css'), import('./alert.css')],
   template: ({ dataset, fire, remove }) => (
     <>
       <div id="host" className={getClassName({ dataset })}>

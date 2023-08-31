@@ -17,7 +17,7 @@ type CustomElementOptions<Props extends CustomElementProps> = {
 };
 
 type CustomElementClass<Props extends CustomElementProps> = {
-  fire: (event: string | HTMLTags, { detail }?: CustomEventInit) => void;
+  fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
   event: (
     id: string | HTMLElement | CustomElement<Props>,
     event: string | HTMLTags,
@@ -128,12 +128,12 @@ export const component = <Props extends CustomElementProps>({
 
     render() {
       requestAnimationFrame(() => {
-        const tmpl = isFunction(template) ? template(this.#proxy) : template;
+        const node = isFunction(template) ? template(this.#proxy) : template;
         const shadowRoot = this.shadowRoot as ShadowRoot;
-        if (isString(tmpl)) {
-          shadowRoot.innerHTML = tmpl;
+        if (isString(node)) {
+          shadowRoot.innerHTML = node;
         } else {
-          shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
+          shadowRoot.replaceChildren(...(isArray(node) ? node.flat() : [node]));
         }
       });
     }

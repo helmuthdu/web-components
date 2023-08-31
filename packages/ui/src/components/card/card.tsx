@@ -19,7 +19,7 @@ define<Props>('ui-card', {
       horizontal: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card.css')],
+  styles: [import('../../styles/styles.css'), import('./card.css')],
   template: ({ dataset }) => (
     <>
       <div id="host" className={getClassName({ dataset })}>

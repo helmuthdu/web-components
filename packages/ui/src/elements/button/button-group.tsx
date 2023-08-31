@@ -26,7 +26,7 @@ define<Props>('ui-button-group', {
       children[idx].setAttribute('data-group', idx === 0 ? 'first' : idx === children.length - 1 ? 'last' : '');
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./button-group.css')],
+  styles: [import('../../styles/styles.css'), import('./button-group.css')],
   template: ({ dataset }) => (
     <>
       <div id="host" className={getClassName({ dataset })}>

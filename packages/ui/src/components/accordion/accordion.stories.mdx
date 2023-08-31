@@ -15,10 +15,12 @@ import './accordion';
       variant: {
         name: 'variant',
         type: { name: 'string', required: true },
-        defaultValue: 'primary',
         control: { type: 'select' },
         options: ['primary', 'secondary', 'tertiary']
       }
+    }}
+    args={{
+      variant: 'primary'
     }}>
     {({ variant }) => /*html*/ `
       <style>

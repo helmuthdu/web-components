@@ -24,7 +24,7 @@ define<Props>('ui-avatar', {
   onAttributeChanged(_name, _prev, _curr, { dataset, ref }) {
     ref('host').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./avatar.css')],
+  styles: [import('../../styles/styles.css'), import('./avatar.css')],
   template: ({ dataset }) => (
     <>
       <div id="host" className={getClassName({ dataset })}>

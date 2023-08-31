@@ -14,7 +14,7 @@ define<Props>('ui-card-image', {
       src: undefined
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./card-image.css')],
+  styles: [import('../../styles/styles.css'), import('./card-image.css')],
   template: ({ dataset }) => (
     <>
       <img id="host" className="card-image" src={dataset.src} alt="" />

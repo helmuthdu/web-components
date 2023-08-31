@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx dom */
 /** @jsxFrag fragment */
-import '../../elements/close-button/close-button';
 import { dom, fragment } from '../../lib/create-element';
 import { classMap, define } from '../../lib/custom-element';
 
@@ -23,7 +22,7 @@ define<Props>('ui-article', {
   onAttributeChanged(name, prev, curr, { dataset, ref: spot }) {
     spot('host').className = getClassName({ dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./article.css')],
+  styles: [import('../../styles/styles.css'), import('./article.css')],
   template: ({ dataset, fire, remove }) => (
     <>
       <div className="card">

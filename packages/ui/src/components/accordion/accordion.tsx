@@ -30,7 +30,7 @@ define<Props>('ui-accordion', {
   onAttributeChanged(name, _prev, _curr, { children, dataset, ref }) {
     switch (name) {
       case 'data-variant':
-        ref('host').className = getClassName({ dataset });
+        ref('root').className = getClassName({ dataset });
         updateChildren(children, { dataset });
         break;
     }
@@ -38,10 +38,10 @@ define<Props>('ui-accordion', {
   onConnected: ({ dataset, children }) => {
     updateChildren(children, { dataset });
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./accordion.css')],
+  styles: [import('../../styles/styles.css'), import('./accordion.css')],
   template: ({ dataset }) => (
     <>
-      <div id="host" className={getClassName({ dataset })}>
+      <div id="root" className={getClassName({ dataset })}>
         <slot />
       </div>
     </>

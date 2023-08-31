@@ -14,7 +14,7 @@ define<Props>('ui-accordion-item', {
       header: ''
     }
   },
-  styles: [import('../../styles/preflight.css'), import('../../styles/theme.css'), import('./accordion-item.css')],
+  styles: [import('../../styles/styles.css'), import('./accordion-item.css')],
   template: ({ dataset }) => (
     <>
       <details id="host" className="accordion-item">
