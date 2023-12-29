@@ -2,10 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--size-2) var(--size-3) var(--size-2) var(--size-4);
-  color: var(--alert-color, var(--color-content-body));
+  padding-block: var(--size-2);
+  padding-inline: var(--size-4) var(--size-3);
   font-size: var(--text-xs);
   line-height: var(--line-spacing-xs);
+  color: var(--alert-color, var(--color-content-body));
   background-color: var(--alert-background-color, var(--color-canvas));
   border: var(--border) solid var(--alert-border-color, var(--color-contrast-300));
   border-radius: var(--rounded-xl);

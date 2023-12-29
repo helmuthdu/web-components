@@ -1,6 +1,7 @@
 .accordion {
   display: block;
-  padding: var(--size-2) var(--size-1);
+  padding-block: var(--size-2);
+  padding-inline: var(--size-1);
   border-radius: var(--rounded-lg);
 }
 
@@ -12,7 +13,7 @@
 ::slotted([data-variant='primary']:not(:last-child)),
 ::slotted([data-variant='tertiary']:not(:last-child)) {
   display: block;
-  border-bottom: var(--border) solid var(--color-contrast-200);
+  border-block-end: var(--border) solid var(--color-contrast-200);
 }
 
 .is-secondary {
@@ -21,7 +22,7 @@
 
 ::slotted([data-variant='secondary']) {
   display: block;
-  margin-bottom: var(--size-2);
+  margin-block-end: var(--size-2);
   background-color: var(--color-canvas);
   border: var(--border) solid var(--color-contrast-200);
   border-radius: var(--rounded-lg);

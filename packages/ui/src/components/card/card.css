@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: var(--size-sm);
+  max-inline-size: var(--size-sm);
   overflow: hidden;
   background-color: var(--color-canvas);
   border: var(--border) solid var(--color-contrast-200);

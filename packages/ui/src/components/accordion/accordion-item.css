@@ -3,8 +3,8 @@ details svg {
 }
 
 details > summary > svg {
-  width: var(--size-4);
-  height: var(--size-4);
+  inline-size: var(--size-4);
+  block-size: var(--size-4);
 }
 
 details[open] svg {
@@ -19,8 +19,7 @@ summary {
   display: flex;
   gap: var(--size-2);
   align-items: center;
-  padding-top: var(--size-1);
-  padding-bottom: var(--size-1);
+  padding-block: var(--size-1);
   cursor: pointer;
 }
 

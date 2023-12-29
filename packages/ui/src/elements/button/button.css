@@ -5,15 +5,15 @@
   align-items: center;
   justify-content: center;
   padding: var(--button-padding, var(--size-3) var(--size-5));
-  font-weight: var(--font-weight-semibold);
   font-size: var(--button-font-size, var(--text-md));
+  font-weight: var(--font-weight-semibold);
   line-height: var(--button-line-height, var(--line-spacing-md));
   text-align: center;
   border: var(--border) solid transparent;
 
   & > svg {
-    width: var(--button-icon-size, var(--size-5));
-    height: var(--button-icon-size, var(--size-5));
+    inline-size: var(--button-icon-size, var(--size-5));
+    block-size: var(--button-icon-size, var(--size-5));
   }
 
   &.is-rounded {
@@ -25,33 +25,32 @@
   }
 
   &.is-block {
-    width: var(--size-full);
+    inline-size: var(--size-full);
   }
 
   &.is-group {
     &.is-outline {
-      margin-right: 0;
-      margin-left: -1px;
+      margin-inline: -1px 0;
     }
 
     &.is-first {
-      border-top-left-radius: var(--rounded-full);
-      border-bottom-left-radius: var(--rounded-full);
+      border-start-start-radius: var(--rounded-full);
+      border-end-start-radius: var(--rounded-full);
     }
 
     &.is-last {
-      border-top-right-radius: var(--rounded-full);
-      border-bottom-right-radius: var(--rounded-full);
+      border-start-end-radius: var(--rounded-full);
+      border-end-end-radius: var(--rounded-full);
     }
 
     &.is-first:not(.is-rounded) {
-      border-top-left-radius: var(--rounded-lg);
-      border-bottom-left-radius: var(--rounded-lg);
+      border-start-start-radius: var(--rounded-lg);
+      border-end-start-radius: var(--rounded-lg);
     }
 
     &.is-last:not(.is-rounded) {
-      border-top-right-radius: var(--rounded-lg);
-      border-bottom-right-radius: var(--rounded-lg);
+      border-start-end-radius: var(--rounded-lg);
+      border-end-end-radius: var(--rounded-lg);
     }
   }
 
@@ -84,8 +83,8 @@
   }
 
   &.is-circle:not(.is-group) {
-    width: var(--button-size, var(--size-12));
-    height: var(--button-size, var(--size-12));
+    inline-size: var(--button-size, var(--size-12));
+    block-size: var(--button-size, var(--size-12));
     padding: 0;
     border-radius: var(--rounded-full);
 
@@ -180,10 +179,12 @@
     }
 
     &.is-xs {
-      margin-top: - var(--size-1);
-
       --button-font-size: var(--text-xs);
       --button-line-height: var(--line-spacing-xs);
+
+      /* stylelint-disable */
+      margin-block-start: -var(--size-1);
+      /* stylelint-enable */
 
       &:not(.is-circle) {
         --button-padding: var(--size-0-5) var(--size-4);

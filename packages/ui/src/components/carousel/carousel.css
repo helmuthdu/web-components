@@ -1,17 +1,17 @@
 .carousel {
   position: relative;
-  width: var(--size-full);
+  inline-size: var(--size-full);
 }
 
 .carousel-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   position: relative;
   display: flex;
-  width: var(--size-full);
-  scroll-snap-type: x mandatory;
+  inline-size: var(--size-full);
   overflow-x: auto;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
 .carousel::-webkit-scrollbar {
@@ -30,36 +30,34 @@
 
 .carousel-button {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  border: none;
-  width: var(--size-12);
+  inset-block: 0;
+  inline-size: var(--size-12);
   color: var(--color-content-body);
+  border: none;
 
   &.is-left {
-    left: 0;
+    inset-inline-start: 0;
   }
 
   &.is-right {
-    right: 0;
+    inset-inline-end: 0;
   }
 }
 
 .carousel-navigation {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset-block-end: 0;
+  inset-inline: 0;
   display: flex;
   gap: var(--size-2);
   justify-content: center;
-  padding-bottom: var(--size-4);
+  padding-block-end: var(--size-4);
 }
 
 .carousel-navigation-item {
-  width: var(--size-8);
-  border-bottom: var(--border-4) solid rgb(255 255 255/ 60%);
+  inline-size: var(--size-8);
   cursor: pointer;
+  border-block-end: var(--border-4) solid rgb(255 255 255/ 60%);
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 700ms;
   transition-property: border-color;

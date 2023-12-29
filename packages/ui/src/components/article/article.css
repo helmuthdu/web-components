@@ -1,20 +1,19 @@
 .card {
   display: flex;
-  flex-flow: wrap;
-  flex-direction: column;
+  flex-flow: column wrap;
   gap: var(--size-4);
 
   &-thumb {
-    aspect-ratio: 1/1;
     flex: 0 0 150px;
+    aspect-ratio: 1/1;
     background-color: var(--color-canvas);
     border-radius: var(--rounded-md);
   }
 
   &-title {
-    margin-bottom: var(--size-3);
-    font-weight: var(--font-weight-bold);
+    margin-block-end: var(--size-3);
     font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
     line-height: var(--line-spacing-lg);
   }
 
@@ -44,15 +43,15 @@
       position: relative;
       align-items: center;
       justify-content: center;
-      min-height: 350px;
+      min-block-size: 350px;
     }
 
     &-thumb {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      block-size: 100%;
       opacity: 0.25;
     }
 
@@ -62,15 +61,14 @@
     }
 
     &-title {
-      margin-bottom: 0.5rem;
-      font-weight: bold;
+      margin-block-end: 0.5rem;
       font-size: 1.5rem;
+      font-weight: 700;
     }
 
     &-desc {
-      max-width: 480px;
-      margin-right: auto;
-      margin-left: auto;
+      max-inline-size: 480px;
+      margin-inline: auto;
       color: #222;
       text-align: center;
     }

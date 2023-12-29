@@ -3,13 +3,14 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  padding: var(--size-1) var(--size-2);
-  color: var(--badge-color, var(--color-content-body));
-  font-weight: var(--font-weight-semibold);
+  padding-block: var(--size-1);
+  padding-inline: var(--size-2);
   font-size: var(--badge-font-size, var(--text-md));
+  font-weight: var(--font-weight-semibold);
   line-height: var(--badge-line-height, var(--line-spacing-md));
-  white-space: nowrap;
+  color: var(--badge-color, var(--color-content-body));
   text-align: center;
+  white-space: nowrap;
   vertical-align: middle;
   background-color: var(--badge-background-color, var(--color-contrast-50));
   border: var(--badge-border, var(--border) solid var(--color-contrast-200));

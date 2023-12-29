@@ -2,30 +2,29 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--size-8);
-  height: var(--size-8);
-  margin-right: - var(--size-1);
-  margin-left: var(--size-1);
+  inline-size: var(--size-8);
+  block-size: var(--size-8);
   padding: var(--size-1);
+  margin-inline: var(--size-1) - var(--size-1);
   color: currentcolor;
+  cursor: pointer;
   background-color: transparent;
   border: none;
-  cursor: pointer;
 }
 
 .close-button > span {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
+  inline-size: 1px;
+  block-size: 1px;
   padding: 0;
+  margin: -1px;
   overflow: hidden;
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-  clip: rect(0, 0, 0, 0);
 }
 
 .close-button > svg {
-  width: var(--size-5);
-  height: var(--size-5);
+  inline-size: var(--size-5);
+  block-size: var(--size-5);
 }
