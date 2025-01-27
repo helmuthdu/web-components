@@ -1,0 +1,17 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/blocks';
+import './badge';
+import * as BadgeStories from './badge.stories';
+
+# Badges
+
+<Meta of={BadgeStories} />
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story of={BadgeStories.Playground} />
+</Canvas>
+
+#### SLOT & PROPS
+
+<ArgsTable story="Playground" />

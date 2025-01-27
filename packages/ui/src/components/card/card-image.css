@@ -1,9 +1,0 @@
-:host {
-  overflow: hidden;
-}
-
-.card-image {
-  inline-size: var(--size-auto);
-  block-size: var(--size-full);
-  object-fit: cover;
-}

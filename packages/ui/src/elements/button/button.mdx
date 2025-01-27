@@ -1,0 +1,76 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/blocks';
+import './button';
+import './button-group';
+import * as ButtonStories from './button.stories';
+
+# Button
+
+Buttons allow users to take actions, and make choices, with a single tap.
+
+<Meta of={ButtonStories} />
+
+## Variants
+
+Change the variants using the `data-variant` attribute, it comes with three variants: **default**, **outlined** and **text**.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Variants} />
+</Canvas>
+
+## Colors
+
+Change the color using the `data-color` attribute, it comes with three colors defined: **primary**, **error** and **success**.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Colors} />
+</Canvas>
+
+## Size
+
+For larger or smaller buttons, use the `data-size` prop.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Size} />
+</Canvas>
+
+## Disabled
+
+Avoid user interaction with the `data-disabled` attribute.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Disabled} />
+</Canvas>
+
+## Loading
+
+Active the loading state with the`data-loading` attribute.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Loading} />
+</Canvas>
+
+## Circle
+
+For a small circular button use the `data-circle` attribute.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Circle} />
+</Canvas>
+
+## Group
+
+All buttons can be grouped together wrapping with the `ui-button-group` component.
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Group} />
+</Canvas>
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story of={ButtonStories.Playground} />
+</Canvas>
+
+### SLOT & PROPS
+
+<ArgsTable story="Playground" />

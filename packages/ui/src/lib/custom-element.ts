@@ -1,93 +1,68 @@
 import { configureFormElement } from './form-element';
-import { applyStyles } from './styling-element';
-import { isArray, isFunction, isObject, isString } from './utils';
+import { isArray, isFunction, isString } from './utils';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
 type CustomElementProps = Record<string, any> | undefined;
 
-type CustomElementOptions<Props extends CustomElementProps> = {
-  onAttributeChanged?: (name: string, prev: string, curr: string, host: CustomElement<Props>) => void;
-  onConnected?: (host: CustomElement<Props>) => void;
-  onDisconnected?: (host: CustomElement<Props>) => void;
-  props?: Props & Partial<Omit<HTMLElement, keyof Props>>;
+type CustomElementOptions<Props extends CustomElementProps, ComponentElement = HTMLElement> = {
   form?: boolean;
-  styles?: unknown[];
-  template: (host: CustomElement<Props>) => any | string;
+  onAttributeChanged?: (name: string, prev: string, curr: string, self: CustomElement<Props, ComponentElement>) => void;
+  onConnected?: (self: CustomElement<Props, ComponentElement>) => void;
+  onDisconnected?: (self: CustomElement<Props, ComponentElement>) => void;
+  props?: Props & Partial<Omit<ComponentElement, keyof Props>>;
+  template: (self: CustomElement<Props, ComponentElement>) => any | string;
 };
 
-type CustomElementClass<Props extends CustomElementProps> = {
-  fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
+type CustomElementClass<Props extends CustomElementProps, ComponentElement = HTMLElement> = {
   event: (
-    id: string | HTMLElement | CustomElement<Props>,
+    id: string | HTMLElement | CustomElement<Props, ComponentElement>,
     event: string | HTMLTags,
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
   ) => void;
-  hostElement: CustomElement<Props>;
-  ref: <T extends HTMLElement>(id: string) => T;
+  fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
+  node: ComponentElement;
+  ref: <T = HTMLElement>(id: string) => T;
   render: () => void;
+  rootElement: CustomElement<Props, ComponentElement>;
   value?: string;
 };
 
-export type CustomElement<Props extends CustomElementProps> = Omit<HTMLElement, keyof Props> &
+export type CustomElement<Props extends CustomElementProps, ComponentElement = HTMLElement> = Omit<
+  ComponentElement,
+  keyof Props
+> &
   Props &
-  CustomElementClass<Props>;
+  CustomElementClass<Props, ComponentElement>;
 
 const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
 
-const valueOf = (key: string | symbol, value: any) =>
-  key === 'dataset'
-    ? Object.entries(value).reduce((acc, [k, v]) => ({ ...acc, [k]: v === '' ? true : v }), {} as typeof value)
-    : value;
-
-const createProxyElement = (customElement: HTMLElement) =>
-  new Proxy(customElement, {
-    get(target, key) {
-      const value = Reflect.get(target, key);
-      return isFunction(value) ? value.bind(target) : valueOf(key, value);
-    }
-  });
-
-const updateProps = <T extends HTMLElement>(target: T, props: CustomElementProps) =>
-  props &&
-  Object.entries(props)
-    .filter(([_, value]) => value !== undefined)
-    .forEach(([prop, value]) => {
-      if (isObject(value)) {
-        Object.assign(
-          (target as any)[prop],
-          Object.entries(value)
-            .filter(([_, val]) => val)
-            .reduce((acc, [key, val]) => ({ ...acc, [key]: acc[key] ?? val }), (target as any)[prop] ?? {})
-        );
-      } else {
-        (target as any)[prop] ??= value;
-      }
-    });
-
-export const component = <Props extends CustomElementProps>({
+export const component = <Props extends CustomElementProps, ComponentElement = HTMLElement>({
   form = false,
   onAttributeChanged,
   onConnected,
   onDisconnected,
   props = {} as any,
-  styles = [],
   template
-}: CustomElementOptions<Props>) =>
-  class extends HTMLElement implements CustomElementClass<Props> {
-    #isConnected = false;
-    #proxy = createProxyElement(this) as unknown as CustomElement<Props>;
-    hostElement = this as unknown as CustomElement<Props>;
+}: CustomElementOptions<Props, ComponentElement>) =>
+  class extends HTMLElement implements CustomElementClass<Props, ComponentElement> {
+    node = this as unknown as ComponentElement;
 
-    constructor() {
-      super();
-      applyStyles(this.attachShadow({ mode: 'open' }), styles);
-      updateProps(this, props);
-      if (form) {
-        configureFormElement(this);
-      }
-      this.render();
+    private get self(): CustomElement<Props, ComponentElement> {
+      return new Proxy(this, {
+        get(target, key) {
+          const value = Reflect.get(target, key) as any;
+          return isFunction(value)
+            ? value.bind(target)
+            : key === 'dataset'
+              ? Object.entries(props.dataset).reduce(
+                  (acc, [k, v]) => ({ ...acc, [k]: acc[k] === '' ? true : (acc[k] ?? v) }),
+                  value
+                )
+              : value;
+        }
+      }) as unknown as CustomElement<Props, ComponentElement>;
     }
 
     static formAssociated = form;
@@ -100,25 +75,31 @@ export const component = <Props extends CustomElementProps>({
       ];
     }
 
-    connectedCallback() {
-      this.style.visibility = 'hidden';
-      setTimeout(() => (this.style.visibility = ''), 100);
+    constructor() {
+      super();
 
-      this.#isConnected = true;
+      if (form) {
+        configureFormElement(this);
+      }
+
+      this.render();
+    }
+
+    connectedCallback() {
       if (onConnected) {
-        onConnected(this.#proxy);
+        onConnected(this.self);
       }
     }
 
     disconnectedCallback() {
       if (onDisconnected) {
-        onDisconnected(this.#proxy);
+        onDisconnected(this.self);
       }
     }
 
     attributeChangedCallback(name: string, prev: string, curr: string) {
-      if (this.#isConnected && prev !== curr && onAttributeChanged) {
-        onAttributeChanged(name, prev, curr, this.#proxy);
+      if (prev !== curr && onAttributeChanged) {
+        onAttributeChanged(name, prev, curr, this.self);
       }
     }
 
@@ -126,16 +107,19 @@ export const component = <Props extends CustomElementProps>({
       if (form) this.setAttribute('value', state);
     }
 
+    get rootElement() {
+      return this.ref('root') as unknown as CustomElement<Props, ComponentElement>;
+    }
+
     render() {
-      requestAnimationFrame(() => {
-        const node = isFunction(template) ? template(this.#proxy) : template;
-        const shadowRoot = this.shadowRoot as ShadowRoot;
-        if (isString(node)) {
-          shadowRoot.innerHTML = node;
-        } else {
-          shadowRoot.replaceChildren(...(isArray(node) ? node.flat() : [node]));
-        }
-      });
+      const tmpl = isFunction(template) ? template(this.self) : template;
+      const shadowRoot = this.attachShadow({ mode: 'open' });
+
+      if (isString(tmpl)) {
+        shadowRoot.innerHTML = tmpl;
+      } else {
+        shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
+      }
     }
 
     fire(event: string | HTMLTags, options?: CustomEventInit) {
@@ -143,23 +127,26 @@ export const component = <Props extends CustomElementProps>({
     }
 
     event(
-      id: string | HTMLElement | CustomElement<Props>,
+      id: string | HTMLElement | CustomElement<Props, ComponentElement>,
       event: string | HTMLTags,
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElement<Props>;
-      if (!el) throw new Error(`element with id="${id}" not found`);
-      el.addEventListener(event, callback, options);
+      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElement<Props, ComponentElement>;
+
+      el?.addEventListener(event, callback, options);
     }
 
-    ref<T extends HTMLElement>(id: string): T {
+    ref<T = HTMLElement>(id: string): T {
       return this.shadowRoot?.getElementById(id) as T;
     }
   };
 
-export const define = <Props extends CustomElementProps>(name: string, options: CustomElementOptions<Props>) => {
-  if (!customElements.get(name)) customElements.define(name, component<Props>(options));
+export const define = <Props extends CustomElementProps, ComponentElement = HTMLElement>(
+  name: string,
+  options: CustomElementOptions<Props, ComponentElement>
+) => {
+  if (!customElements.get(name)) customElements.define(name, component<Props, ComponentElement>(options));
 };
 
 export { classMap } from './styling-element';

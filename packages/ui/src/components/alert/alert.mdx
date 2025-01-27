@@ -1,0 +1,23 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/blocks';
+import './alert';
+import * as AlertStories from './alert.stories';
+
+# Alert
+
+<Meta of={AlertStories} />
+
+## Examples
+
+<Canvas withToolbar={true}>
+  <Story of={AlertStories.Examples} />
+</Canvas>
+
+## Playground
+
+<Canvas withToolbar={true}>
+  <Story of={AlertStories.Playground} />
+</Canvas>
+
+#### SLOT & PROPS
+
+<ArgsTable story="Playground" />

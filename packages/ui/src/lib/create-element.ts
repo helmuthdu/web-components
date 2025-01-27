@@ -5,8 +5,8 @@ export type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 type HtmlOrSvg<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
   ? HTMLElementTagNameMap[Tag]
   : Tag extends keyof SVGElementTagNameMap
-  ? SVGElementTagNameMap[Tag]
-  : unknown;
+    ? SVGElementTagNameMap[Tag]
+    : unknown;
 
 export type ElementProps<T extends Markup> = Partial<Omit<HtmlOrSvg<T>, 'part'>> & { part?: string };
 
@@ -40,7 +40,7 @@ const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFra
     if (isArray(child)) {
       child.forEach(c => appendChild(c, element));
     } else if (isObject(child)) {
-      element.append(child);
+      element.append(child as Node);
     } else if (!isBoolean(child)) {
       element.append(document.createTextNode(child.toString()));
     }

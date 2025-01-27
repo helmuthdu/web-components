@@ -1,10 +1,14 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const plugins = [require('postcss-import'), require('postcss-mixins'), require('postcss-preset-env')({ stage: 1 })];
+import postcssImport from 'postcss-import';
+import postcssMixins from 'postcss-mixins';
+import postcssPresetEnv from 'postcss-preset-env';
+import postcssNano from 'cssnano';
 
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(require('cssnano'));
+const plugins = [postcssImport, postcssMixins, postcssPresetEnv({ stage: 1 })];
+
+if (import.meta.env.NODE_ENV === 'production') {
+  plugins.push(postcssNano);
 }
 
-module.exports = {
+export default {
   plugins
 };

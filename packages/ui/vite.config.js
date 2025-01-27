@@ -1,29 +1,26 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [require('postcss-import'), require('postcss-mixins'), require('postcss-preset-env')({ stage: 1 })]
-    }
-  },
   esbuild: {
     minify: true
   },
   build: {
     lib: {
-      entry: './src/main.ts',
-      name: 'web-components',
-      fileName: format => `web-components.${format}.js`
+      entry: resolve(__dirname, 'src/main.ts'),
+      name: 'wc-ui',
+      fileName: 'wc-ui'
     },
     rollupOptions: {
       output: {
         entryFileNames: `index.js`,
         chunkFileNames: `js/[name].js`,
-        assetFileNames: `css/[name].[ext]`
+        assetFileNames: info => `css/${info.originalFileNames[0]}`
       }
     }
-  },
-  plugins: []
+  }
 });
