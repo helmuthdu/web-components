@@ -65,7 +65,8 @@ code,
 kbd,
 samp,
 pre {
-  font-family: var(--default-mono-font-family,
+  font-family: var(
+    --default-mono-font-family,
     ui-monospace,
     SFMono-Regular,
     Menlo,
