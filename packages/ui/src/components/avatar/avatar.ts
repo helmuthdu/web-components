@@ -1,4 +1,4 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define } from '../../utils/custom-element.util';
 
 export type Props = {
   dataset: {
@@ -27,15 +27,15 @@ define<Props>('ui-avatar', {
         align-items: center;
         justify-content: center;
       }
-      
+
       .avatar {
         overflow: hidden;
         border: var(--border) solid var(--color-contrast-400);
-      
+
         &.is-circle {
           border-radius: var(--rounded-full);
         }
-      
+
         &.is-rounded {
           border-radius: var(--rounded-lg);
         }
@@ -43,7 +43,7 @@ define<Props>('ui-avatar', {
     </style>
     <div id="root" class="${getClassName(el)}">
       <span class="text-sm">
-        <slot />
+        <slot></slot>
       </span>
     </div>
   `

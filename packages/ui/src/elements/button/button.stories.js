@@ -3,82 +3,74 @@ import './button';
 
 export default {
   title: 'Elements/Button',
-  decorators: [story => `<div class="canvas">${story()}</div>`]
+  decorators: [story => /*html*/ `<div class="canvas">${story()}</div>`]
 };
 
 export const Variants = {
-  /*html*/
-  render: () => `
-      <ui-button>Get Started</ui-button>
-      <ui-button data-variant="outline">Get Started</ui-button>
-      <ui-button data-variant="text">Get Started</ui-button>`,
+  render: () => /*html*/ `
+    <ui-button>Get Started</ui-button>
+    <ui-button data-variant="outline">Get Started</ui-button>
+    <ui-button data-variant="text">Get Started</ui-button>`,
 
   name: 'Variants'
 };
 
 export const Colors = {
-  /*html*/
-  render: () => `
-      <ui-button>Get Started</ui-button>
-      <ui-button data-color="primary">Get Started</ui-button>
-      <ui-button data-color="error">Get Started</ui-button>
-      <ui-button data-color="success">Get Started</ui-button>`,
+  render: () => /*html*/ `
+    <ui-button>Get Started</ui-button>
+    <ui-button data-color="primary">Get Started</ui-button>
+    <ui-button data-color="error">Get Started</ui-button>
+    <ui-button data-color="success">Get Started</ui-button>`,
 
   name: 'Colors'
 };
 
 export const Size = {
-  /*html*/
-  render: () => `
-      <ui-button data-size="xs">Get Started</ui-button>
-      <ui-button data-size="sm">Get Started</ui-button>
-      <ui-button data-size="md">Get Started</ui-button>
-      <ui-button data-size="lg">Get Started</ui-button>
-      <ui-button data-size="xl">Get Started</ui-button>`,
+  render: () => /*html*/ `
+    <ui-button data-size="xs">Get Started</ui-button>
+    <ui-button data-size="sm">Get Started</ui-button>
+    <ui-button data-size="md">Get Started</ui-button>
+    <ui-button data-size="lg">Get Started</ui-button>
+    <ui-button data-size="xl">Get Started</ui-button>`,
 
   name: 'Size'
 };
 
 export const Disabled = {
-  /*html*/
-  render: () => `
-      <ui-button data-disabled>Get Started</ui-button>`,
+  render: () => /*html*/ `
+    <ui-button data-disabled>Get Started</ui-button>`,
 
   name: 'Disabled'
 };
 
 export const Loading = {
-  /*html*/
-  render: () => `
-      <ui-button data-loading>Get Started</ui-button>`,
+  render: () => /*html*/ `
+    <ui-button data-loading>Get Started</ui-button>`,
 
   name: 'Loading'
 };
 
 export const Circle = {
-  /*html*/
-  render: () => `
-      <ui-button data-circle data-variant="outline">
-        <svg style="height: 1.5rem; width: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-      </ui-button>`,
+  render: () => /*html*/ `
+    <ui-button data-circle data-variant="outline">
+      <svg style="height: 1.5rem; width: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+    </ui-button>`,
 
   name: 'Circle'
 };
 
 export const Group = {
-  /*html*/
-  render: () => `
-      <ui-button-group>
-        <ui-button>Get Started</ui-button>
-        <ui-button data-variant="outline">Get Started</ui-button>
-      </ui-button-group>`,
+  render: () => /*html*/ `
+    <ui-button-group>
+      <ui-button>Get Started</ui-button>
+      <ui-button data-variant="outline">Get Started</ui-button>
+    </ui-button-group>`,
 
   name: 'Group'
 };
 
 export const Playground = {
-  /*html*/
-  render: ({ slot, ...props }) => `
+  render: ({ slot, ...props }) => /*html*/ `
     <ui-button
       ${props.color ? `data-color="${props.color}"` : ''}
       ${props.size ? `data-size="${props.size}"` : ''}
@@ -89,8 +81,8 @@ export const Playground = {
       ${props.rounded ? 'data-rounded' : ''}
       ${props.block ? 'data-block' : ''}>
         ${slot}
-      </ui-button>
-    `,
+    </ui-button>
+  `,
 
   name: 'Playground',
 

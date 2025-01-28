@@ -1,4 +1,4 @@
-import { dom, ElementProps, Markup } from './create-element';
+import { dom, ElementProps, Markup } from './create-element.util';
 
 const createDomElement =
   <T extends Markup>(tag: T) =>

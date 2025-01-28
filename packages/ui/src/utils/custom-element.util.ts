@@ -1,5 +1,5 @@
-import { configureFormElement } from './form-element';
-import { isArray, isFunction, isString } from './utils';
+import { configureFormElement } from './form-element.util';
+import { isArray, isFunction, isString } from './type-checking.util';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
@@ -7,16 +7,21 @@ type CustomElementProps = Record<string, any> | undefined;
 
 type CustomElementOptions<Props extends CustomElementProps, ComponentElement = HTMLElement> = {
   form?: boolean;
-  onAttributeChanged?: (name: string, prev: string, curr: string, self: CustomElement<Props, ComponentElement>) => void;
-  onConnected?: (self: CustomElement<Props, ComponentElement>) => void;
-  onDisconnected?: (self: CustomElement<Props, ComponentElement>) => void;
+  onAttributeChanged?: (
+    name: string,
+    prev: string,
+    curr: string,
+    self: CustomElementUtil<Props, ComponentElement>
+  ) => void;
+  onConnected?: (self: CustomElementUtil<Props, ComponentElement>) => void;
+  onDisconnected?: (self: CustomElementUtil<Props, ComponentElement>) => void;
   props?: Props & Partial<Omit<ComponentElement, keyof Props>>;
-  template: (self: CustomElement<Props, ComponentElement>) => any | string;
+  template: (self: CustomElementUtil<Props, ComponentElement>) => any | string;
 };
 
 type CustomElementClass<Props extends CustomElementProps, ComponentElement = HTMLElement> = {
   event: (
-    id: string | HTMLElement | CustomElement<Props, ComponentElement>,
+    id: string | HTMLElement | CustomElementUtil<Props, ComponentElement>,
     event: string | HTMLTags,
     callback: EventListener,
     options?: boolean | AddEventListenerOptions
@@ -25,11 +30,11 @@ type CustomElementClass<Props extends CustomElementProps, ComponentElement = HTM
   node: ComponentElement;
   ref: <T = HTMLElement>(id: string) => T;
   render: () => void;
-  rootElement: CustomElement<Props, ComponentElement>;
+  rootElement: CustomElementUtil<Props, ComponentElement>;
   value?: string;
 };
 
-export type CustomElement<Props extends CustomElementProps, ComponentElement = HTMLElement> = Omit<
+export type CustomElementUtil<Props extends CustomElementProps, ComponentElement = HTMLElement> = Omit<
   ComponentElement,
   keyof Props
 > &
@@ -49,7 +54,7 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
   class extends HTMLElement implements CustomElementClass<Props, ComponentElement> {
     node = this as unknown as ComponentElement;
 
-    private get self(): CustomElement<Props, ComponentElement> {
+    private get self(): CustomElementUtil<Props, ComponentElement> {
       return new Proxy(this, {
         get(target, key) {
           const value = Reflect.get(target, key) as any;
@@ -62,7 +67,7 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
                 )
               : value;
         }
-      }) as unknown as CustomElement<Props, ComponentElement>;
+      }) as unknown as CustomElementUtil<Props, ComponentElement>;
     }
 
     static formAssociated = form;
@@ -108,7 +113,7 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
     }
 
     get rootElement() {
-      return this.ref('root') as unknown as CustomElement<Props, ComponentElement>;
+      return this.ref('root') as unknown as CustomElementUtil<Props, ComponentElement>;
     }
 
     render() {
@@ -127,12 +132,12 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
     }
 
     event(
-      id: string | HTMLElement | CustomElement<Props, ComponentElement>,
+      id: string | HTMLElement | CustomElementUtil<Props, ComponentElement>,
       event: string | HTMLTags,
       callback: EventListener,
       options?: boolean | AddEventListenerOptions
     ) {
-      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElement<Props, ComponentElement>;
+      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElementUtil<Props, ComponentElement>;
 
       el?.addEventListener(event, callback, options);
     }
@@ -149,4 +154,4 @@ export const define = <Props extends CustomElementProps, ComponentElement = HTML
   if (!customElements.get(name)) customElements.define(name, component<Props, ComponentElement>(options));
 };
 
-export { classMap } from './styling-element';
+export { classMap } from './styling-element.util';

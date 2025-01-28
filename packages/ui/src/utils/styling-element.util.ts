@@ -1,4 +1,4 @@
-import { isObject, isString } from './utils';
+import { isObject, isString } from './type-checking.util';
 
 export const classMap = (...classes: unknown[]) =>
   classes

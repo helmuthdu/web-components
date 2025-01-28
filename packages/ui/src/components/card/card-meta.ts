@@ -1,8 +1,6 @@
-import { define } from '../../lib/custom-element';
+import { define } from '../../utils/custom-element.util';
 
-export type Props = undefined;
-
-define<Props>('ui-card-meta', {
+define('ui-card-meta', {
   template: () => /*html*/ `
     <style>
       .card-meta {
@@ -13,7 +11,7 @@ define<Props>('ui-card-meta', {
       }
     </style>
     <span id="root" class="card-meta">
-      <slot />
+      <slot></slot>
     </span>
   `
 });

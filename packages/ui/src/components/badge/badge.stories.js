@@ -2,18 +2,28 @@ import './badge';
 
 export default {
   title: 'Components/Badges',
-  decorators: [story => /*html*/ `<div class="canvas">${story()}</div>`]
+  decorators: [story => /*html*/ `<div class="canvas" style="flex-direction: row">${story()}</div>`]
+};
+
+export const Examples = {
+  render: () => /*html*/ `
+    <ui-badge>default</ui-badge>
+    <ui-badge data-color="contrast">contrast</ui-badge>
+    <ui-badge data-color="info">info</ui-badge>
+    <ui-badge data-color="error">error</ui-badge>
+    <ui-badge data-color="success">success</ui-badge>
+  `
 };
 
 export const Playground = {
   render: ({ slot, ...props }) => /*html*/ `
-      <ui-badge
-        data-size="${props.size}"
-        ${props.color ? `data-color="${props.color}"` : ''}
-        ${props.pill ? 'data-pill' : ''}>
+    <ui-badge
+      data-size="${props.size}"
+      ${props.color ? `data-color="${props.color}"` : ''}
+      ${props.pill ? 'data-pill' : ''}>
         ${slot}
-      </ui-badge>
-    `,
+    </ui-badge>
+  `,
 
   name: 'Playground',
 

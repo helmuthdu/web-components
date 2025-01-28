@@ -1,4 +1,4 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define } from '../../utils/custom-element.util';
 
 export type Props = {
   dataset: { horizontal?: boolean };

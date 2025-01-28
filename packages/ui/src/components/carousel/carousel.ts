@@ -1,4 +1,4 @@
-import { define } from '../../lib/custom-element';
+import { define } from '../../utils/custom-element.util';
 
 let slideIndex = 0;
 let timeout: NodeJS.Timeout;
@@ -57,9 +57,8 @@ define<Props>('ui-carousel', {
       'click',
       (e: Event) => {
         e.stopPropagation();
-        const idx = (e.target as any).dataset.index;
-        if (!idx) return;
-        _showSlides(+idx);
+        const idx = (e.target as HTMLLIElement).dataset.index;
+        if (idx) _showSlides(+idx);
       },
       true
     );
@@ -70,7 +69,7 @@ define<Props>('ui-carousel', {
         position: relative;
         inline-size: var(--size-full);
       }
-      
+
       .carousel-container {
         position: relative;
         display: flex;
@@ -81,7 +80,7 @@ define<Props>('ui-carousel', {
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
       }
-      
+
       ::slotted(.carousel-image) {
         position: absolute;
         inline-size: var(--size-full);
@@ -89,23 +88,23 @@ define<Props>('ui-carousel', {
         transition-duration: 700ms;
         transition-property: opacity;
       }
-      
+
       ::slotted(.carousel-image.is-visible) {
         opacity: 1;
       }
-    
+
       ::slotted(.carousel-image.is-hidden) {
         opacity: 0;
       }
-    
+
       ::slotted(.carousel-image:first-child) {
         position: relative;
       }
-      
+
       .carousel::-webkit-scrollbar {
         display: none;
       }
-      
+
       .carousel-button {
         position: absolute;
         inset-block: 0;
@@ -114,16 +113,16 @@ define<Props>('ui-carousel', {
         background-color: transparent;
         border: none;
         cursor: pointer;
-      
+
         &.is-left {
           inset-inline-start: 0;
         }
-      
+
         &.is-right {
           inset-inline-end: 0;
         }
       }
-      
+
       .carousel-navigation {
         position: absolute;
         inset-block-end: 0;
@@ -133,7 +132,7 @@ define<Props>('ui-carousel', {
         justify-content: center;
         list-style: none;
       }
-      
+
       .carousel-navigation-item {
         inline-size: var(--size-8);
         cursor: pointer;
@@ -141,7 +140,7 @@ define<Props>('ui-carousel', {
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 700ms;
         transition-property: border-color;
-      
+
         &.is-selected,
         &:hover {
           border-color: rgb(255 255 255);

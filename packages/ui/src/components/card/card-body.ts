@@ -1,8 +1,6 @@
-import { define } from '../../lib/custom-element';
+import { define } from '../../utils/custom-element.util';
 
-export type Props = undefined;
-
-define<Props>('ui-card-body', {
+define('ui-card-body', {
   template: () => /* html */ `
     <style>
       .card-body {
@@ -16,7 +14,7 @@ define<Props>('ui-card-body', {
       }
     </style>
     <section id="root" class="card-body">
-      <slot />
+      <slot></slot>
     </section>
   `
 });

@@ -1,8 +1,8 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define } from '../../utils/custom-element.util';
 
 export type Props = {
   dataset: {
-    variant?: 'primary' | 'secondary' | 'tertiary';
+    variant?: UIVariant;
   };
 };
 
@@ -12,9 +12,9 @@ const getClassName = ({ dataset }: Props) =>
   });
 
 const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
-  [...children].forEach(el => {
+  for (const el of children) {
     el.setAttribute('data-variant', dataset.variant as string);
-  });
+  }
 };
 
 define<Props>('ui-accordion', {
@@ -42,25 +42,25 @@ define<Props>('ui-accordion', {
         padding-inline: var(--size-1);
         border-radius: var(--rounded-lg);
       }
-      
+
       .is-primary {
         background-color: var(--color-canvas);
         border: var(--border) solid var(--color-contrast-200);
       }
-      
+
       ::slotted([data-variant='primary']:not(:last-child)),
       ::slotted([data-variant='tertiary']:not(:last-child)) {
         display: block;
         border-block-end: var(--border) solid var(--color-contrast-200);
       }
-      
+
       .is-secondary {
         background-color: transparent;
         gap: var(--size-3);
         flex-direction: column;
         display: flex;
       }
-      
+
       ::slotted([data-variant='secondary']) {
         display: block;
         margin-block-end: var(--size-2);
@@ -68,7 +68,7 @@ define<Props>('ui-accordion', {
         border: var(--border) solid var(--color-contrast-200);
         border-radius: var(--rounded-lg);
       }
-      
+
       .is-tertiary {
         background-color: transparent;
       }

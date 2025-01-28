@@ -1,8 +1,6 @@
-import { define } from '../../lib/custom-element';
+import { define } from '../../utils/custom-element.util';
 
-export type Props = undefined;
-
-define<Props>('ui-avatar-group', {
+define('ui-avatar-group', {
   template: () => /*html*/ `
     <style>
       .avatar-group {
@@ -12,7 +10,7 @@ define<Props>('ui-avatar-group', {
       }
     </style>
     <div id="avatar-group" class="avatar-group">
-      <slot />
+      <slot></slot>
     </div>
   `
 });

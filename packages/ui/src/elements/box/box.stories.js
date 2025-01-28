@@ -2,16 +2,15 @@ import './box';
 
 export default {
   title: 'Components/Box',
-  decorators: [story => `<div class="canvas">${story()}</div>`]
+  decorators: [story => /*html*/ `<div class="canvas">${story()}</div>`]
 };
 
 export const Playground = {
-  /*html*/
-  render: ({ slot, ...props }) => `
-      <ui-box>
-        ${slot}
-      </ui-box>
-    `,
+  render: ({ slot, ...props }) => /*html*/ `
+    <ui-box>
+      ${slot}
+    </ui-box>
+  `,
 
   name: 'Playground',
 

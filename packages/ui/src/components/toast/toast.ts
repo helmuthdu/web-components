@@ -1,16 +1,16 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define } from '../../utils/custom-element.util';
 import '../../elements/close-button/close-button';
 
 export type Props = {
   dataset: {
     fixed?: boolean;
-    color: 'error' | 'success' | 'info' | 'contrast' | undefined;
+    color?: Exclude<UIColor, 'primary' | 'warning'>;
     timeout: number;
   };
 };
 
 const getContainer = () => {
-  let container: any = document.getElementById('toasts');
+  let container = document.getElementById('toasts');
   if (!container) {
     container = document.createElement('div');
     container.id = 'toasts';
@@ -77,28 +77,25 @@ define<Props>('ui-toast', {
           border-radius: var(--rounded-lg);
           box-shadow: var(--shadow-lg);
           animation: bounce-in-left 0.7s ease-in;
-        
+
           &.is-hidden {
             animation: bounce-out-left 0.7s ease-in;
           }
         }
-        
+
         .toast-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding-block: var(--size-1);
-          padding-inline: var(--size-3);          
-        
+          padding-inline: var(--size-3);
+
           &:not(.is-info, .is-error, .is-success, .is-contrast) {
             background-color: var(--color-canvas);
-          }
-        
-          &:not(.is-info, .is-error, .is-success) {
-            border-block-end: var(--border) solid var(--color-contrast-500);
+            border-block-end: var(--border) solid var(--color-contrast-300);
           }
         }
-        
+
         .toast-header-content {
           display: flex;
           flex-direction: row;
@@ -106,43 +103,43 @@ define<Props>('ui-toast', {
           align-items: center;
           justify-content: space-between;
           font-weight: var(--font-weight-bold);
-        
+
           &:not(.is-text-info, .is-text-error, .is-text-success, .is-text-contrast) {
             color: var(--color-content-heading);
           }
         }
-        
+
         .toast-header-extra {
           display: flex;
           align-items: center;
-        
+
           &:not(.is-info, .is-error, .is-success, .is-contrast) {
             color: var(--color-content-body);
           }
         }
-        
+
         .toast-header-meta {
           font-size: var(--text-xs);
           line-height: var(--line-spacing-xs);
-        
+
           &:not(.is-text-info, .is-text-error, .is-text-success) {
             color: var(--color-content-tertiary);
           }
-          
+
           &.is-text-contrast {
             color: var(--color-content-secondary););
           }
         }
-        
+
         .toast-content {
           padding: var(--size-3);
           overflow-wrap: break-word;
-        
+
           &:not(.is-info, .is-error, .is-success, .is-contrast) {
             color: var(--color-content-body);
             background-color: var(--color-canvas);
           }
-        
+
           &.is-headless {
             display: flex;
             flex-direction: row;
@@ -151,69 +148,69 @@ define<Props>('ui-toast', {
             justify-content: space-between;
           }
         }
-        
+
         .is-info {
           background-color: var(--color-primary);
         }
-        
+
         .is-error {
           background-color: var(--color-error);
         }
-        
+
         .is-success {
           background-color: var(--color-success);
         }
-        
+
         .is-contrast {
           background-color: var(--color-contrast-900);
         }
-        
+
         .is-text-info {
           color: var(--color-primary-contrast);
         }
-        
+
         .is-text-error {
           color: var(--color-error-contrast);
         }
-        
+
         .is-text-success {
           color: var(--color-success-contrast);
         }
-        
+
         .is-text-contrast {
           color: var(--color-content-contrast);
         }
-        
+
         @keyframes bounce-in-left {
           0% {
             opacity: 0;
             transform: translate3d(200%, 0, 0);
           }
-        
+
           55% {
             opacity: 1;
             transform: translate3d(20px, 0, 0);
           }
-        
+
           75% {
             transform: translate3d(-10px, 0, 0);
           }
-        
+
           90% {
             transform: translate3d(5px, 0, 0);
           }
-        
+
           100% {
             transform: none;
           }
         }
-        
+
         @keyframes bounce-out-left {
           10% {
             opacity: 1;
             transform: translate3d(-20px, 0, 0);
           }
-        
+
           100% {
             opacity: 0;
             transform: translate3d(200%, 0, 0);
@@ -223,7 +220,7 @@ define<Props>('ui-toast', {
       <div id="root" class="toast">
         ${
           hasHeader
-            ? /*html*/ ` 
+            ? /*html*/ `
           <div
             class="${classMap('toast-header', {
               [`is-${el.dataset.color}`]: el.dataset.color
@@ -264,7 +261,7 @@ define<Props>('ui-toast', {
           })}">
           ${
             hasHeader
-              ? /*html*/ `<slot></slot>`
+              ? /*html*/ '<slot></slot>'
               : /*html*/ `
                 <slot name="icon"></slot>
                 <slot></slot>

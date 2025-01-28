@@ -1,5 +1,5 @@
-import { classMap, define } from '../../lib/custom-element';
-import type { Sizes } from '../../types';
+import { classMap, define } from '../../utils/custom-element.util';
+import loadingIcon from '../../assets/icons/loading.icon.svg?raw';
 
 export type Props = {
   type?: 'button' | 'submit' | 'reset';
@@ -10,23 +10,10 @@ export type Props = {
     group?: string;
     loading?: boolean;
     rounded?: boolean;
-    size?: Sizes;
-    color?: 'primary' | 'error' | 'success';
-    variant?: 'outline' | 'text' | undefined;
+    size?: UISizes;
+    color?: Exclude<UIColor, 'warning' | 'info'>;
+    variant?: 'outline' | 'text';
   };
-};
-
-const renderLoadingIcon = () => {
-  const template = document.createElement('template');
-  template.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-    <path
-      fill="currentColor"
-      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-    />
-  </svg>`;
-
-  return template.content.cloneNode(true);
 };
 
 const getClassName = ({ dataset }: Props) =>
@@ -59,37 +46,23 @@ define<Props, HTMLButtonElement>('ui-button', {
     }
   },
   onAttributeChanged: (name, prev, curr, el) => {
+    el.rootElement.className = getClassName(el);
+
     switch (name) {
-      case 'data-circle':
-      case 'data-color':
-      case 'data-group':
-      case 'data-rounded':
-      case 'data-size':
-      case 'data-variant':
-        el.rootElement.className = getClassName(el);
+      case 'data-block':
+        el.style.width = el.dataset.block ? '100%' : '';
         break;
       case 'data-loading':
         if (curr === null) {
           el.rootElement.querySelector('svg')?.remove();
         } else {
-          el.rootElement.prepend(renderLoadingIcon());
+          el.rootElement.prepend(new DOMParser().parseFromString(loadingIcon, 'image/svg+xml').firstChild!);
         }
-        el.rootElement.className = getClassName(el);
         break;
       case 'data-disabled':
         el.rootElement.disabled = curr !== null;
-        el.rootElement.className = getClassName(el);
         break;
-      case 'data-block':
-        el.rootElement.style.width = el.dataset.block ? '100%' : '';
-        el.rootElement.className = getClassName(el);
-        break;
-      default:
-        el.render();
     }
-  },
-  onConnected(el) {
-    el.style.width = el.dataset.block ? '100%' : '';
   },
   template: el => /*html*/ `
     <style>

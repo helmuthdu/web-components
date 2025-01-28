@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
-import { DOMAttributes } from 'react';
 
 type CustomEvents<K extends string> = { [key in K]: (event: CustomEvent) => void };
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type CustomElement<T, K extends string> = Partial<T & DOMAttributes<T> & { children: any } & CustomEvents<`on${K}`>>;
 
 declare module 'react' {
@@ -29,7 +29,7 @@ declare global {
       ['ui-card-image']: CustomElement<any>;
       ['ui-card-meta']: CustomElement<any>;
       ['ui-carousel']: CustomElement<any>;
-      ['ui-carousel-item']: CustomElement<any>;
+      ['ui-carousel-image']: CustomElement<any>;
       ['ui-close-button']: CustomElement<any>;
       ['ui-toast']: CustomElement<any>;
     }
@@ -38,21 +38,3 @@ declare global {
     adoptedStyleSheets: CSSStyleSheet[];
   }
 }
-
-type Primitive = string | boolean | number;
-
-type ValueOf<T> = T[keyof T];
-
-type Nullable<T> = T | null;
-
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends (infer U)[]
-    ? DeepPartial<U>[]
-    : T[P] extends readonly (infer U)[]
-      ? readonly DeepPartial<U>[]
-      : DeepPartial<T[P]>;
-};
-
-type Entries<T> = {
-  [K in keyof T]: [K, T[K]];
-}[keyof T][];

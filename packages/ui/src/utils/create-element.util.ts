@@ -1,4 +1,4 @@
-import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './utils';
+import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './type-checking.util';
 
 export type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
 
@@ -47,12 +47,12 @@ const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFra
   }
 };
 
-const createElement = (tag: string) =>
+const createElementUtil = (tag: string) =>
   isSVG(tag) ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
 
 const composeElement = (draft: ElementDraft) => {
   if (isFunction(draft.tag)) return draft.tag(draft.props, draft.children);
-  const element = draft.tag === 'fragment' ? new DocumentFragment() : createElement(draft.tag);
+  const element = draft.tag === 'fragment' ? new DocumentFragment() : createElementUtil(draft.tag);
   Object.entries(draft.props ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
   draft.children.forEach(child => appendChild(child, element));
   return element;

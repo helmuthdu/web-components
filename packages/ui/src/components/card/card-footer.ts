@@ -1,18 +1,17 @@
-import { define } from '../../lib/custom-element';
+import { define } from '../../utils/custom-element.util';
 
-export type Props = undefined;
-
-define<Props>('ui-card-footer', {
+define('ui-card-footer', {
   template: () => /*html*/ `
     <style>
       .card-footer {
         display: inline-flex;
-        gap: var(--size-2);
+        gap: var(--size-3-5);
         inline-size: var(--size-full);
+        margin-top: var(--size-3);
       }
     </style>
     <footer id="root" class="card-footer">
-      <slot />
+      <slot></slot>
     </footer>
   `
 });

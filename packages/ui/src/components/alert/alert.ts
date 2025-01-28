@@ -1,8 +1,8 @@
-import { classMap, define } from '../../lib/custom-element';
+import { classMap, define } from '../../utils/custom-element.util';
 import '../../elements/close-button/close-button';
 
 export type Props = {
-  dataset: { color?: 'warning' | 'error' | 'success' | 'info' | 'contrast' | undefined };
+  dataset: { color?: Exclude<UIColor, 'primary'> };
 };
 
 const getClassName = ({ dataset }: Props) =>
@@ -35,45 +35,45 @@ define<Props>('ui-alert', {
         padding-inline: var(--size-4) var(--size-3);
         font-size: var(--text-xs);
         line-height: var(--line-spacing-xs);
-        color: var(--alert-color, var(--color-content-body));
-        background-color: var(--alert-background-color, var(--color-canvas));
-        border: var(--border) solid var(--alert-border-color, var(--color-contrast-300));
+        color: var(--alert-color, var(--color-contrast-900));
+        background-color: var(--alert-background-color, var(--color-contrast-50));
+        border: var(--border) solid var(--alert-border-color, var(--color-contrast-700));
         border-radius: var(--rounded-xl);
         box-shadow: var(--shadow-sm);
-      
+
         & > span {
           font-size: var(--text-sm);
           line-height: var(--line-spacing-sm);
         }
-      
+
         &.is-info {
-          --alert-border-color: var(--color-primary-focus);
-          --alert-background-color: var(--color-primary-backdrop);
           --alert-color: var(--color-primary-content);
+          --alert-background-color: var(--color-primary-backdrop);
+          --alert-border-color: var(--color-primary-focus);
         }
-      
+
         &.is-warning {
-          --alert-border-color: var(--color-warning-focus);
-          --alert-background-color: var(--color-warning-backdrop);
           --alert-color: var(--color-warning-content);
+          --alert-background-color: var(--color-warning-backdrop);
+          --alert-border-color: var(--color-warning-focus);
         }
-      
+
         &.is-error {
-          --alert-border-color: var(--color-error-focus);
-          --alert-background-color: var(--color-error-backdrop);
           --alert-color: var(--color-error-content);
+          --alert-background-color: var(--color-error-backdrop);
+          --alert-border-color: var(--color-error-focus);
         }
-      
+
         &.is-success {
-          --alert-border-color: var(--color-success-focus);
-          --alert-background-color: var(--color-success-backdrop);
           --alert-color: var(--color-success-content);
+          --alert-background-color: var(--color-success-backdrop);
+          --alert-border-color: var(--color-success-focus);
         }
-      
+
         &.is-contrast {
-          --alert-border-color: var(--color-contrast-600);
+          --alert-color: var(--color-contrast-50);
           --alert-background-color: var(--color-contrast-900);
-          --alert-color: var(--color-content-contrast);
+          --alert-border-color: var(--color-contrast-300);
         }
       }
     </style>

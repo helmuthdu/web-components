@@ -1,5 +1,5 @@
-import { classMap } from '../../lib/styling-element';
-import { define } from '../../lib/custom-element';
+import { classMap } from '../../utils/styling-element.util';
+import { define } from '../../utils/custom-element.util';
 
 export type Props = { dataset: { append?: string } };
 
@@ -42,7 +42,7 @@ define<Props, HTMLButtonElement>('ui-close-button', {
         block-size: var(--size-5);
       }
     </style>
-    <button id="close-button" type="button" class="${classMap('close-button', ctx.dataset.append)}">
+    <button aria-label="close" id="close-button" type="button" class="${classMap('close-button', ctx.dataset.append)}">
       <span>close</span>
       <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path

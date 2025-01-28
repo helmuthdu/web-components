@@ -144,29 +144,29 @@
   --color-content-heading: var(--color-contrast-900);
   --color-content-body: var(--color-contrast-800);
   --color-content-secondary: var(--color-contrast-700);
-  --color-content-tertiary: var(--color-contrast-500);
+  --color-content-tertiary: var(--color-contrast-400);
   --color-content-disabled: var(--color-contrast-500);
-  --color-content-contrast: var(--color-contrast-50);
-  --color-primary-backdrop: hsl(206deg 100% 90% / 91%);
+  --color-content-contrast: var(--color-contrast-100);
+  --color-primary-backdrop: hsl(206deg 100% 87% / 83%);
   --color-primary-focus: hsl(206deg 100% 51% / 91%);
   --color-primary: hsl(206deg 100% 44% / 91%);
-  --color-primary-content: hsl(206deg 100% 26% / 91%);
+  --color-primary-content: hsl(206deg 100% 15% / 91%);
   --color-primary-contrast: hsl(206deg 100% 97% / 91%);
-  --color-success-backdrop: hsl(142deg 71% 90% / 91%);
+  --color-success-backdrop: hsl(142deg 71% 87% / 83%);
   --color-success-focus: hsl(142deg 71% 51% / 91%);
   --color-success: hsl(142deg 71% 44% / 91%);
-  --color-success-content: hsl(142deg 71% 26% / 91%);
+  --color-success-content: hsl(142deg 71% 15% / 91%);
   --color-success-contrast: hsl(142deg 71% 97% / 91%);
-  --color-warning-backdrop: hsl(38deg 92% 97% / 91%);
+  --color-warning-backdrop: hsl(38deg 92% 87% / 83%);
   --color-warning-focus: hsl(38deg 92% 63% / 91%);
   --color-warning: hsl(38deg 92% 57% / 91%);
-  --color-warning-content: hsl(38deg 92% 26% / 91%);
-  --color-warning-contrast: hsl(38deg 92% 97% / 91%);
-  --color-error-backdrop: hsl(350deg 89% 90% / 91%);
+  --color-warning-content: hsl(38deg 92% 15% / 91%);
+  --color-warning-contrast: hsl(38deg 92% 91% / 91%);
+  --color-error-backdrop: hsl(350deg 89% 87% / 83%);
   --color-error-focus: hsl(350deg 89% 63% / 91%);
   --color-error: hsl(350deg 89% 57% / 91%);
-  --color-error-content: hsl(350deg 89% 26% / 91%);
-  --color-error-contrast: hsl(350deg 89% 97% / 91%);
+  --color-error-content: hsl(350deg 89% 15% / 91%);
+  --color-error-contrast: hsl(350deg 89% 91% / 91%);
 }
 
 @media (prefers-color-scheme: dark) {

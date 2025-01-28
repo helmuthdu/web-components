@@ -37,10 +37,10 @@ export const Examples = {
 
 export const Playground = {
   render: ({ slot, ...props }) => /*html*/ `
-      <ui-alert ${props.color ? `data-color="${props.color}"` : ''} >
-        ${slot}
-      </ui-alert>
-    `,
+    <ui-alert ${props.color ? `data-color="${props.color}"` : ''} >
+      ${slot}
+    </ui-alert>
+  `,
 
   name: 'Playground',
 

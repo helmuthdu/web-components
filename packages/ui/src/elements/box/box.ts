@@ -1,8 +1,6 @@
-import { define } from '../../lib/custom-element';
+import { define } from '../../utils/custom-element.util';
 
-export type Props = undefined;
-
-define<Props>('ui-box', {
+define('ui-box', {
   template: () => /*html*/ `
     <style>
       .box {
