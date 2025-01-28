@@ -4,6 +4,7 @@
   "type": "module",
   "description": "Web Components",
   "scripts": {
+    "build": "npm run build --ws",
     "build:storybook": "cd packages/ui && npm run storybook:build",
     "lint": "eslint packages --fix",
     "lint:css": "stylelint --fix \"packages/**/src/**/*.css\""

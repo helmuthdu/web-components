@@ -5,7 +5,7 @@ import postcssNano from 'cssnano';
 
 const plugins = [postcssImport, postcssMixins, postcssPresetEnv({ stage: 1 })];
 
-if (import.meta.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   plugins.push(postcssNano);
 }
 
