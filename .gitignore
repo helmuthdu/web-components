@@ -7,3 +7,6 @@ node_modules
 packages/*/docs-build
 packages/*/lib
 packages/*/dist
+qodana.yaml
+
+*storybook.log

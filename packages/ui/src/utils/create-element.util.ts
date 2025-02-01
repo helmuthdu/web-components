@@ -1,25 +1,28 @@
-import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './type-checking.util';
+import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './type-check.util';
 
-export type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
+export type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap | 'fragment';
 
-type HtmlOrSvg<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
+export type ElementProps<T extends Markup> = Partial<Omit<ElementType<T>, 'part'>> & { part?: string };
+
+export type ElementDom<T extends Markup> = ElementType<T> | HTMLElement | SVGElement | DocumentFragment;
+
+type ElementType<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
   ? HTMLElementTagNameMap[Tag]
   : Tag extends keyof SVGElementTagNameMap
     ? SVGElementTagNameMap[Tag]
-    : unknown;
+    : DocumentFragment;
 
-export type ElementProps<T extends Markup> = Partial<Omit<HtmlOrSvg<T>, 'part'>> & { part?: string };
+type ElementTag<T extends Markup> = T | ((props: ElementProps<T>, children: any[]) => ElementType<T>);
 
-type ElementDraft = {
-  props: Record<string, any>;
+type ElementDraft<T extends Markup> = {
   children: any[];
-  tag: string | any;
+  props: ElementProps<T>;
+  tag: ElementTag<T>;
 };
-
-export type ElementDom<T extends Markup> = (...props: (HtmlOrSvg<T> | Element[])[]) => HtmlOrSvg<T>;
 
 const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (element instanceof DocumentFragment) return;
+
   if (attr === 'className') {
     element.setAttribute('class', value);
   } else if (isFunction(value)) {
@@ -38,7 +41,7 @@ const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGEle
 const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (!isNil(child)) {
     if (isArray(child)) {
-      child.forEach(c => appendChild(c, element));
+      child.forEach((c) => appendChild(c, element));
     } else if (isObject(child)) {
       element.append(child as Node);
     } else if (!isBoolean(child)) {
@@ -47,23 +50,31 @@ const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFra
   }
 };
 
-const createElementUtil = (tag: string) =>
+const createElementUtil = (tag: Markup) =>
   isSVG(tag) ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
 
-const composeElement = (draft: ElementDraft) => {
+const composeElement = <T extends Markup>(draft: ElementDraft<T>) => {
   if (isFunction(draft.tag)) return draft.tag(draft.props, draft.children);
+
   const element = draft.tag === 'fragment' ? new DocumentFragment() : createElementUtil(draft.tag);
+
   Object.entries(draft.props ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
-  draft.children.forEach(child => appendChild(child, element));
+  draft.children.forEach((child) => appendChild(child, element));
+
   return element;
 };
 
-export const fragment = (...children: any[]) => composeElement({ tag: 'fragment', props: {}, children });
+export const fragment = (...children: any[]) => composeElement({ children, props: {}, tag: 'fragment' });
 
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
-  composeElement({ tag, props, children });
+  composeElement<T>({ children, props, tag });
 
-export const raw = (string: string) => [...new DOMParser().parseFromString(string, 'text/html').body.children];
+export const raw = (string: string) => new DOMParser().parseFromString(string, 'text/html').body.childNodes;
 
-// @ts-ignore
-// window.rawHTML = raw;
+declare global {
+  interface Window {
+    parseHTML: (value: string) => NodeListOf<ChildNode>;
+  }
+}
+
+window.parseHTML = raw;

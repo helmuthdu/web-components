@@ -1,4 +1,5 @@
 import { classMap, define } from '../../utils/custom-element.util';
+import style from './avatar.css?raw';
 
 export type Props = {
   dataset: {
@@ -8,43 +9,14 @@ export type Props = {
 
 const getClassName = ({ dataset }: Props) =>
   classMap('avatar', {
-    [`is-${dataset.variant}`]: dataset.variant
+    [`is-${dataset.variant}`]: dataset.variant,
   });
 
-define<Props>('ui-avatar', {
-  props: {
-    dataset: {
-      variant: undefined
-    }
-  },
-  onAttributeChanged(_name, _prev, _curr, el) {
-    el.rootElement.className = getClassName(el);
-  },
-  template: el => /*html*/ `
-    <style>
-      ::slotted(:first-child) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .avatar {
-        overflow: hidden;
-        border: var(--border) solid var(--color-contrast-400);
-
-        &.is-circle {
-          border-radius: var(--rounded-full);
-        }
-
-        &.is-rounded {
-          border-radius: var(--rounded-lg);
-        }
-      }
-    </style>
-    <div id="root" class="${getClassName(el)}">
-      <span class="text-sm">
-        <slot></slot>
-      </span>
+define('ui-avatar', {
+  styles: [style],
+  template: (el) => /* html */ `
+    <div class="${getClassName(el)}">
+      <slot></slot>
     </div>
-  `
+  `,
 });

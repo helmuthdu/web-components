@@ -1,4 +1,4 @@
-import { isObject, isString } from './type-checking.util';
+import { isObject, isString } from './type-check.util';
 
 export const classMap = (...classes: unknown[]) =>
   classes
@@ -12,24 +12,29 @@ export const classMap = (...classes: unknown[]) =>
             acc += `${key} `;
           });
       }
+
       return acc;
     }, '')
     .trim();
 
-export const applyStyles = async (shadowRoot: ShadowRoot, styles: unknown[] = []) => {
-  if ((styles ?? []).length > 0) {
-    Promise.all(styles).then(sheets => {
-      // @ts-ignore
-      shadowRoot.adoptedStyleSheets = sheets.map((style: any) => {
-        const _style = style.default ?? style;
-        if (isString(_style)) {
-          const sheet = new CSSStyleSheet(); // @ts-ignore
-          return sheet.replace(_style);
-        } else if (_style instanceof CSSStyleSheet) {
-          return Promise.resolve(_style);
-        }
-        throw new Error(`invalid css in styles`);
-      });
-    });
+export const createCSSStyleSheets = async (payload: unknown[] = []) => {
+  if ((payload ?? []).length) {
+    return Promise.all(payload).then((styles) =>
+      Promise.all(
+        styles.map((style: any) => {
+          const sheet = style.default ?? style;
+
+          if (isString(sheet)) {
+            return new CSSStyleSheet().replace(sheet);
+          } else if (sheet instanceof CSSStyleSheet) {
+            return Promise.resolve(sheet);
+          }
+
+          throw new Error(`invalid css in styles`);
+        }),
+      ),
+    );
   }
+
+  return Promise.resolve();
 };

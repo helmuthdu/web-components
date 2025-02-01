@@ -1,7 +1,7 @@
 node_modules
 public
 build
-.storybook
+packages/ui/.storybook_bkp
 .cache
 .vscode
 .idea

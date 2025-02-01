@@ -1,91 +1,74 @@
+import { raw } from './create-element.util';
 import { configureFormElement } from './form-element.util';
-import { isArray, isFunction, isString } from './type-checking.util';
+import { createCSSStyleSheets } from './styling-element.util';
+import { isFunction, isString } from './type-check.util';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
-type CustomElementProps = Record<string, any> | undefined;
-
-type CustomElementOptions<Props extends CustomElementProps, ComponentElement = HTMLElement> = {
+type WebComponentOptions<ComponentElement = HTMLElement> = {
   form?: boolean;
-  onAttributeChanged?: (
-    name: string,
-    prev: string,
-    curr: string,
-    self: CustomElementUtil<Props, ComponentElement>
-  ) => void;
-  onConnected?: (self: CustomElementUtil<Props, ComponentElement>) => void;
-  onDisconnected?: (self: CustomElementUtil<Props, ComponentElement>) => void;
-  props?: Props & Partial<Omit<ComponentElement, keyof Props>>;
-  template: (self: CustomElementUtil<Props, ComponentElement>) => any | string;
+  observedAttributes?: string[];
+  onAttributeChanged?: (name: string, prev: string, curr: string, el: WebComponent<ComponentElement>) => void;
+  onConnected?: (el: WebComponent<ComponentElement>) => void;
+  onDisconnected?: (el: WebComponent<ComponentElement>) => void;
+  styles?: (CSSStyleSheet | string)[];
+  template: ((el: WebComponent<ComponentElement>) => any) | string;
 };
 
-type CustomElementClass<Props extends CustomElementProps, ComponentElement = HTMLElement> = {
+type WebComponentElement<ComponentElement = HTMLElement> = {
   event: (
-    id: string | HTMLElement | CustomElementUtil<Props, ComponentElement>,
+    id: string | HTMLElement | ComponentElement,
     event: string | HTMLTags,
     callback: EventListener,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ) => void;
   fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
-  node: ComponentElement;
   ref: <T = HTMLElement>(id: string) => T;
   render: () => void;
-  rootElement: CustomElementUtil<Props, ComponentElement>;
+  rootElement: ComponentElement;
   value?: string;
 };
 
-export type CustomElementUtil<Props extends CustomElementProps, ComponentElement = HTMLElement> = Omit<
-  ComponentElement,
-  keyof Props
-> &
-  Props &
-  CustomElementClass<Props, ComponentElement>;
+export type WebComponent<ComponentElement = HTMLElement> = ComponentElement & WebComponentElement<ComponentElement>;
 
-const getAttrName = (prop: string) => prop.replace(/([A-Z])/g, '-$1').toLowerCase();
-
-export const component = <Props extends CustomElementProps, ComponentElement = HTMLElement>({
+export const component = <ComponentElement = HTMLElement>({
   form = false,
+  observedAttributes = [],
   onAttributeChanged,
   onConnected,
   onDisconnected,
-  props = {} as any,
-  template
-}: CustomElementOptions<Props, ComponentElement>) =>
-  class extends HTMLElement implements CustomElementClass<Props, ComponentElement> {
-    node = this as unknown as ComponentElement;
-
-    private get self(): CustomElementUtil<Props, ComponentElement> {
-      return new Proxy(this, {
-        get(target, key) {
-          const value = Reflect.get(target, key) as any;
-          return isFunction(value)
-            ? value.bind(target)
-            : key === 'dataset'
-              ? Object.entries(props.dataset).reduce(
-                  (acc, [k, v]) => ({ ...acc, [k]: acc[k] === '' ? true : (acc[k] ?? v) }),
-                  value
-                )
-              : value;
-        }
-      }) as unknown as CustomElementUtil<Props, ComponentElement>;
-    }
-
+  styles,
+  template,
+}: WebComponentOptions<ComponentElement>) =>
+  class extends HTMLElement implements WebComponentElement<ComponentElement> {
     static formAssociated = form;
 
     static get observedAttributes() {
-      return [
-        ...Object.entries(props)
-          .map(([key, value]) => (key === 'dataset' ? Object.keys(value).map(p => `data-${getAttrName(p)}`) : key))
-          .flat()
-      ];
+      return observedAttributes;
+    }
+
+    private shadow = this.attachShadow({ mode: 'open' });
+
+    private eventListeners: Array<{ callback: EventListener; element: HTMLElement; event: string }> = [];
+
+    get rootElement() {
+      return this.shadow.firstChild as ComponentElement;
+    }
+
+    get self() {
+      return this as unknown as WebComponent<ComponentElement>;
     }
 
     constructor() {
       super();
 
       if (form) {
-        configureFormElement(this);
+        configureFormElement(this as unknown as HTMLInputElement);
       }
+
+      createCSSStyleSheets(styles).then((sheets) => {
+        if (sheets) this.shadow.adoptedStyleSheets = sheets;
+      });
 
       this.render();
     }
@@ -94,12 +77,28 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
       if (onConnected) {
         onConnected(this.self);
       }
+
+      // automatically sync observed attributes with properties
+      observedAttributes
+        .filter((attr) => !attr.match(/^data-*/))
+        .forEach((attr) => {
+          Object.defineProperty(this, attr, {
+            get: () => this.getAttribute(attr),
+            set: (value: string) => this.setAttribute(attr, value),
+          });
+        });
     }
 
     disconnectedCallback() {
       if (onDisconnected) {
         onDisconnected(this.self);
       }
+
+      // clean up event listeners to prevent memory leaks
+      this.eventListeners.forEach(({ callback, element, event }) => {
+        element.removeEventListener(event, callback);
+      });
+      this.eventListeners = [];
     }
 
     attributeChangedCallback(name: string, prev: string, curr: string) {
@@ -108,22 +107,28 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
       }
     }
 
-    formStateRestoreCallback(state: string) {
-      if (form) this.setAttribute('value', state);
-    }
-
-    get rootElement() {
-      return this.ref('root') as unknown as CustomElementUtil<Props, ComponentElement>;
-    }
-
     render() {
-      const tmpl = isFunction(template) ? template(this.self) : template;
-      const shadowRoot = this.attachShadow({ mode: 'open' });
+      const tmpl: string = isFunction(template) ? template(this.self) : template;
+      const nodes: NodeListOf<ChildNode> = raw(tmpl);
 
-      if (isString(tmpl)) {
-        shadowRoot.innerHTML = tmpl;
+      // only update changed elements instead of replacing everything
+      if (this.shadow.childNodes.length === 0) {
+        this.shadow.append(...nodes);
       } else {
-        shadowRoot.replaceChildren(...(isArray(tmpl) ? tmpl.flat() : [tmpl]));
+        const oldNodes = Array.from(this.shadow.childNodes);
+
+        for (let i = 0; i < Math.max(oldNodes.length, nodes.length); i++) {
+          const oldNode = oldNodes[i];
+          const newNode = nodes[i];
+
+          if (!newNode) {
+            this.shadow.removeChild(oldNode);
+          } else if (!oldNode) {
+            this.shadow.appendChild(newNode);
+          } else if (!oldNode.isEqualNode(newNode)) {
+            this.shadow.replaceChild(newNode, oldNode);
+          }
+        }
       }
     }
 
@@ -132,14 +137,19 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
     }
 
     event(
-      id: string | HTMLElement | CustomElementUtil<Props, ComponentElement>,
+      id: string | HTMLElement | ComponentElement,
       event: string | HTMLTags,
       callback: EventListener,
-      options?: boolean | AddEventListenerOptions
+      options?: boolean | AddEventListenerOptions,
     ) {
-      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement | CustomElementUtil<Props, ComponentElement>;
+      const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement;
 
-      el?.addEventListener(event, callback, options);
+      if (el) {
+        el.addEventListener(event, callback, options);
+        this.eventListeners.push({ callback, element: el, event });
+      } else {
+        console.warn(`Element with id ${id} not found.`);
+      }
     }
 
     ref<T = HTMLElement>(id: string): T {
@@ -147,11 +157,11 @@ export const component = <Props extends CustomElementProps, ComponentElement = H
     }
   };
 
-export const define = <Props extends CustomElementProps, ComponentElement = HTMLElement>(
+export const define = <ComponentElement = HTMLElement>(
   name: string,
-  options: CustomElementOptions<Props, ComponentElement>
+  options: WebComponentOptions<ComponentElement>,
 ) => {
-  if (!customElements.get(name)) customElements.define(name, component<Props, ComponentElement>(options));
+  if (!window.customElements.get(name)) window.customElements.define(name, component<ComponentElement>(options));
 };
 
 export { classMap } from './styling-element.util';

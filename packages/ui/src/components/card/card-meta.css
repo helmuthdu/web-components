@@ -1,0 +1,6 @@
+.card-meta {
+  display: block;
+  font-size: var(--text-sm);
+  line-height: var(--line-spacing-sm);
+  color: var(--color-content-tertiary);
+}

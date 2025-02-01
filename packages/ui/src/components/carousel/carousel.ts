@@ -1,173 +1,95 @@
-import { define } from '../../utils/custom-element.util';
+import { classMap, define } from '../../utils/custom-element.util';
+import style from './carousel.css?raw';
 
-let slideIndex = 0;
-let timeout: NodeJS.Timeout;
+const CarouselController: {
+  go(index: number): void;
+  index: number;
+  navigation: HTMLLIElement[];
+  next(): void;
+  previous(): void;
+  slides: HTMLCollection;
+  timeout: number;
+  timeoutFn?: NodeJS.Timeout;
+} = {
+  go(index: number) {
+    const { navigation, slides, timeout, timeoutFn } = CarouselController;
 
-const showSlides = (index: number, slides: HTMLCollection, dots: HTMLLIElement[], timer = 8000) => {
-  slideIndex = index;
-
-  if (slideIndex >= slides.length) {
-    slideIndex = 0;
-  }
-  if (slideIndex < 0) {
-    slideIndex = slides.length - 1;
-  }
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].classList.remove('is-visible');
-    slides[i].classList.add('carousel-image', 'is-hidden');
-  }
-  slides[slideIndex].classList.replace('is-hidden', 'is-visible');
-
-  if (dots.length > 0) {
-    for (let i = 0; i < dots.length; i++) {
-      dots[i].classList.remove('is-selected');
+    if (index >= slides.length) {
+      index = 0;
+    } else if (index < 0) {
+      index = slides.length - 1;
     }
-    dots[slideIndex].classList.add('is-selected');
-  }
 
-  if (timer === 0) return;
-  if (timeout) clearInterval(timeout);
-  timeout = setTimeout(() => showSlides(slideIndex + 1, slides, dots, timer), timer);
+    CarouselController.index = index;
+
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.remove('is-visible');
+      slides[i].classList.add('carousel-image', 'is-hidden');
+    }
+    slides[index].classList.replace('is-hidden', 'is-visible');
+
+    if (navigation.length > 0) {
+      for (let i = 0; i < navigation.length; i++) {
+        navigation[i].classList.remove('is-selected');
+      }
+      navigation[index].classList.add('is-selected');
+    }
+
+    if (timeout === 0) return;
+
+    if (timeoutFn) clearTimeout(CarouselController.timeoutFn);
+
+    CarouselController.timeoutFn = setTimeout(
+      () => CarouselController.go(CarouselController.index + 1),
+      CarouselController.timeout,
+    );
+  },
+  index: 0,
+  navigation: [],
+  next: () => CarouselController.go(CarouselController.index + 1),
+  previous: () => CarouselController.go(CarouselController.index - 1),
+  slides: {} as HTMLCollection,
+  timeout: 8000,
+  timeoutFn: undefined,
 };
 
 export type Props = {
-  dataset: { indicators?: boolean; buttons?: boolean; timeout: number };
+  dataset: { controls?: string; navigation?: string; timeout?: string };
 };
 
-define<Props>('ui-carousel', {
-  props: {
-    dataset: {
-      indicators: undefined,
-      buttons: undefined,
-      timeout: 8000
-    }
-  },
-  onConnected: el => {
-    const _showSlides = (idx: number) =>
-      showSlides(idx, el.children, Array.from(el.shadowRoot?.querySelectorAll('li') ?? []), +el.dataset.timeout);
+define('ui-carousel', {
+  onConnected: (el) => {
+    CarouselController.slides = el.children;
+    CarouselController.navigation = Array.from(el.shadowRoot?.querySelectorAll('li') ?? []);
+    CarouselController.timeout = el.dataset.timeout !== undefined ? +el.dataset.timeout : 8000;
+    CarouselController.go(0);
 
-    _showSlides(slideIndex);
-
-    el.event('carousel-button-left', 'click', () => _showSlides(slideIndex - 1));
-
-    el.event('carousel-button-right', 'click', () => _showSlides(slideIndex + 1));
-
+    el.event('carousel-control-left', 'click', CarouselController.previous);
+    el.event('carousel-control-right', 'click', CarouselController.next);
     el.event(
       'carousel-navigation',
       'click',
       (e: Event) => {
         e.stopPropagation();
+
         const idx = (e.target as HTMLLIElement).dataset.index;
-        if (idx) _showSlides(+idx);
+
+        if (idx) CarouselController.go(+idx);
       },
-      true
+      { capture: true },
     );
   },
-  template: el => /*html*/ `
-    <style>
-      .carousel {
-        position: relative;
-        inline-size: var(--size-full);
-      }
-
-      .carousel-container {
-        position: relative;
-        display: flex;
-        inline-size: var(--size-full);
-        overflow-x: auto;
-        -ms-overflow-style: none;
-        scroll-behavior: smooth;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-      }
-
-      ::slotted(.carousel-image) {
-        position: absolute;
-        inline-size: var(--size-full);
-        transition-timing-function: ease-in;
-        transition-duration: 700ms;
-        transition-property: opacity;
-      }
-
-      ::slotted(.carousel-image.is-visible) {
-        opacity: 1;
-      }
-
-      ::slotted(.carousel-image.is-hidden) {
-        opacity: 0;
-      }
-
-      ::slotted(.carousel-image:first-child) {
-        position: relative;
-      }
-
-      .carousel::-webkit-scrollbar {
-        display: none;
-      }
-
-      .carousel-button {
-        position: absolute;
-        inset-block: 0;
-        inline-size: var(--size-12);
-        color: var(--color-content-body);
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-
-        &.is-left {
-          inset-inline-start: 0;
-        }
-
-        &.is-right {
-          inset-inline-end: 0;
-        }
-      }
-
-      .carousel-navigation {
-        position: absolute;
-        inset-block-end: 0;
-        inset-inline: 0;
-        display: flex;
-        gap: var(--size-2);
-        justify-content: center;
-        list-style: none;
-      }
-
-      .carousel-navigation-item {
-        inline-size: var(--size-8);
-        cursor: pointer;
-        border-block-end: var(--border-4) solid rgb(255 255 255/ 60%);
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 700ms;
-        transition-property: border-color;
-
-        &.is-selected,
-        &:hover {
-          border-color: rgb(255 255 255);
-        }
-      }
-    </style>
-    <div id="root" class="carousel">
+  styles: [style],
+  template: (el) => /*html*/ `
+    <div class="carousel">
       <div class="carousel-container">
         <slot></slot>
       </div>
-      ${
-        el.dataset.buttons
-          ? /*html*/ `
-          <button id="carousel-button-left" class="carousel-button is-left">❮</button>
-          <button id="carousel-button-right" class="carousel-button is-right">❯</button>
-        `
-          : ''
-      }
-      ${
-        el.dataset.indicators
-          ? /*html*/ `
-          <ol id="carousel-navigation" class="carousel-navigation">
-            ${[...Array(el.children.length)].map((_, idx) => /*html*/ `<li class="carousel-navigation-item" data-index="${idx}"></li>`).join('')}
-          </ol>
-        `
-          : ''
-      }
+      <button id="carousel-control-left" class="${classMap('carousel-control is-left', { 'is-hidden': el.dataset.controls !== '' })}">❮</button>
+      <button id="carousel-control-right" class="${classMap('carousel-control is-right', { 'is-hidden': el.dataset.controls !== '' })}">❯</button>
+      <ol id="carousel-navigation" class="${classMap('carousel-navigation', { 'is-hidden': el.dataset.navigation !== '' })}">
+        ${[...Array(el.children.length)].map((_, idx) => /*html*/ `<li class="carousel-navigation-item" data-index="${idx}"></li>`).join('')}
+      </ol>
     </div>
-  `
+  `,
 });

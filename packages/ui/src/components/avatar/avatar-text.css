@@ -1,0 +1,25 @@
+.avatar-text {
+  --avatar-size: 4;
+  --avatar-hue: 23;
+  --avatar-saturation: 50;
+  --avatar-lightness: 50;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--avatar-size) * 1rem);
+  height: calc(var(--avatar-size) * 1rem);
+  font-size: calc(var(--avatar-size) * 0.5rem);
+  font-weight: 700;
+  background-color: hsl(
+    calc(var(--avatar-hue) * 1deg) calc(var(--avatar-saturation) * 1%) calc(var(--avatar-lightness) * 1%)
+  );
+
+  & > span {
+    --threshold: 50;
+    --switch: calc((var(--avatar-lightness) - var(--threshold)) * -100%);
+
+    color: hsl(0deg 0% var(--switch));
+  }
+}

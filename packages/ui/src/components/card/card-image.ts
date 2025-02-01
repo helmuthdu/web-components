@@ -1,27 +1,17 @@
 import { define } from '../../utils/custom-element.util';
+import style from './card-image.css?raw';
 
 export type Props = {
   dataset: { src?: string };
 };
 
-define<Props>('ui-card-image', {
-  props: {
-    dataset: {
-      src: undefined
-    }
+define<HTMLImageElement>('ui-card-image', {
+  observedAttributes: ['data-src'],
+  onAttributeChanged: (name, prev, curr, el) => {
+    el.rootElement.src = el.dataset.src!;
   },
-  template: ({ dataset }) => /*html*/ `
-    <style>
-      :host {
-        overflow: hidden;
-      }
-      
-      .card-image {
-        inline-size: var(--size-full);
-        block-size: var(--size-full);
-        object-fit: cover;
-      }
-    </style>
-    <img id="root" class="card-image" src="${dataset.src}" alt="" />
-  `
+  styles: [style],
+  template: (el) => /*html*/ `
+    <img class="card-image" alt="" src="${el.dataset.src}" />
+  `,
 });

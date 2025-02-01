@@ -2,7 +2,7 @@
 <html class="dark" lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link href="favicon.svg" rel="icon" type="image/svg+xml" />
+    <link type="image/svg+xml" href="favicon.svg" rel="icon" />
     <link id="theme" href="src/styles/styles.css" rel="stylesheet" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://unpkg.com/construct-style-sheets-polyfill"></script>
@@ -51,8 +51,8 @@
     </style>
   </head>
   <body>
-    <script src="src/main.ts" type="module"></script>
-    <script src="src/utils/create-element.util.ts" type="module"></script>
+    <script type="module" src="src/main.ts"></script>
+    <script type="module" src="src/utils/create-element.util.ts"></script>
     <div class="wrapper">
       <div class="grid-lines"></div>
       <div class="container">
@@ -60,10 +60,10 @@
           <!-- <ui-box>this is a box!</ui-box> -->
           <ui-button id="create-toast-button" data-color="primary">
             Get Started
-            <ui-badge data-color="error" data-size="xs" data-pill>+99</ui-badge>
+            <ui-badge data-color="error" data-pill data-size="xs">+99</ui-badge>
           </ui-button>
-          <ui-button data-disabled data-loading data-color="primary">Get Started</ui-button>
-          <ui-button data-variant="outline" data-rounded data-color="primary">Get Started</ui-button>
+          <ui-button data-color="primary" data-disabled data-loading>Get Started</ui-button>
+          <ui-button data-color="primary" data-rounded data-variant="outline">Get Started</ui-button>
 
           <!-- <ui-card>
             <ui-card-image data-src="https://mdbootstrap.com/img/new/standard/nature/184.jpg"></ui-card-image>
@@ -195,23 +195,24 @@
 
     const el = document.querySelectorAll('ui-alert')[0];
     el &&
-      el.addEventListener('close', event => {
+      el.addEventListener('close', (event) => {
         console.log('ui-alert was closed', event);
       });
 
     const createToastButton = document.getElementById('create-toast-button');
     createToastButton.addEventListener('click', () => {
       document.body.append(
-        ...rawHTML(
+        ...parseHTML(
           random([true, false])
-            ? '<ui-toast><header slot="header">Toast Header</header><p>Lorem ipsum net zu.</p></ui-toast>'
-            : `<ui-toast data-color="${random([
-                'info',
-                'error',
-                'success',
-                'contrast'
-              ])}"><header slot="header">Toast Header</header><p>Lorem ipsum net zu.</p></ui-toast>`
-        )
+            ? `<ui-toast>
+                  <header slot="header">Toast Header</header>
+                  <p>Lorem ipsum net zu.</p>
+                </ui-toast>`
+            : `<ui-toast data-color="${random(['info', 'error', 'success', 'contrast'])}">
+                <header slot="header">Toast Header</header>
+                <p>Lorem ipsum net zu.</p>
+              </ui-toast>`,
+        ),
       );
     });
   </script>

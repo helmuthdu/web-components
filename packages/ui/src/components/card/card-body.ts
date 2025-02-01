@@ -1,20 +1,11 @@
 import { define } from '../../utils/custom-element.util';
+import style from './card-body.css?raw';
 
 define('ui-card-body', {
+  styles: [style],
   template: () => /* html */ `
-    <style>
-      .card-body {
-        display: flex;
-        flex-direction: column;
-        gap: var(--size-2);
-        padding: var(--size-4);
-        font-size: var(--text-md);
-        line-height: var(--line-spacing-md);
-        color: var(--color-content-body);
-      }
-    </style>
-    <section id="root" class="card-body">
+    <section class="card-body">
       <slot></slot>
     </section>
-  `
+  `,
 });

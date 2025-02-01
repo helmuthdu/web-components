@@ -4,6 +4,8 @@ import './alert/alert';
 import './article/article';
 import './avatar/avatar';
 import './avatar/avatar-group';
+import './avatar/avatar-image';
+import './avatar/avatar-text';
 import './badge/badge';
 import './card/card';
 import './card/card-body';

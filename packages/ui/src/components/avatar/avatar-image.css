@@ -1,0 +1,5 @@
+.avatar-image {
+  --avatar-size: 4;
+
+  width: calc(var(--avatar-size) * 1rem);
+}

@@ -1,0 +1,58 @@
+import { Meta, Story, Canvas, Controls } from '@storybook/blocks';
+import * as ButtonStories from './button.stories';
+
+# Button
+
+Buttons allow users to take actions, and make choices, with a single tap.
+
+<Meta of={ButtonStories} />
+
+<Canvas of={ButtonStories.Playground} />
+
+## API
+
+<Controls />
+
+## Examples
+
+### Variants
+
+Change the variants using the `data-variant` attribute, it comes with three variants: **default**, **outlined** and **text**.
+
+<Story of={ButtonStories.Variants} />
+
+### Colors
+
+Change the color using the `data-color` attribute, it comes with three colors defined: **primary**, **error** and **success**.
+
+<Story of={ButtonStories.Colors} />
+
+### Size
+
+For larger or smaller buttons, use the `data-size` prop.
+
+<Story of={ButtonStories.Size} />
+
+### Disabled
+
+Avoid user interaction with the `data-disabled` attribute.
+
+<Story of={ButtonStories.Disabled} />
+
+### Loading
+
+Active the loading state with the`data-loading` attribute.
+
+<Story of={ButtonStories.Loading} />
+
+### Circle
+
+For a small circular button use the `data-circle` attribute.
+
+<Story of={ButtonStories.Circle} />
+
+### Group
+
+All buttons can be grouped together wrapping with the `ui-button-group` component.
+
+<Story of={ButtonStories.Group} />
