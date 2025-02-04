@@ -1,6 +1,6 @@
 {
     "excluded": [
         "packages/*/dist",
-        "packages/*/lib",
+        "packages/*/lib"
     ]
 }

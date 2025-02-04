@@ -3,6 +3,7 @@
 .idea
 *.local
 build
+storybook-static
 node_modules
 packages/*/docs-build
 packages/*/lib
