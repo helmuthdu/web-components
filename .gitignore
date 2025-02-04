@@ -8,5 +8,5 @@ packages/*/docs-build
 packages/*/lib
 packages/*/dist
 qodana.yaml
-
+package-lock.json
 *storybook.log
