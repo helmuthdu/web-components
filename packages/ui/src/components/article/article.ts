@@ -2,19 +2,27 @@ import { define } from '../../utils/custom-element.util';
 import style from './article.css?raw';
 
 define('ui-article', {
+  onConnected(el) {
+    el.style.setProperty('width', '100%');
+  },
   styles: [style],
   template: () => /* html */ `
-    <div class="article">
-      <div class="article__thumb"></div>
-      <article class="article__content">
-        <header class="article__title">
-          <slot name="title"></slot>
-        </header>
-        <slot></slot>
-        <footer class="article__desc">
-          <slot name="description"></slot>
-        </footer>
-      </article>
+    <div class="layout">
+      <div class="article">
+        <div class="article-image">
+          <slot name="image"></slot>
+        </div>
+        <article class="article-content">
+          <header class="article-header">
+            <slot name="header"></slot>
+          </header>
+          <slot name="meta"></slot>
+          <slot></slot>
+          <footer class="article-footer">
+            <slot name="footer"></slot>
+          </footer>
+        </article>
+      </div>
     </div>
   `,
 });
