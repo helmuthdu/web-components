@@ -24,11 +24,14 @@ const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGEle
   if (element instanceof DocumentFragment) return;
 
   if (attr === 'className') {
-    element.setAttribute('class', value);
+    (element as HTMLElement).className = value;
   } else if (isFunction(value)) {
-    if (/^(on[a-z]+)$/i.test(attr.toLowerCase())) {
+    if (/^(on[a-z]+)$/i.test(attr)) {
       (element as any)[attr.toLowerCase()] = value;
     }
+  } else if (isBoolean(value)) {
+    if (value) element.setAttribute(attr, '');
+    else element.removeAttribute(attr);
   } else if (isObject(value)) {
     if ((element as any)[attr]) {
       Object.assign((element as any)[attr], value);
@@ -41,11 +44,14 @@ const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGEle
 const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (!isNil(child)) {
     if (isArray(child)) {
-      child.forEach((c) => appendChild(c, element));
+      const fragment = document.createDocumentFragment();
+
+      child.forEach((c) => appendChild(c, fragment));
+      element.append(fragment);
     } else if (isObject(child)) {
       element.append(child as Node);
     } else if (!isBoolean(child)) {
-      element.append(document.createTextNode(child.toString()));
+      element.append(document.createTextNode(String(child)));
     }
   }
 };
@@ -69,7 +75,13 @@ export const fragment = (...children: any[]) => composeElement({ children, props
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
   composeElement<T>({ children, props, tag });
 
-export const raw = (string: string) => new DOMParser().parseFromString(string, 'text/html').body.childNodes;
+export const raw = (string: string) => {
+  const doc = new DOMParser().parseFromString(string, 'text/html');
+
+  doc.querySelectorAll('script').forEach((script) => script.remove()); // Remove script elements
+
+  return doc.body.childNodes;
+};
 
 declare global {
   interface Window {

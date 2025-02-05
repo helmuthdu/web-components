@@ -5,19 +5,19 @@ import { isFunction, isString } from './type-check.util';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
-type WebComponentOptions<ComponentElement = HTMLElement> = {
+type WebComponentOptions<T extends HTMLElement = HTMLElement> = {
   form?: boolean;
   observedAttributes?: string[];
-  onAttributeChanged?: (name: string, prev: string, curr: string, el: WebComponent<ComponentElement>) => void;
-  onConnected?: (el: WebComponent<ComponentElement>) => void;
-  onDisconnected?: (el: WebComponent<ComponentElement>) => void;
+  onAttributeChanged?: (name: string, prev: string, curr: string, el: WebComponent<T>) => void;
+  onConnected?: (el: WebComponent<T>) => void;
+  onDisconnected?: (el: WebComponent<T>) => void;
   styles?: (CSSStyleSheet | string)[];
-  template: ((el: WebComponent<ComponentElement>) => any) | string;
+  template: ((el: WebComponent<T>) => any) | string;
 };
 
-type WebComponentElement<ComponentElement = HTMLElement> = {
+type WebComponentElement<T extends HTMLElement = HTMLElement> = {
   event: (
-    id: string | HTMLElement | ComponentElement,
+    id: string | HTMLElement | T,
     event: string | HTMLTags,
     callback: EventListener,
     options?: boolean | AddEventListenerOptions,
@@ -25,13 +25,13 @@ type WebComponentElement<ComponentElement = HTMLElement> = {
   fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
   ref: <T = HTMLElement>(id: string) => T;
   render: () => void;
-  rootElement: ComponentElement;
+  rootElement: T;
   value?: string;
 };
 
-export type WebComponent<ComponentElement = HTMLElement> = ComponentElement & WebComponentElement<ComponentElement>;
+export type WebComponent<T extends HTMLElement = HTMLElement> = T & WebComponentElement<T>;
 
-export const component = <ComponentElement = HTMLElement>({
+export const component = <T extends HTMLElement = HTMLElement>({
   form = false,
   observedAttributes = [],
   onAttributeChanged,
@@ -39,12 +39,31 @@ export const component = <ComponentElement = HTMLElement>({
   onDisconnected,
   styles,
   template,
-}: WebComponentOptions<ComponentElement>) =>
-  class extends HTMLElement implements WebComponentElement<ComponentElement> {
+}: WebComponentOptions<T>) =>
+  class extends HTMLElement implements WebComponentElement<T> {
     static formAssociated = form;
 
     static get observedAttributes() {
       return observedAttributes;
+    }
+
+    private static defineObservedAttributes(attributes: string[], target: any) {
+      attributes
+        .filter((attr) => !attr.startsWith('data-'))
+        .forEach((attr) => {
+          Object.defineProperty(target.prototype, attr, {
+            get() {
+              return this.getAttribute(attr);
+            },
+            set(value: string) {
+              this.setAttribute(attr, value);
+            },
+          });
+        });
+    }
+
+    static {
+      this.defineObservedAttributes(observedAttributes, this);
     }
 
     private shadow = this.attachShadow({ mode: 'open' });
@@ -52,11 +71,11 @@ export const component = <ComponentElement = HTMLElement>({
     private eventListeners: Array<{ callback: EventListener; element: HTMLElement; event: string }> = [];
 
     get rootElement() {
-      return this.shadow.firstChild as ComponentElement;
+      return this.shadow.firstChild as T;
     }
 
     get self() {
-      return this as unknown as WebComponent<ComponentElement>;
+      return this as unknown as WebComponent<T>;
     }
 
     constructor() {
@@ -77,16 +96,6 @@ export const component = <ComponentElement = HTMLElement>({
       if (onConnected) {
         onConnected(this.self);
       }
-
-      // automatically sync observed attributes with properties
-      observedAttributes
-        .filter((attr) => !attr.match(/^data-*/))
-        .forEach((attr) => {
-          Object.defineProperty(this, attr, {
-            get: () => this.getAttribute(attr),
-            set: (value: string) => this.setAttribute(attr, value),
-          });
-        });
     }
 
     disconnectedCallback() {
@@ -109,26 +118,29 @@ export const component = <ComponentElement = HTMLElement>({
 
     render() {
       const tmpl: string = isFunction(template) ? template(this.self) : template;
-      const nodes: NodeListOf<ChildNode> = raw(tmpl);
+      const newNodes: NodeListOf<ChildNode> = raw(tmpl);
 
-      // only update changed elements instead of replacing everything
-      if (this.shadow.childNodes.length === 0) {
-        this.shadow.append(...nodes);
-      } else {
-        const oldNodes = Array.from(this.shadow.childNodes);
+      if (!this.shadow.hasChildNodes()) {
+        this.shadow.append(...newNodes);
 
-        for (let i = 0; i < Math.max(oldNodes.length, nodes.length); i++) {
-          const oldNode = oldNodes[i];
-          const newNode = nodes[i];
+        return;
+      }
 
-          if (!newNode) {
-            this.shadow.removeChild(oldNode);
-          } else if (!oldNode) {
-            this.shadow.appendChild(newNode);
-          } else if (!oldNode.isEqualNode(newNode)) {
-            this.shadow.replaceChild(newNode, oldNode);
-          }
+      const oldNodes = Array.from(this.shadow.childNodes);
+
+      oldNodes.forEach((oldNode, index) => {
+        const newNode = newNodes[index];
+
+        if (!newNode) {
+          this.shadow.removeChild(oldNode);
+        } else if (!oldNode.isEqualNode(newNode)) {
+          oldNode.replaceWith(newNode);
         }
+      });
+
+      // Append remaining new nodes
+      for (let i = oldNodes.length; i < newNodes.length; i++) {
+        this.shadow.appendChild(newNodes[i]);
       }
     }
 
@@ -137,7 +149,7 @@ export const component = <ComponentElement = HTMLElement>({
     }
 
     event(
-      id: string | HTMLElement | ComponentElement,
+      id: string | HTMLElement | T,
       event: string | HTMLTags,
       callback: EventListener,
       options?: boolean | AddEventListenerOptions,
@@ -157,11 +169,8 @@ export const component = <ComponentElement = HTMLElement>({
     }
   };
 
-export const define = <ComponentElement = HTMLElement>(
-  name: string,
-  options: WebComponentOptions<ComponentElement>,
-) => {
-  if (!window.customElements.get(name)) window.customElements.define(name, component<ComponentElement>(options));
+export const define = <T extends HTMLElement = HTMLElement>(name: string, options: WebComponentOptions<T>) => {
+  if (!window.customElements.get(name)) window.customElements.define(name, component<T>(options));
 };
 
 export { classMap } from './styling-element.util';
