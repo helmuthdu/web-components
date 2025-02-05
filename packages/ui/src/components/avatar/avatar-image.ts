@@ -13,7 +13,7 @@ define<HTMLImageElement>('ui-avatar-image', {
   onAttributeChanged(name, _prev, curr, el) {
     switch (name) {
       case 'data-size':
-        el.rootElement.style.setProperty('--avatar-size', curr);
+        el.style.setProperty('--avatar-size', curr);
         break;
     }
   },

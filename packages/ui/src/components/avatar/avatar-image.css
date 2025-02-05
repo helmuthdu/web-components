@@ -1,5 +1,7 @@
-.avatar-image {
+:host {
   --avatar-size: 4;
+}
 
+.avatar-image {
   width: calc(var(--avatar-size) * 1rem);
 }

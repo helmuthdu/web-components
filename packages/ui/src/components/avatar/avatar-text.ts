@@ -15,16 +15,16 @@ define('ui-avatar-text', {
   onAttributeChanged(name, _prev, curr, el) {
     switch (name) {
       case 'data-hue':
-        el.rootElement.style.setProperty('--avatar-hue', curr);
+        el.style.setProperty('--avatar-hue', curr);
         break;
       case 'data-lightness':
-        el.rootElement.style.setProperty('--avatar-lightness', curr);
+        el.style.setProperty('--avatar-lightness', curr);
         break;
       case 'data-saturation':
-        el.rootElement.style.setProperty('--avatar-saturation', curr);
+        el.style.setProperty('--avatar-saturation', curr);
         break;
       case 'data-size':
-        el.rootElement.style.setProperty('--avatar-size', curr);
+        el.style.setProperty('--avatar-size', curr);
         break;
     }
   },
