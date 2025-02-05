@@ -1,3 +1,7 @@
+:host {
+  --carousel-timeout: 7000;
+}
+
 .carousel {
   position: relative;
   inline-size: var(--size-full);
@@ -75,15 +79,38 @@
 }
 
 .carousel-navigation-item {
-  inline-size: var(--size-8);
+  position: relative;
+  width: var(--size-8);
+  height: var(--size-1-5);
+  overflow: hidden;
   cursor: pointer;
-  border-block-end: var(--border-4) solid rgb(255 255 255/ 60%);
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 700ms;
-  transition-property: border-color;
+  background-color: rgb(255 255 255/ 60%);
+  border-radius: var(--rounded-md);
 
-  &.is-selected,
+  &.is-selected {
+    &::after {
+      display: block;
+      width: var(--size-8);
+      height: var(--size-1-5);
+      content: '';
+      background-color: rgb(255 255 255);
+      transform: translateX(-100%);
+      animation: loading calc(var(--carousel-timeout) * 1ms) linear;
+      animation-fill-mode: forwards;
+    }
+  }
+
   &:hover {
-    border-color: rgb(255 255 255);
+    background-color: rgb(255 255 255);
+  }
+}
+
+@keyframes loading {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0%);
   }
 }

@@ -12,7 +12,7 @@ export const Playground = {
     navigation: true,
     textAlign: 'center',
     textPosition: 'bottom',
-    timeout: 8000,
+    timeout: 7000,
   },
 
   argTypes: {
@@ -85,12 +85,6 @@ export const Playground = {
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
-      <ui-carousel-image data-src="https://picsum.photos/id/405/800/300"
-          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
-        <h2 class="title">Campaign title</h2>
-        <p class="subtitle">Some representative placeholder content for the first slide</p>
-      </ui-carousel-image>
       <ui-carousel-image data-src="https://picsum.photos/id/402/800/300"
           ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
           ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
@@ -104,6 +98,18 @@ export const Playground = {
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
       <ui-carousel-image data-src="https://picsum.photos/id/404/800/300"
+          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+        <h2 class="title">Campaign title</h2>
+        <p class="subtitle">Some representative placeholder content for the first slide</p>
+      </ui-carousel-image>
+      <ui-carousel-image data-src="https://picsum.photos/id/405/800/300"
+          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+        <h2 class="title">Campaign title</h2>
+        <p class="subtitle">Some representative placeholder content for the first slide</p>
+      </ui-carousel-image>
+      <ui-carousel-image data-src="https://picsum.photos/id/406/800/300"
           ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
           ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>

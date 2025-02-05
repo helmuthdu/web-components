@@ -1,57 +1,68 @@
-import { classMap, define } from '../../utils/custom-element.util';
+import { classMap, define, WebComponent } from '../../utils/custom-element.util';
 import style from './carousel.css?raw';
 
-const CarouselController: {
-  go(index: number): void;
-  index: number;
-  navigation: HTMLLIElement[];
-  next(): void;
-  previous(): void;
-  slides: HTMLCollection;
-  timeout: number;
-  timeoutFn?: NodeJS.Timeout;
-} = {
-  go(index: number) {
-    const { navigation, slides, timeout, timeoutFn } = CarouselController;
+class CarouselController {
+  private slides: HTMLCollection;
+  private navigation: HTMLLIElement[];
+  private timeout: number;
+  private timeoutFn?: NodeJS.Timeout;
+  private index: number = 0;
 
-    if (index >= slides.length) {
+  constructor(
+    private component: WebComponent,
+    timeout: number,
+  ) {
+    this.slides = component.children;
+    this.navigation = Array.from(component.shadowRoot?.querySelectorAll('li') ?? []);
+    this.timeout = timeout;
+
+    this.setupEventListeners();
+    this.go(0);
+  }
+
+  go(index: number) {
+    if (index >= this.slides.length) {
       index = 0;
     } else if (index < 0) {
-      index = slides.length - 1;
+      index = this.slides.length - 1;
     }
 
-    CarouselController.index = index;
+    this.index = index;
 
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].classList.remove('is-visible');
-      slides[i].classList.add('carousel-image', 'is-hidden');
+    Array.from(this.slides).forEach((slide, i) => {
+      slide.classList.toggle('is-visible', i === index);
+      slide.classList.toggle('is-hidden', i !== index);
+    });
+
+    this.navigation.forEach((nav, i) => {
+      nav.classList.toggle('is-selected', i === index);
+    });
+
+    if (this.timeout > 0) {
+      if (this.timeoutFn) clearTimeout(this.timeoutFn);
+
+      this.timeoutFn = setTimeout(() => this.go(this.index + 1), this.timeout);
     }
-    slides[index].classList.replace('is-hidden', 'is-visible');
+  }
 
-    if (navigation.length > 0) {
-      for (let i = 0; i < navigation.length; i++) {
-        navigation[i].classList.remove('is-selected');
-      }
-      navigation[index].classList.add('is-selected');
-    }
+  next = () => this.go(this.index + 1);
+  previous = () => this.go(this.index - 1);
 
-    if (timeout === 0) return;
+  private setupEventListeners() {
+    this.component.event('carousel-control-left', 'click', this.previous);
+    this.component.event('carousel-control-right', 'click', this.next);
+    this.component.event(
+      'carousel-navigation',
+      'click',
+      (e: Event) => {
+        const idx = (e.target as HTMLLIElement).dataset.index;
 
-    if (timeoutFn) clearTimeout(CarouselController.timeoutFn);
-
-    CarouselController.timeoutFn = setTimeout(
-      () => CarouselController.go(CarouselController.index + 1),
-      CarouselController.timeout,
+        if (idx) this.go(+idx);
+      },
+      { capture: true },
     );
-  },
-  index: 0,
-  navigation: [],
-  next: () => CarouselController.go(CarouselController.index + 1),
-  previous: () => CarouselController.go(CarouselController.index - 1),
-  slides: {} as HTMLCollection,
-  timeout: 8000,
-  timeoutFn: undefined,
-};
+  }
+}
 
 export type Props = {
   dataset: { controls?: string; navigation?: string; timeout?: string };
@@ -59,25 +70,11 @@ export type Props = {
 
 define('ui-carousel', {
   onConnected: (el) => {
-    CarouselController.slides = el.children;
-    CarouselController.navigation = Array.from(el.shadowRoot?.querySelectorAll('li') ?? []);
-    CarouselController.timeout = el.dataset.timeout !== undefined ? +el.dataset.timeout : 8000;
-    CarouselController.go(0);
+    const ms = +el.dataset.timeout! || 7000;
+    const timeout = ms >= 2500 && ms <= 25000 ? ms : 0;
 
-    el.event('carousel-control-left', 'click', CarouselController.previous);
-    el.event('carousel-control-right', 'click', CarouselController.next);
-    el.event(
-      'carousel-navigation',
-      'click',
-      (e: Event) => {
-        e.stopPropagation();
-
-        const idx = (e.target as HTMLLIElement).dataset.index;
-
-        if (idx) CarouselController.go(+idx);
-      },
-      { capture: true },
-    );
+    el.style.setProperty('--carousel-timeout', String(timeout));
+    new CarouselController(el, timeout);
   },
   styles: [style],
   template: (el) => /*html*/ `
