@@ -129,7 +129,7 @@
   --text-7xl: 4.5rem;
   --text-8xl: 6rem;
   --text-9xl: 8rem;
-  --color-contrast-50: hsl(240deg 4% 93% / 91%);
+  --color-contrast-50: hsl(240deg 4% 93% / 100%);
   --color-contrast-100: hsl(240deg 4% 90% / 91%);
   --color-contrast-200: hsl(240deg 4% 74% / 91%);
   --color-contrast-300: hsl(240deg 4% 57% / 91%);
@@ -171,7 +171,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-contrast-50: hsl(240deg 4% 9% / 91%);
+    --color-contrast-50: hsl(240deg 4% 9% / 100%);
     --color-contrast-100: hsl(240deg 4% 12% / 91%);
     --color-contrast-200: hsl(240deg 4% 15% / 91%);
     --color-contrast-300: hsl(240deg 4% 20% / 91%);
@@ -183,10 +183,3 @@
     --color-contrast-900: hsl(240deg 4% 97% / 91%);
   }
 }
-
-@custom-media --xs (min-width: var(--size-screen-xs));
-@custom-media --sm (min-width: var(--size-screen-sm));
-@custom-media --md (min-width: var(--size-screen-md));
-@custom-media --lg (min-width: var(--size-screen-lg));
-@custom-media --xl (min-width: var(--size-screen-xl));
-@custom-media --xxl (min-width: var(--size-screen-2xl));
