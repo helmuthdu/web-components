@@ -111,11 +111,11 @@
   --line-spacing-2xl: 2rem;
   --line-spacing-3xl: 2.25rem;
   --line-spacing-4xl: 2.5rem;
-  --line-spacing-5xl: 1;
-  --line-spacing-6xl: 1;
-  --line-spacing-7xl: 1;
-  --line-spacing-8xl: 1;
-  --line-spacing-9xl: 1;
+  --line-spacing-5xl: 3.5rem;
+  --line-spacing-6xl: 4rem;
+  --line-spacing-7xl: 5rem;
+  --line-spacing-8xl: 7rem;
+  --line-spacing-9xl: 9rem;
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-md: 1rem;

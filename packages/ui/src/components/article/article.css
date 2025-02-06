@@ -82,11 +82,11 @@
   }
 
   .article-header {
-    margin-top: calc(var(--size-20) * -1);
-    margin-bottom: var(--size-16);
+    margin-top: calc(var(--size-24) * -1);
+    margin-bottom: var(--size-8);
     font-size: var(--text-5xl);
     font-weight: 700;
-    line-height: var(--line-spacing-5xl);
+    line-height: var(--line-spacing-6xl);
   }
 
   .article-content {
