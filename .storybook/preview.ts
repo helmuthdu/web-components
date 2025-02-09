@@ -15,8 +15,8 @@ const preview: Preview = {
         opacity: 0.4
       },
       values: [
-        { name: 'light', value: '#f5f5f5' },
-        { name: 'dark', value: '#333333' }
+        { name: 'light', value: 'hsl(240deg 4% 93% / 100%)' },
+        { name: 'dark', value: 'hsl(240deg 4% 9% / 100%)' }
       ]
     },
     controls: {

@@ -2,10 +2,9 @@ import { create } from '@storybook/theming/create';
 
 export default create({
   // UI
-  appBg: '#171717',
-
-  appBorderColor: '#3f3f46',
-  appContentBg: '#262626',
+  appBg: 'hsl(240deg 4% 12% / 91%)',
+  appBorderColor: 'hsl(240deg 4% 34% / 91%)',
+  appContentBg: 'hsl(240deg 4% 9% / 100%)',
 
   base: 'dark',
   brandImage: undefined,

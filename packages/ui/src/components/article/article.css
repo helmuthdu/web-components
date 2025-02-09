@@ -1,4 +1,7 @@
 .layout {
+  max-width: var(--size-7xl);
+  padding: var(--size-6);
+  margin: auto;
   container-name: layout;
   container-type: inline-size;
 }
@@ -14,11 +17,15 @@
   aspect-ratio: 1/1;
   overflow: hidden;
   background-color: var(--color-canvas);
-  border-radius: var(--rounded-md);
+  border-radius: var(--rounded-lg);
 
   slot[name='image']::slotted(img) {
     height: 100% !important;
     object-fit: cover;
+  }
+
+  slot[name='image']::slotted(img:hover) {
+    transform: scale(1.05);
   }
 }
 
@@ -27,7 +34,7 @@
   margin-block-end: var(--size-3);
   font-size: var(--text-2xl);
   font-weight: var(--font-weight-bold);
-  line-height: var(--line-spacing-2xl);
+  line-height: var(--line-spacing-3xl);
   color: var(--color-content-heading);
 }
 
@@ -64,32 +71,40 @@
   }
 
   .article-image {
-    position: relative;
-    inset: 0;
+    position: absolute;
     flex: unset;
     width: 100%;
     aspect-ratio: 2 / 1;
+    border-radius: var(--rounded-xl) var(--rounded-xl) 0 0;
+    opacity: 0.25;
 
     &::after {
       position: absolute;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 40%;
+      inset: 0;
+      height: var(--size-full);
       content: '';
-      background: linear-gradient(to bottom, transparent 0%, var(--color-canvas) 70%);
+      background: linear-gradient(to bottom, transparent 0%, var(--color-canvas) 91%);
+      backdrop-filter: blur(var(--blur-2xl));
     }
   }
 
   .article-header {
-    margin-top: calc(var(--size-24) * -1);
-    margin-bottom: var(--size-8);
-    font-size: var(--text-5xl);
+    max-width: calc(100% - var(--size-10));
+    margin-bottom: var(--size-14);
+    font-size: var(--text-4xl);
     font-weight: 700;
-    line-height: var(--line-spacing-6xl);
+    line-height: var(--line-spacing-5xl);
+
+    ::slotted(*) {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .article-content {
-    padding-inline: var(--size-8);
+    max-width: calc(100% - var(--size-10));
+    padding: var(--size-8);
   }
 }
