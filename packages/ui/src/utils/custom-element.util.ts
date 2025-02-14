@@ -20,7 +20,7 @@ type WebComponentElement<T extends HTMLElement = HTMLElement> = {
     id: string | HTMLElement | T,
     event: string | HTMLTags,
     callback: EventListener,
-    options?: boolean | AddEventListenerOptions,
+    options?: AddEventListenerOptions,
   ) => void;
   fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
   ref: <T = HTMLElement>(id: string) => T;
@@ -68,7 +68,7 @@ export const component = <T extends HTMLElement = HTMLElement>({
 
     private shadow = this.attachShadow({ mode: 'open' });
 
-    private eventListeners: Array<{ callback: EventListener; element: HTMLElement; event: string }> = [];
+    private controller = new AbortController();
 
     get rootElement() {
       return this.shadow.firstChild as T;
@@ -103,11 +103,7 @@ export const component = <T extends HTMLElement = HTMLElement>({
         onDisconnected(this.self);
       }
 
-      // clean up event listeners to prevent memory leaks
-      this.eventListeners.forEach(({ callback, element, event }) => {
-        element.removeEventListener(event, callback);
-      });
-      this.eventListeners = [];
+      this.controller.abort();
     }
 
     attributeChangedCallback(name: string, prev: string, curr: string) {
@@ -152,13 +148,12 @@ export const component = <T extends HTMLElement = HTMLElement>({
       id: string | HTMLElement | T,
       event: string | HTMLTags,
       callback: EventListener,
-      options?: boolean | AddEventListenerOptions,
+      options?: AddEventListenerOptions,
     ) {
       const el = (isString(id) ? this.ref(`${id}`) : id) as HTMLElement;
 
       if (el) {
-        el.addEventListener(event, callback, options);
-        this.eventListeners.push({ callback, element: el, event });
+        el.addEventListener(event, callback, { ...options, signal: this.controller.signal });
       } else {
         console.warn(`Element with id ${id} not found.`);
       }
