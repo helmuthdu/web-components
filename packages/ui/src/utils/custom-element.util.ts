@@ -1,18 +1,18 @@
 import { raw } from './create-element.util';
 import { configureFormElement } from './form-element.util';
-import { createCSSStyleSheets } from './styling-element.util';
+import { loadCSSStyleSheets } from './styling-element.util';
 import { isFunction, isString } from './type-check.util';
 
 type HTMLTags = keyof HTMLElementEventMap;
 
 type WebComponentOptions<T extends HTMLElement = HTMLElement> = {
   form?: boolean;
-  observedAttributes?: string[];
-  onAttributeChanged?: (name: string, prev: string, curr: string, el: WebComponent<T>) => void;
+  observedAttributes?: readonly string[];
+  onAttributeChanged?: (name: string, prev: string | null, curr: string | null, el: WebComponent<T>) => void;
   onConnected?: (el: WebComponent<T>) => void;
   onDisconnected?: (el: WebComponent<T>) => void;
   styles?: (CSSStyleSheet | string)[];
-  template: ((el: WebComponent<T>) => any) | string;
+  template: ((el: WebComponent<T>) => string) | string;
 };
 
 type WebComponentElement<T extends HTMLElement = HTMLElement> = {
@@ -23,9 +23,9 @@ type WebComponentElement<T extends HTMLElement = HTMLElement> = {
     options?: AddEventListenerOptions,
   ) => void;
   fire: (event: string | HTMLTags, options?: CustomEventInit) => void;
-  ref: <T = HTMLElement>(id: string) => T;
+  ref: <U extends HTMLElement = HTMLElement>(id: string) => U | null;
   render: () => void;
-  rootElement: T;
+  readonly rootElement: T;
   value?: string;
 };
 
@@ -47,7 +47,7 @@ export const component = <T extends HTMLElement = HTMLElement>({
       return observedAttributes;
     }
 
-    private static defineObservedAttributes(attributes: string[], target: any) {
+    private static defineObservedAttributes(attributes: readonly string[], target: any) {
       attributes
         .filter((attr) => !attr.startsWith('data-'))
         .forEach((attr) => {
@@ -66,12 +66,12 @@ export const component = <T extends HTMLElement = HTMLElement>({
       this.defineObservedAttributes(observedAttributes, this);
     }
 
-    private shadow = this.attachShadow({ mode: 'open' });
+    private readonly shadow = this.attachShadow({ mode: 'open' });
 
-    private controller = new AbortController();
+    private readonly controller = new AbortController();
 
-    get rootElement() {
-      return this.shadow.firstChild as T;
+    get rootElement(): T {
+      return this.shadow.firstElementChild as T;
     }
 
     get self() {
@@ -85,7 +85,7 @@ export const component = <T extends HTMLElement = HTMLElement>({
         configureFormElement(this as unknown as HTMLInputElement);
       }
 
-      createCSSStyleSheets(styles).then((sheets) => {
+      loadCSSStyleSheets(styles).then((sheets) => {
         if (sheets) this.shadow.adoptedStyleSheets = sheets;
       });
 
@@ -112,32 +112,34 @@ export const component = <T extends HTMLElement = HTMLElement>({
       }
     }
 
-    render() {
-      const tmpl: string = isFunction(template) ? template(this.self) : template;
-      const newNodes: NodeListOf<ChildNode> = raw(tmpl);
+    render(): void {
+      requestAnimationFrame(() => {
+        const tmpl: string = isFunction(template) ? template(this.self) : template;
+        const newNodes: NodeListOf<ChildNode> = raw(tmpl);
 
-      if (!this.shadow.hasChildNodes()) {
-        this.shadow.append(...newNodes);
+        if (!this.shadow.hasChildNodes()) {
+          this.shadow.append(...newNodes);
 
-        return;
-      }
+          return;
+        }
 
-      const oldNodes = Array.from(this.shadow.childNodes);
+        const oldNodes = Array.from(this.shadow.childNodes);
 
-      oldNodes.forEach((oldNode, index) => {
-        const newNode = newNodes[index];
+        oldNodes.forEach((oldNode, index) => {
+          const newNode = newNodes[index];
 
-        if (!newNode) {
-          this.shadow.removeChild(oldNode);
-        } else if (!oldNode.isEqualNode(newNode)) {
-          oldNode.replaceWith(newNode);
+          if (!newNode) {
+            oldNode.remove();
+          } else if (!oldNode.isEqualNode(newNode)) {
+            oldNode.replaceWith(newNode);
+          }
+        });
+
+        // Append remaining new nodes
+        for (let i = oldNodes.length; i < newNodes.length; i++) {
+          this.shadow.appendChild(newNodes[i]);
         }
       });
-
-      // Append remaining new nodes
-      for (let i = oldNodes.length; i < newNodes.length; i++) {
-        this.shadow.appendChild(newNodes[i]);
-      }
     }
 
     fire(event: string | HTMLTags, options?: CustomEventInit) {
@@ -159,13 +161,15 @@ export const component = <T extends HTMLElement = HTMLElement>({
       }
     }
 
-    ref<T = HTMLElement>(id: string): T {
-      return this.shadowRoot?.getElementById(id) as T;
+    ref<U extends HTMLElement = HTMLElement>(id: string): U | null {
+      return this.shadowRoot?.getElementById(id) as U | null;
     }
   };
 
-export const define = <T extends HTMLElement = HTMLElement>(name: string, options: WebComponentOptions<T>) => {
-  if (!window.customElements.get(name)) window.customElements.define(name, component<T>(options));
+export const define = <T extends HTMLElement = HTMLElement>(name: string, options: WebComponentOptions<T>): void => {
+  if (!customElements.get(name)) {
+    customElements.define(name, component<T>(options));
+  }
 };
 
 export { classMap } from './styling-element.util';

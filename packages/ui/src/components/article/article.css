@@ -1,3 +1,9 @@
+:host {
+  --max-lines: 3;
+
+  width: 100%;
+}
+
 .layout {
   max-width: var(--size-7xl);
   padding: var(--size-6);
@@ -32,9 +38,9 @@
 .article-header {
   position: relative;
   margin-block-end: var(--size-3);
-  font-size: var(--text-2xl);
+  font-size: var(--text-lg);
   font-weight: var(--font-weight-bold);
-  line-height: var(--line-spacing-3xl);
+  line-height: var(--line-spacing-xl);
   color: var(--color-content-heading);
 }
 
@@ -45,17 +51,53 @@
   slot[name='meta']::slotted(*) {
     display: block;
     margin-block: var(--size-3) var(--size-1) !important;
+    font-size: var(--text-sm);
     color: var(--color-content-secondary);
+  }
+
+  slot[name='text']::slotted(*) {
+    position: relative;
+    max-width: calc(100% - var(--size-10));
+    overflow: hidden;
+    font-size: var(--text-md);
+    line-height: var(--line-spacing-md);
+    text-align: justify;
   }
 }
 
 .article-footer {
-  margin-block-start: var(--size-3);
-  color: var(--color-content-tertiary);
+  display: none;
+}
+
+@container layout (max-width: 799px) {
+  .article-content {
+    slot[name='text']::slotted(*) {
+      max-height: calc(var(--line-spacing-md) * var(--max-lines));
+    }
+
+    slot[name='text']::slotted(*)::before {
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline-end: 0;
+      width: var(--text-2xl);
+      height: var(--line-spacing-md);
+      content: '';
+      background: var(--color-canvas);
+    }
+
+    slot[name='text']::slotted(*)::after {
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline-end: 0;
+      content: '…';
+    }
+  }
 }
 
 @container layout (min-width: 400px) {
   .article {
+    --max-lines: 2;
+
     flex-flow: row wrap;
   }
 
@@ -106,5 +148,11 @@
   .article-content {
     max-width: calc(100% - var(--size-10));
     padding: var(--size-8);
+  }
+
+  .article-footer {
+    display: block;
+    margin-block-start: var(--size-3);
+    color: var(--color-content-tertiary);
   }
 }

@@ -14,9 +14,7 @@ export const classMap = (...classes: unknown[]): string =>
     })
     .join(' ');
 
-export const createCSSStyleSheets = async (
-  payload: (string | CSSStyleSheet | { default?: string | CSSStyleSheet })[] = [],
-): Promise<CSSStyleSheet[]> => {
+export const loadCSSStyleSheets = async (payload: (CSSStyleSheet | string)[] = []): Promise<CSSStyleSheet[]> => {
   if (!payload.length) return [];
 
   const styles = await Promise.all(payload);

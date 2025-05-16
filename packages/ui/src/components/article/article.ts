@@ -2,9 +2,7 @@ import { define } from '../../utils/custom-element.util';
 import style from './article.css?raw';
 
 define('ui-article', {
-  onConnected(el) {
-    el.style.setProperty('width', '100%');
-  },
+  onConnected(el) {},
   styles: [style],
   template: () => /* html */ `
     <div class="layout">
@@ -17,7 +15,7 @@ define('ui-article', {
             <slot name="header"></slot>
           </header>
           <slot name="meta"></slot>
-          <slot></slot>
+          <slot name="text"></slot>
           <footer class="article-footer">
             <slot name="footer"></slot>
           </footer>

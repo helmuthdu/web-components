@@ -35,6 +35,8 @@ const getClassName = ({ dataset }: Props) =>
 define<HTMLButtonElement>('ui-button', {
   observedAttributes: ['data-block', 'data-disabled', 'data-loading'],
   onAttributeChanged: (name, prev, curr, el) => {
+    if (!el.rootElement) return;
+
     switch (name) {
       case 'data-block':
         el.rootElement.className = getClassName(el);
