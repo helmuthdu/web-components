@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/html';
+import type { Preview } from '@storybook/html-vite';
 import '../packages/ui/src/styles/styles.css';
 import theme from './theme';
 
@@ -15,8 +15,8 @@ const preview: Preview = {
         opacity: 0.4
       },
       values: [
+        { name: 'dark', value: 'hsl(240deg 4% 9% / 100%)' },
         { name: 'light', value: 'hsl(240deg 4% 93% / 100%)' },
-        { name: 'dark', value: 'hsl(240deg 4% 9% / 100%)' }
       ]
     },
     controls: {

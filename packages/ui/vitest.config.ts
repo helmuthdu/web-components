@@ -8,6 +8,9 @@ export default defineConfig({
       enabled: true,
       headless: true,
       provider: 'playwright',
+      instances: [
+        { browser: 'chromium' },
+      ],
     },
     environment: 'jsdom',
     globals: true,
