@@ -6,7 +6,6 @@ const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
-      default: 'dark',
       grid: {
         cellAmount: 5,
         cellSize: 32,
@@ -14,10 +13,11 @@ const preview: Preview = {
         offsetY: -1,
         opacity: 0.4
       },
-      values: [
-        { name: 'dark', value: 'hsl(240deg 4% 9% / 100%)' },
-        { name: 'light', value: 'hsl(240deg 4% 93% / 100%)' },
-      ]
+
+      options: {
+        dark: { name: 'dark', value: 'hsl(240deg 4% 9% / 100%)' },
+        light: { name: 'light', value: 'hsl(240deg 4% 93% / 100%)' }
+      }
     },
     controls: {
       matchers: {
@@ -27,6 +27,12 @@ const preview: Preview = {
     },
     docs: { theme },
   },
+
+  initialGlobals: {
+    backgrounds: {
+      value: 'dark'
+    }
+  }
 };
 
 export default preview;
