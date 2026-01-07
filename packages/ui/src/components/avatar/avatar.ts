@@ -1,21 +1,13 @@
 import { classMap, define } from '../../utils/custom-element.util';
 import style from './avatar.css?raw';
 
-export type Props = {
-  dataset: {
-    variant?: 'circle' | 'rounded';
-  };
-};
-
-const getClassName = ({ dataset }: Props) =>
-  classMap('avatar', {
-    [`is-${dataset.variant}`]: dataset.variant,
-  });
-
 define('ui-avatar', {
+  observedAttributes: ['variant'],
   styles: [style],
-  template: (el) => /* html */ `
-    <div class="${getClassName(el)}">
+  template: (el: any) => /* html */ `
+    <div class="${classMap('avatar', {
+      [`is-${el.variant}`]: el.variant,
+    })}">
       <slot></slot>
     </div>
   `,

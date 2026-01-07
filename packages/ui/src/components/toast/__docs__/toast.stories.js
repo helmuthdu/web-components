@@ -26,7 +26,7 @@ export const Playground = {
         },
         type: 'select',
       },
-      name: 'data-color',
+      name: 'color',
       options: [undefined, 'info', 'error', 'success', 'contrast'],
       type: {
         name: 'string',
@@ -38,7 +38,22 @@ export const Playground = {
   name: 'Playground',
 
   render: ({ slot, ...props }) => /*html*/ `
-    <ui-toast ${props.color ? `data-color="${props.color}"` : ''} data-fixed>
+    <ui-toast ${props.color ? `color="${props.color}"` : ''} important>
+      ${slot}
+    </ui-toast>
+  `,
+};
+
+export const Important = {
+  args: {
+    color: 'error',
+    slot: /*html*/ `<header slot="header">Emergency Notification</header>This toast will not close automatically and will shake to grab your attention. It stops shaking when you hover over it.`,
+  },
+
+  name: 'Important',
+
+  render: ({ slot, ...props }) => /*html*/ `
+    <ui-toast color="${props.color}" important>
       ${slot}
     </ui-toast>
   `,
@@ -48,7 +63,7 @@ export const Examples = {
   name: 'Examples',
 
   render: () => /*html*/ `
-      <ui-toast data-fixed>
+      <ui-toast important>
         <i slot="icon">
           <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -63,7 +78,7 @@ export const Examples = {
         <span slot="meta">10 minutes ago</span>
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
-      <ui-toast data-color="contrast" data-fixed>
+      <ui-toast color="contrast" important>
         <i slot="icon">
           <svg style="width: 1.5rem; height: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -77,7 +92,7 @@ export const Examples = {
         <header slot="header">My Notification</header>
         Excepteur est ullamco do sit culpa laboris.
       </ui-toast>
-      <ui-toast data-fixed data-color="info">
+      <ui-toast important color="info">
         <i slot="icon">
           <svg style="width: 2rem; height: 2rem; flex: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -90,7 +105,7 @@ export const Examples = {
         </i>
         ${truncate('Ut minim voluptate ea laboris velit duis exercitation sit minim ex magna commodo id.', 78)}
       </ui-toast>
-      <ui-toast data-fixed data-color="success">
+      <ui-toast important color="success">
         <i slot="icon">
           <svg style="width: 2rem; height: 2rem; flex: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -103,7 +118,7 @@ export const Examples = {
         </i>
         Consectetur mollit exercitation duis consectetur pariatur cupidatat consequat.
       </ui-toast>
-      <ui-toast data-fixed data-color="error">
+      <ui-toast important color="error">
         <i slot="icon">
           <svg style="width: 2rem; height: 2rem; flex: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path

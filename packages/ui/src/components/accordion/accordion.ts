@@ -1,39 +1,24 @@
 import { classMap, define } from '../../utils/custom-element.util';
 import style from './accordion.css?raw';
 
-export type Props = {
-  dataset: {
-    variant?: UIVariant;
-  };
+type AccordionProps = {
+  variant: UIVariant;
 };
 
-const getClassName = ({ dataset }: Props) =>
-  classMap('accordion', {
-    [`is-${dataset.variant}`]: dataset.variant,
-  });
-
-const updateChildren = (children: HTMLCollection, { dataset }: Props) => {
-  for (const el of children) {
-    el.setAttribute('data-variant', dataset.variant!);
-  }
-};
-
-define('ui-accordion', {
-  observedAttributes: ['data-variant'],
-  onAttributeChanged(name, _prev, _curr, el) {
-    switch (name) {
-      case 'data-variant':
-        el.rootElement.className = getClassName(el);
-        updateChildren(el.children, el);
-        break;
+define<HTMLElement, AccordionProps>('ui-accordion', {
+  observedAttributes: ['variant'],
+  onUpdated(el) {
+    for (const child of el.children) {
+      if (el.variant) {
+        child.setAttribute('variant', el.variant);
+      } else {
+        child.removeAttribute('variant');
+      }
     }
-  },
-  onConnected(el) {
-    updateChildren(el.children, el);
   },
   styles: [style],
   template: (el) => /* html */ `
-    <div class="${getClassName(el)}">
+    <div class="${classMap('accordion', { [`is-${el.variant}`]: el.variant })}">
       <slot></slot>
     </div>
   `,

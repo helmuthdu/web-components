@@ -2,7 +2,6 @@ import { define } from '../../utils/custom-element.util';
 import style from './article.css?raw';
 
 define('ui-article', {
-  onConnected(el) {},
   styles: [style],
   template: () => /* html */ `
     <div class="layout">

@@ -1,28 +1,24 @@
 import { classMap, define } from '../../utils/custom-element.util';
 import style from './carousel-image.css?raw';
 
-export type Props = {
-  dataset: {
-    src?: string;
-    textAlign?: 'left' | 'center' | 'right';
-    textPosition?: 'top' | 'middle' | 'bottom';
-  };
+type CarouselImageProps = {
+  src?: string;
+  textAlign?: 'left' | 'center' | 'right';
+  textPosition?: 'top' | 'middle' | 'bottom';
 };
 
-const getClassName = ({ dataset }: Props) =>
-  classMap('carousel-text', {
-    [`is-${dataset.textAlign}`]: dataset.textAlign,
-    [`is-${dataset.textPosition}`]: dataset.textPosition,
-  });
-
-define('ui-carousel-image', {
+define<HTMLElement, CarouselImageProps>('ui-carousel-image', {
+  observedAttributes: ['src', 'text-align', 'text-position'],
   onConnected: (el) => {
     el.classList.add('carousel-image');
   },
   styles: [style],
   template: (el) => /*html*/ `
-    <img class="carousel-img" alt="" src="${el.dataset.src}" />
-    <div class="${getClassName(el)}">
+    <img class="carousel-img" alt="" src="${el.src}" />
+    <div class="${classMap('carousel-text', {
+      [`is-${el.textAlign}`]: el.textAlign,
+      [`is-${el.textPosition}`]: el.textPosition,
+    })}">
       <slot></slot>
     </div>
   `,

@@ -23,21 +23,19 @@ type ElementDraft<T extends Markup> = {
 const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
   if (element instanceof DocumentFragment) return;
 
-  if (attr === 'className') {
-    (element as HTMLElement).className = value;
-  } else if (isFunction(value)) {
-    if (/^(on[a-z]+)$/i.test(attr)) {
-      (element as any)[attr.toLowerCase()] = value;
-    }
+  const target = element as any;
+
+  if (attr === 'className' || attr === 'class') {
+    element.setAttribute('class', isArray(value) ? value.join(' ') : String(value));
+  } else if (isFunction(value) && /^on[a-z]+/i.test(attr)) {
+    target[attr.toLowerCase()] = value;
   } else if (isBoolean(value)) {
     if (value) element.setAttribute(attr, '');
     else element.removeAttribute(attr);
-  } else if (isObject(value)) {
-    if ((element as any)[attr]) {
-      Object.assign((element as any)[attr], value);
-    }
-  } else {
-    element.setAttribute(attr, value);
+  } else if (isObject(value) && target[attr]) {
+    Object.assign(target[attr], value);
+  } else if (!isNil(value)) {
+    element.setAttribute(attr, String(value));
   }
 };
 
@@ -75,12 +73,19 @@ export const fragment = (...children: any[]) => composeElement({ children, props
 export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
   composeElement<T>({ children, props, tag });
 
+const templateElement = typeof document !== 'undefined' ? document.createElement('template') : null;
+
 export const raw = (string: string) => {
-  const doc = new DOMParser().parseFromString(string, 'text/html');
+  if (!templateElement) return [] as unknown as NodeListOf<ChildNode>;
 
-  doc.querySelectorAll('script').forEach((script) => script.remove()); // Remove script elements
+  templateElement.innerHTML = string;
 
-  return doc.body.childNodes;
+  // Remove script elements for security
+  if (string.includes('<script')) {
+    templateElement.content.querySelectorAll('script').forEach((script) => script.remove());
+  }
+
+  return templateElement.content.childNodes;
 };
 
 declare global {
@@ -89,4 +94,6 @@ declare global {
   }
 }
 
-window.parseHTML = raw;
+if (typeof window !== 'undefined') {
+  window.parseHTML = raw;
+}

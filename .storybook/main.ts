@@ -1,4 +1,4 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
+// Storybook has automatically migrated this file to valid ESM format.
 import { createRequire } from "node:module";
 import type { StorybookConfig } from '@storybook/html-vite';
 
@@ -17,7 +17,8 @@ const config: StorybookConfig = {
   stories: ['../packages/**/__docs__/**/*.mdx', '../packages/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     getAbsolutePath('@chromatic-com/storybook'),
-    getAbsolutePath("@storybook/addon-docs")
+    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook/addon-vitest")
   ],
   framework: {
     name: getAbsolutePath('@storybook/html-vite'),

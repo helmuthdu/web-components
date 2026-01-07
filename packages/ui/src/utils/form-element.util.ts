@@ -4,7 +4,14 @@
  *
  * @param target - The target form-associated element.
  */
-export const configureFormElement = (target: HTMLInputElement & { error?: string; value?: string }) => {
+export const configureFormElement = (
+  target: HTMLElement & {
+    checked?: boolean;
+    error?: string;
+    setCustomValidity?: (message: string) => void;
+    value?: any;
+  },
+) => {
   if (!target.attachInternals) {
     console.warn('attachInternals is not supported in this environment.');
 
@@ -13,23 +20,32 @@ export const configureFormElement = (target: HTMLInputElement & { error?: string
 
   const internals = target.attachInternals();
 
-  // Define "value" property with form association
+  // Define "value" property for form interaction
+  const originalValue = Object.getOwnPropertyDescriptor(target, 'value');
+
   Object.defineProperty(target, 'value', {
-    get() {
-      return target.getAttribute('value') || '';
-    },
-    set(value: string) {
-      target.setAttribute('value', value);
-      internals.setFormValue(value);
+    configurable: true,
+    get: originalValue?.get || (() => target.getAttribute('value') || ''),
+    set: (value: any) => {
+      const strValue = value === null || value === undefined ? '' : String(value);
+
+      if (originalValue?.set) {
+        originalValue.set.call(target, strValue);
+      } else {
+        target.setAttribute('value', strValue);
+      }
+
+      internals.setFormValue(strValue);
     },
   });
 
   // Define "error" property for validation feedback
-  Object.defineProperty(target, 'error', {
-    get() {
-      return internals.validationMessage;
-    },
-  });
+  if (!Object.getOwnPropertyDescriptor(target, 'error')) {
+    Object.defineProperty(target, 'error', {
+      configurable: true,
+      get: () => internals.validationMessage,
+    });
+  }
 
   /**
    * allows setting a custom validation message.
@@ -42,27 +58,34 @@ export const configureFormElement = (target: HTMLInputElement & { error?: string
 
   // ensure value updates trigger validation
   target.addEventListener('input', () => {
-    if (target.hasAttribute('required') && !target.value) {
-      target.setCustomValidity('This field is required.');
+    if (target.hasAttribute('required') && !(target as any).value) {
+      target.setCustomValidity?.('This field is required.');
     } else {
-      target.setCustomValidity('');
+      target.setCustomValidity?.('');
     }
   });
 
-  // support for checkboxes and radio buttons
-  if (target instanceof HTMLInputElement && (target.type === 'checkbox' || target.type === 'radio')) {
+  // support for checkboxes and radio buttons based on role or type
+  const type = target.getAttribute('type');
+  const role = target.getAttribute('role');
+  const isCheckable = type === 'checkbox' || type === 'radio' || role === 'checkbox' || role === 'radio';
+
+  if (isCheckable) {
+    const originalChecked = Object.getOwnPropertyDescriptor(target, 'checked');
+
     Object.defineProperty(target, 'checked', {
-      get() {
-        return target.hasAttribute('checked');
-      },
-      set(value: boolean) {
-        if (value) {
+      configurable: true,
+      get: originalChecked?.get || (() => target.hasAttribute('checked')),
+      set: (value: boolean) => {
+        if (originalChecked?.set) {
+          originalChecked.set.call(target, value);
+        } else if (value) {
           target.setAttribute('checked', '');
         } else {
           target.removeAttribute('checked');
         }
 
-        internals.setFormValue(value ? target.value || 'on' : '');
+        internals.setFormValue(value ? (target as any).value || 'on' : '');
       },
     });
   }

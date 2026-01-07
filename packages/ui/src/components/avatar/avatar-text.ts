@@ -1,31 +1,18 @@
 import { define } from '../../utils/custom-element.util';
 import style from './avatar-text.css?raw';
 
-export type Props = {
-  dataset: {
-    hue?: string;
-    lightness?: string;
-    saturation?: string;
-    size?: string;
-  };
+export type AvatarTextProps = {
+  hue?: string;
+  lightness?: string;
+  saturation?: string;
+  size?: string;
 };
 
-define('ui-avatar-text', {
-  observedAttributes: ['data-hue', 'data-lightness', 'data-saturation', 'data-size'],
+define<HTMLElement, AvatarTextProps>('ui-avatar-text', {
+  observedAttributes: ['hue', 'lightness', 'saturation', 'size'],
   onAttributeChanged(name, _prev, curr, el) {
-    switch (name) {
-      case 'data-hue':
-        el.style.setProperty('--avatar-hue', curr);
-        break;
-      case 'data-lightness':
-        el.style.setProperty('--avatar-lightness', curr);
-        break;
-      case 'data-saturation':
-        el.style.setProperty('--avatar-saturation', curr);
-        break;
-      case 'data-size':
-        el.style.setProperty('--avatar-size', curr);
-        break;
+    if (curr !== null) {
+      el.style.setProperty(`--avatar-${name}`, curr);
     }
   },
   styles: [style],

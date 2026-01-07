@@ -89,9 +89,9 @@
 
   &.is-selected {
     &::after {
-      display: block;
-      width: var(--size-8);
-      height: var(--size-1-5);
+      position: absolute;
+      inset: 0;
+      display: var(--carousel-display, block);
       content: '';
       background-color: rgb(255 255 255);
       transform: translateX(-100%);

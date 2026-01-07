@@ -1,12 +1,10 @@
 import { define } from '../../utils/custom-element.util';
 import style from './accordion-item.css?raw';
 
-export type Props = {
-  dataset: { header: string };
-};
+export type AccordionItemProps = { header: string };
 
-define<HTMLDetailsElement>('ui-accordion-item', {
-  observedAttributes: ['data-header'],
+define<HTMLDetailsElement, AccordionItemProps>('ui-accordion-item', {
+  observedAttributes: ['header'],
   styles: [style],
   template: () => /*html*/ `
     <details class="accordion-item">

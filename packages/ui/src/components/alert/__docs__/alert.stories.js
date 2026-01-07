@@ -24,7 +24,7 @@ export const Playground = {
         },
         type: 'select',
       },
-      name: 'data-color',
+      name: 'color',
       options: [undefined, 'info', 'error', 'success', 'contrast'],
       type: {
         name: 'string',
@@ -36,7 +36,7 @@ export const Playground = {
   name: 'Playground',
 
   render: ({ slot, ...props }) => /*html*/ `
-    <ui-alert ${props.color ? `data-color="${props.color}"` : ''} >
+    <ui-alert ${props.color ? `color="${props.color}"` : ''} >
       ${slot}
     </ui-alert>
   `,
@@ -50,23 +50,23 @@ export const Examples = {
       <span class="font-medium">Default alert!</span>
       Change a few things up and try submitting again.
     </ui-alert>
-    <ui-alert data-color="info">
+    <ui-alert color="info">
       <span class="font-medium">Info alert!</span>
       Change a few things up and try submitting again.
     </ui-alert>
-    <ui-alert data-color="warning">
+    <ui-alert color="warning">
       <span class="font-medium">Danger alert!</span>
       Change a few things up and try submitting again.
     </ui-alert>
-    <ui-alert data-color="error">
+    <ui-alert color="error">
       <span class="font-medium">Danger alert!</span>
       Change a few things up and try submitting again.
     </ui-alert>
-    <ui-alert data-color="success">
+    <ui-alert color="success">
       <span class="font-medium">Success alert!</span>
       Change a few things up and try submitting again.
     </ui-alert>
-    <ui-alert data-color="contrast">
+    <ui-alert color="contrast">
       <span class="font-medium">Warning alert!</span>
       Change a few things up and try submitting again.
     </ui-alert>`,

@@ -3,8 +3,8 @@ import styles from './close-button.css?raw';
 
 define<HTMLButtonElement>('ui-close-button', {
   styles: [styles],
-  template: (ctx) => /*html*/ `
-    <button type="button" class="close-button" aria-label="close">
+  template: () => /*html*/ `
+    <button class="close-button" type="button" aria-label="close">
       <span>close</span>
       <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path

@@ -10,8 +10,8 @@
   border: var(--border) solid var(--color-contrast-200);
 }
 
-::slotted([data-variant='primary']:not(:last-child)),
-::slotted([data-variant='tertiary']:not(:last-child)) {
+::slotted([variant='primary']:not(:last-child)),
+::slotted([variant='tertiary']:not(:last-child)) {
   display: block;
   border-block-end: var(--border) solid var(--color-contrast-200);
 }
@@ -23,7 +23,7 @@
   background-color: transparent;
 }
 
-::slotted([data-variant='secondary']) {
+::slotted([variant='secondary']) {
   display: block;
   margin-block-end: var(--size-2);
   background-color: var(--color-canvas);

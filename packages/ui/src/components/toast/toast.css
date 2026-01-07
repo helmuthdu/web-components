@@ -10,6 +10,16 @@
   box-shadow: var(--shadow-lg);
   animation: bounce-in-left 0.7s ease-in;
 
+  &.is-important {
+    animation:
+      bounce-in-left 0.7s ease-in,
+      shake 3s linear infinite 7s;
+
+    &:hover {
+      animation-play-state: running, paused;
+    }
+  }
+
   &.is-hidden {
     animation: bounce-out-left 0.7s ease-in;
   }
@@ -146,5 +156,28 @@
   100% {
     opacity: 0;
     transform: translate3d(200%, 0, 0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  20%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  2%,
+  6%,
+  10%,
+  14%,
+  18% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  4%,
+  8%,
+  12%,
+  16% {
+    transform: translate3d(4px, 0, 0);
   }
 }

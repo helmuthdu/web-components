@@ -1,35 +1,60 @@
-import { isObject, isString } from './type-check.util';
+import { isArray, isObject, isString } from './type-check.util';
 
-export const classMap = (...classes: unknown[]): string =>
-  classes
-    .flatMap((arg) => {
-      if (isString(arg)) return arg;
+export const classMap = (...classes: unknown[]): string => {
+  const result = new Set<string>();
 
-      if (isObject(arg))
-        return Object.entries(arg)
-          .filter(([_, valid]) => valid)
-          .map(([key]) => key);
+  const process = (arg: unknown) => {
+    if (isString(arg)) {
+      arg
+        .split(/\s+/)
+        .filter(Boolean)
+        .forEach((c) => result.add(c));
+    } else if (isArray(arg)) {
+      arg.forEach(process);
+    } else if (isObject(arg)) {
+      Object.entries(arg as Record<string, any>).forEach(([key, value]) => {
+        if (value) {
+          key
+            .split(/\s+/)
+            .filter(Boolean)
+            .forEach((c) => result.add(c));
+        }
+      });
+    }
+  };
 
-      return [];
-    })
-    .join(' ');
+  classes.forEach(process);
+
+  return Array.from(result).join(' ');
+};
+
+const styleCache = new Map<string, CSSStyleSheet>();
 
 export const loadCSSStyleSheets = async (payload: (CSSStyleSheet | string)[] = []): Promise<CSSStyleSheet[]> => {
-  if (!payload.length) return [];
+  if (!payload?.length) return [];
 
   const styles = await Promise.all(payload);
 
   return Promise.all(
-    styles.map((style) => {
+    styles.map(async (style) => {
       const sheet = (style as any).default ?? style;
 
+      if (sheet instanceof CSSStyleSheet) return sheet;
+
       if (isString(sheet)) {
-        return new CSSStyleSheet().replace(sheet);
-      } else if (sheet instanceof CSSStyleSheet) {
-        return Promise.resolve(sheet);
+        if (styleCache.has(sheet)) {
+          return styleCache.get(sheet)!;
+        }
+
+        const cssSheet = new CSSStyleSheet();
+
+        await cssSheet.replace(sheet);
+        styleCache.set(sheet, cssSheet);
+
+        return cssSheet;
       }
 
-      return Promise.reject(new Error('Invalid CSS in styles'));
+      throw new Error('Invalid CSS in styles');
     }),
   );
 };

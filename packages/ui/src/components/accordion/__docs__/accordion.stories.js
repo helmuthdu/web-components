@@ -33,7 +33,7 @@ export const Playground = {
         width: var(--size-96);
       }
     </style>
-    <ui-accordion class="wrapper" data-variant="${variant}">
+    <ui-accordion class="wrapper" variant="${variant}">
       <ui-accordion-item>
         <h2 slot="header">1 item</h2>
         <p>Laborum elit sint velit nulla aliqua sint anim id et adipisicing dolore.</p>

@@ -3,7 +3,7 @@ import { dom, ElementProps, Markup } from './create-element.util';
 const createDomElement =
   <T extends Markup>(tag: T) =>
   (props: ElementProps<T>, ...children: any[]) =>
-    dom<T>(tag, props, children);
+    dom<T>(tag, props, ...children);
 
 export const a = createDomElement('a');
 export const abbr = createDomElement('abbr');

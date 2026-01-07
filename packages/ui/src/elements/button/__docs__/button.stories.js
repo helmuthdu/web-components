@@ -21,7 +21,7 @@ export const Playground = {
 
   argTypes: {
     block: {
-      name: 'data-block',
+      name: 'block',
       table: {
         category: 'props',
       },
@@ -31,7 +31,7 @@ export const Playground = {
     },
 
     circle: {
-      name: 'data-circle',
+      name: 'circle',
       table: {
         category: 'props',
       },
@@ -44,7 +44,7 @@ export const Playground = {
       control: {
         type: 'select',
       },
-      name: 'data-color',
+      name: 'color',
       options: ['default', 'primary', 'error', 'success'],
       table: {
         category: 'props',
@@ -52,7 +52,7 @@ export const Playground = {
     },
 
     disabled: {
-      name: 'data-disabled',
+      name: 'disabled',
       table: {
         category: 'props',
       },
@@ -62,7 +62,7 @@ export const Playground = {
     },
 
     loading: {
-      name: 'data-loading',
+      name: 'loading',
       table: {
         category: 'props',
       },
@@ -72,7 +72,7 @@ export const Playground = {
     },
 
     rounded: {
-      name: 'data-rounded',
+      name: 'rounded',
       table: {
         category: 'props',
       },
@@ -85,7 +85,7 @@ export const Playground = {
       control: {
         type: 'select',
       },
-      name: 'data-size',
+      name: 'size',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       table: {
         category: 'props',
@@ -114,7 +114,7 @@ export const Playground = {
         },
         type: 'select',
       },
-      name: 'data-variant',
+      name: 'variant',
       options: [undefined, 'outline', 'text'],
       table: {
         category: 'props',
@@ -129,14 +129,14 @@ export const Playground = {
 
   render: ({ slot, ...props }) => /*html*/ `
     <ui-button
-      ${props.color ? `data-color="${props.color}"` : ''}
-      ${props.size ? `data-size="${props.size}"` : ''}
-      ${props.variant ? `data-variant="${props.variant}"` : ''}
-      ${props.disabled ? 'data-disabled' : ''}
-      ${props.loading ? 'data-loading' : ''}
-      ${props.circle ? 'data-circle' : ''}
-      ${props.rounded ? 'data-rounded' : ''}
-      ${props.block ? 'data-block' : ''}>
+      ${props.color ? `color="${props.color}"` : ''}
+      ${props.size ? `size="${props.size}"` : ''}
+      ${props.variant ? `variant="${props.variant}"` : ''}
+      ${props.disabled ? 'disabled' : ''}
+      ${props.loading ? 'loading' : ''}
+      ${props.circle ? 'circle' : ''}
+      ${props.rounded ? 'rounded' : ''}
+      ${props.block ? 'block' : ''}>
         ${slot}
     </ui-button>
   `,
@@ -147,8 +147,8 @@ export const Variants = {
 
   render: () => /*html*/ `
     <ui-button>Get Started</ui-button>
-    <ui-button data-variant="outline">Get Started</ui-button>
-    <ui-button data-variant="text">Get Started</ui-button>`,
+    <ui-button variant="outline">Get Started</ui-button>
+    <ui-button variant="text">Get Started</ui-button>`,
 };
 
 export const Colors = {
@@ -156,41 +156,41 @@ export const Colors = {
 
   render: () => /*html*/ `
     <ui-button>Get Started</ui-button>
-    <ui-button data-color="primary">Get Started</ui-button>
-    <ui-button data-color="error">Get Started</ui-button>
-    <ui-button data-color="success">Get Started</ui-button>`,
+    <ui-button color="primary">Get Started</ui-button>
+    <ui-button color="error">Get Started</ui-button>
+    <ui-button color="success">Get Started</ui-button>`,
 };
 
 export const Size = {
   name: 'Size',
 
   render: () => /*html*/ `
-    <ui-button data-size="xs">Get Started</ui-button>
-    <ui-button data-size="sm">Get Started</ui-button>
-    <ui-button data-size="md">Get Started</ui-button>
-    <ui-button data-size="lg">Get Started</ui-button>
-    <ui-button data-size="xl">Get Started</ui-button>`,
+    <ui-button size="xs">Get Started</ui-button>
+    <ui-button size="sm">Get Started</ui-button>
+    <ui-button size="md">Get Started</ui-button>
+    <ui-button size="lg">Get Started</ui-button>
+    <ui-button size="xl">Get Started</ui-button>`,
 };
 
 export const Disabled = {
   name: 'Disabled',
 
   render: () => /*html*/ `
-    <ui-button data-disabled>Get Started</ui-button>`,
+    <ui-button disabled>Get Started</ui-button>`,
 };
 
 export const Loading = {
   name: 'Loading',
 
   render: () => /*html*/ `
-    <ui-button data-loading>Get Started</ui-button>`,
+    <ui-button loading>Get Started</ui-button>`,
 };
 
 export const Circle = {
   name: 'Circle',
 
   render: () => /*html*/ `
-    <ui-button data-circle data-variant="outline">
+    <ui-button circle variant="outline">
       <svg style="height: 1.5rem; width: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
     </ui-button>`,
 };
@@ -201,6 +201,6 @@ export const Group = {
   render: () => /*html*/ `
     <ui-button-group>
       <ui-button>Get Started</ui-button>
-      <ui-button data-variant="outline">Get Started</ui-button>
+      <ui-button variant="outline">Get Started</ui-button>
     </ui-button-group>`,
 };

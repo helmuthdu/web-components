@@ -26,7 +26,7 @@ export const Playground = {
   name: 'Playground',
 
   render: ({ slot, ...props }) => /*html*/ `
-    <ui-article ${props.color ? `data-color="${props.color}"` : ''} >
+    <ui-article ${props.color ? `color="${props.color}"` : ''} >
       ${slot}
     </ui-article>
   `,

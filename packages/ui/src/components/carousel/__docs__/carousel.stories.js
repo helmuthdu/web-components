@@ -17,14 +17,14 @@ export const Playground = {
 
   argTypes: {
     controls: {
-      name: 'data-controls',
+      name: 'controls',
       type: {
         name: 'boolean',
       },
     },
 
     navigation: {
-      name: 'data-navigation',
+      name: 'navigation',
       type: {
         name: 'boolean',
       },
@@ -34,7 +34,7 @@ export const Playground = {
       control: {
         type: 'select',
       },
-      name: 'data-text-align',
+      name: 'text-align',
       options: ['left', 'center', 'right'],
       type: {
         name: 'string',
@@ -45,7 +45,7 @@ export const Playground = {
       control: {
         type: 'select',
       },
-      name: 'data-text-position',
+      name: 'text-position',
       options: ['top', 'middle', 'bottom'],
       type: {
         name: 'string',
@@ -53,7 +53,7 @@ export const Playground = {
     },
 
     timeout: {
-      name: 'data-timeout',
+      name: 'timeout',
       type: {
         name: 'number',
       },
@@ -76,42 +76,42 @@ export const Playground = {
       }
     </style>
     <ui-carousel
-      ${props.navigation ? 'data-navigation' : ''}
-      ${props.controls ? 'data-controls' : ''}
-      ${props.timeout ? `data-timeout="${props.timeout}"` : ''}>
-      <ui-carousel-image data-src="https://picsum.photos/id/400/800/300"
-        ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-        ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+      ${props.navigation ? 'navigation' : ''}
+      ${props.controls ? 'controls' : ''}
+      ${props.timeout ? `timeout="${props.timeout}"` : ''}>
+      <ui-carousel-image src="https://picsum.photos/id/400/800/300"
+        ${props.textAlign ? `text-align="${props.textAlign}"` : ''}
+        ${props.textPosition ? `text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
-      <ui-carousel-image data-src="https://picsum.photos/id/402/800/300"
-          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+      <ui-carousel-image src="https://picsum.photos/id/402/800/300"
+          ${props.textAlign ? `text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
-      <ui-carousel-image data-src="https://picsum.photos/id/403/800/300"
-          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+      <ui-carousel-image src="https://picsum.photos/id/403/800/300"
+          ${props.textAlign ? `text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
-      <ui-carousel-image data-src="https://picsum.photos/id/404/800/300"
-          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+      <ui-carousel-image src="https://picsum.photos/id/404/800/300"
+          ${props.textAlign ? `text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
-      <ui-carousel-image data-src="https://picsum.photos/id/405/800/300"
-          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+      <ui-carousel-image src="https://picsum.photos/id/405/800/300"
+          ${props.textAlign ? `text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>
-      <ui-carousel-image data-src="https://picsum.photos/id/406/800/300"
-          ${props.textAlign ? `data-text-align="${props.textAlign}"` : ''}
-          ${props.textPosition ? `data-text-position="${props.textPosition}"` : ''}>
+      <ui-carousel-image src="https://picsum.photos/id/406/800/300"
+          ${props.textAlign ? `text-align="${props.textAlign}"` : ''}
+          ${props.textPosition ? `text-position="${props.textPosition}"` : ''}>
         <h2 class="title">Campaign title</h2>
         <p class="subtitle">Some representative placeholder content for the first slide</p>
       </ui-carousel-image>

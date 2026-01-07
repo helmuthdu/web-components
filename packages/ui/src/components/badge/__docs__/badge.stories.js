@@ -22,18 +22,19 @@ export const Playground = {
           info: 'info',
           success: 'success',
           [undefined]: 'default',
+          warning: 'warning',
         },
         type: 'select',
       },
-      name: 'data-color',
-      options: [undefined, 'info', 'error', 'success', 'contrast'],
+      name: 'color',
+      options: [undefined, 'info', 'error', 'warning', 'success', 'contrast'],
       type: {
         name: 'string',
         required: true,
       },
     },
     pill: {
-      name: 'data-pill',
+      name: 'pill',
       type: {
         name: 'boolean',
       },
@@ -42,8 +43,8 @@ export const Playground = {
       control: {
         type: 'select',
       },
-      name: 'data-size',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      name: 'size',
+      options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl'],
       type: {
         name: 'string',
       },
@@ -60,9 +61,9 @@ export const Playground = {
 
   render: ({ slot, ...props }) => /*html*/ `
     <ui-badge
-      data-size="${props.size}"
-      ${props.color ? `data-color="${props.color}"` : ''}
-      ${props.pill ? 'data-pill' : ''}>
+      size="${props.size}"
+      ${props.color ? `color="${props.color}"` : ''}
+      ${props.pill ? 'pill' : ''}>
         ${slot}
     </ui-badge>
   `,
@@ -71,9 +72,9 @@ export const Playground = {
 export const Examples = {
   render: () => /*html*/ `
     <ui-badge>default</ui-badge>
-    <ui-badge data-color="contrast">contrast</ui-badge>
-    <ui-badge data-color="info">info</ui-badge>
-    <ui-badge data-color="error">error</ui-badge>
-    <ui-badge data-color="success">success</ui-badge>
+    <ui-badge color="contrast">contrast</ui-badge>
+    <ui-badge color="info">info</ui-badge>
+    <ui-badge color="error">error</ui-badge>
+    <ui-badge color="success">success</ui-badge>
   `,
 };
