@@ -18,6 +18,8 @@ const getContainer = () => {
   if (!container) {
     container = document.createElement('div');
     container.id = 'toasts';
+    container.setAttribute('role', 'log');
+    container.setAttribute('aria-live', 'polite');
     Object.assign(container.style, {
       display: 'flex',
       flexDirection: 'column-reverse',
@@ -75,7 +77,10 @@ define<HTMLElement, ToastProps, ToastState>('ui-toast', {
       <div id="toast" class="${classMap('toast', {
         'is-hidden': el.state.hidden,
         'is-important': !!el.important && !el.state.hidden,
-      })}">
+      })}"
+      role="${el.important ? 'alert' : 'status'}"
+      aria-live="${el.important ? 'assertive' : 'polite'}"
+      >
         ${
           hasHeader
             ? /*html*/ `

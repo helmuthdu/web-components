@@ -7,8 +7,8 @@ define<HTMLElement, CardProps>('ui-card', {
   observedAttributes: ['horizontal'],
   styles: [style],
   template: (el: any) => /* html */ `
-    <div class="${classMap('card', { 'is-horizontal': !!el.horizontal })}">
+    <article class="${classMap('card', { 'is-horizontal': !!el.horizontal })}">
       <slot></slot>
-    </div>
+    </article>
   `,
 });

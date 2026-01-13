@@ -260,11 +260,11 @@ class UiLoading extends HTMLElement {
           to { left: -50px; }
         }
       </style>
-      <div class="dino-game">
-        <div class="cloud">
+      <div class="dino-game" role="img" aria-label="Loading...">
+        <div class="cloud" aria-hidden="true">
           ${UiLoading.SVGS.cloud}
         </div>
-        <div class="ground">
+        <div class="ground" aria-hidden="true">
           <div class="horizon">
             ${UiLoading.SVGS.horizon}
           </div>

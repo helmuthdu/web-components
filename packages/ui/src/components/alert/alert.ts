@@ -16,9 +16,12 @@ define<HTMLElement, AlertProps>('ui-alert', {
   },
   styles: [style],
   template: (el) => /* html */ `
-    <div class="${classMap('alert', {
-      [`is-${el.color}`]: el.color,
-    })}">
+    <div
+      class="${classMap('alert', {
+        [`is-${el.color}`]: el.color,
+      })}"
+      role="alert"
+    >
       <span>
         <slot></slot>
       </span>
