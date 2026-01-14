@@ -7,6 +7,8 @@ import './avatar/avatar-group';
 import './avatar/avatar-image';
 import './avatar/avatar-text';
 import './badge/badge';
+import './breadcrumb/breadcrumb';
+import './breadcrumb/breadcrumbs';
 import './card/card';
 import './card/card-body';
 import './card/card-footer';

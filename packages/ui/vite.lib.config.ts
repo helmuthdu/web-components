@@ -15,6 +15,8 @@ export default defineConfig({
         './src/components/avatar/avatar-image.ts',
         './src/components/avatar/avatar-text.ts',
         './src/components/badge/badge.ts',
+        './src/components/breadcrumb/breadcrumb.ts',
+        './src/components/breadcrumb/breadcrumbs.ts',
         './src/components/card/card.ts',
         './src/components/card/card-body.ts',
         './src/components/card/card-footer.ts',
