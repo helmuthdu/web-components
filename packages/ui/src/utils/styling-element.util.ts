@@ -1,50 +1,73 @@
 import { isArray, isObject, isString } from './type-check.util';
 
-export const classMap = (...classes: unknown[]): string => {
-  const result = new Set<string>();
+/**
+ * Creates a space-separated string of class names from various input types.
+ * Deduplicates classes and handles nested arrays, objects, and strings.
+ *
+ * @param args - Classes to process (strings, arrays, or objects).
+ * @returns A space-separated string of class names.
+ */
+export const classMap = (...args: unknown[]): string => {
+  const classes = new Set<string>();
 
-  const process = (arg: unknown) => {
-    if (isString(arg)) {
-      arg
-        .split(/\s+/)
-        .filter(Boolean)
-        .forEach((c) => result.add(c));
-    } else if (isArray(arg)) {
-      arg.forEach(process);
-    } else if (isObject(arg)) {
-      Object.entries(arg as Record<string, any>).forEach(([key, value]) => {
-        if (value) {
-          key
-            .split(/\s+/)
-            .filter(Boolean)
-            .forEach((c) => result.add(c));
+  const process = (val: unknown): void => {
+    if (isString(val)) {
+      if (val) {
+        const parts = val.split(/\s+/);
+
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i]) classes.add(parts[i]);
         }
-      });
+      }
+    } else if (isArray(val)) {
+      for (let i = 0; i < val.length; i++) {
+        process(val[i]);
+      }
+    } else if (isObject(val)) {
+      for (const [key, enabled] of Object.entries(val as object)) {
+        if (enabled) {
+          const parts = key.split(/\s+/);
+
+          for (let i = 0; i < parts.length; i++) {
+            if (parts[i]) classes.add(parts[i]);
+          }
+        }
+      }
     }
   };
 
-  classes.forEach(process);
+  for (let i = 0; i < args.length; i++) {
+    process(args[i]);
+  }
 
-  return Array.from(result).join(' ');
+  return Array.from(classes).join(' ');
 };
 
 const styleCache = new Map<string, CSSStyleSheet>();
 
-export const loadCSSStyleSheets = async (payload: (CSSStyleSheet | string)[] = []): Promise<CSSStyleSheet[]> => {
+/**
+ * Loads and caches CSSStyleSheet objects from strings or existing sheets.
+ * Optimized for performance by streamlining promise handling and caching.
+ *
+ * @param payload - Array of CSSStyleSheets, strings, or promises resolving to them.
+ * @returns A promise that resolves to an array of CSSStyleSheet objects.
+ */
+export const loadCSSStyleSheets = async (
+  payload: (CSSStyleSheet | string | Promise<CSSStyleSheet | string>)[] = [],
+): Promise<CSSStyleSheet[]> => {
   if (!payload?.length) return [];
 
-  const styles = await Promise.all(payload);
-
   return Promise.all(
-    styles.map(async (style) => {
-      const sheet = (style as any).default ?? style;
+    payload.map(async (item) => {
+      const style = await item;
+      const sheet = (style as any)?.default ?? style;
 
       if (sheet instanceof CSSStyleSheet) return sheet;
 
       if (isString(sheet)) {
-        if (styleCache.has(sheet)) {
-          return styleCache.get(sheet)!;
-        }
+        const cached = styleCache.get(sheet);
+
+        if (cached) return cached;
 
         const cssSheet = new CSSStyleSheet();
 

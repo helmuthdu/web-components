@@ -103,30 +103,43 @@ export type WebComponent<
 > = P & WebComponentElement<T, S> & Omit<T, keyof P | keyof WebComponentElement<T, S>>;
 
 /**
- * Helper to convert kebab-case to camelCase.
+ * Memoized helpers for case conversion to improve performance.
  */
-const toCamelCase = (str: string) => {
-  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+const camelCache = new Map<string, string>();
+const toCamelCase = (s: string) => {
+  const cached = camelCache.get(s);
+
+  if (cached) return cached;
+
+  const res = s.replace(/-([a-z])/g, (_, g) => g.toUpperCase());
+
+  camelCache.set(s, res);
+
+  return res;
 };
 
-/**
- * Helper to convert camelCase or PascalCase to kebab-case.
- */
-const toKebabCase = (str: string) => {
-  return str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`).replace(/^-/, '');
+const kebabCache = new Map<string, string>();
+const toKebabCase = (s: string) => {
+  const cached = kebabCache.get(s);
+
+  if (cached) return cached;
+
+  const res = s
+    .replace(/([A-Z])/g, '-$1')
+    .toLowerCase()
+    .replace(/^-/, '');
+
+  kebabCache.set(s, res);
+
+  return res;
 };
 
-/**
- * Helper to convert various template results to a Node array.
- */
-const toNodeArray = (result: any): Node[] => {
-  if (isString(result)) return Array.from(raw(result));
+const toNodeArray = (res: any): Node[] => {
+  if (isString(res)) return Array.from(raw(res));
 
-  if (result instanceof NodeList || result instanceof HTMLCollection) return Array.from(result);
+  if (res instanceof NodeList || res instanceof HTMLCollection) return Array.from(res);
 
-  if (result instanceof Node) {
-    return result instanceof DocumentFragment ? Array.from(result.childNodes) : [result];
-  }
+  if (res instanceof Node) return res instanceof DocumentFragment ? Array.from(res.childNodes) : [res];
 
   return [];
 };
@@ -183,33 +196,26 @@ export abstract class BaseWebComponent<
    * Initializes state with a recursive reactive proxy.
    */
   private _initState(initialState?: S): S {
-    const render = () => this.render();
     const proxyMap = new WeakMap<object, any>();
 
     const createProxy = (obj: any): any => {
-      if (!isObject(obj) || obj instanceof Node) {
-        return obj;
-      }
-
-      if (proxyMap.has(obj)) {
-        return proxyMap.get(obj);
+      if (!isObject(obj) || obj instanceof Node || proxyMap.has(obj)) {
+        return proxyMap.get(obj) ?? obj;
       }
 
       const proxy = new Proxy(obj, {
-        get(target, prop) {
-          const value = Reflect.get(target, prop);
+        get: (target, prop) => {
+          const val = Reflect.get(target, prop);
 
-          return createProxy(value);
+          return isObject(val) && !(val instanceof Node) ? createProxy(val) : val;
         },
-        set(target, prop, value) {
+        set: (target, prop, value) => {
           if (Reflect.get(target, prop) === value) return true;
 
           const result = Reflect.set(target, prop, value);
 
-          // Only trigger re-render if the property name does not start with "_"
-          // This allows storing internal/non-reactive data in the state
           if (typeof prop !== 'string' || !prop.startsWith('_')) {
-            render();
+            this.render();
           }
 
           return result;
@@ -230,27 +236,28 @@ export abstract class BaseWebComponent<
   private _initAttributes(attributes?: readonly string[]): void {
     if (!attributes) return;
 
-    attributes.forEach((attr) => {
+    for (const attr of attributes) {
       const prop = toCamelCase(attr);
 
-      if (!(prop in this)) {
-        Object.defineProperty(this, prop, {
-          configurable: true,
-          get: () => {
-            const val = this.getAttribute(attr);
+      if (prop in this) continue;
 
-            return val === '' ? true : val;
-          },
-          set: (val: any) => {
-            if (val === null || val === false) {
-              this.removeAttribute(attr);
-            } else {
-              this.setAttribute(attr, val === true ? '' : String(val));
-            }
-          },
-        });
-      }
-    });
+      Object.defineProperty(this, prop, {
+        configurable: true,
+        enumerable: true,
+        get: () => {
+          const val = this.getAttribute(attr);
+
+          return val === '' ? true : val;
+        },
+        set: (val: any) => {
+          if (val === null || val === false) {
+            this.removeAttribute(attr);
+          } else {
+            this.setAttribute(attr, val === true ? '' : String(val));
+          }
+        },
+      });
+    }
   }
 
   /**
@@ -332,56 +339,58 @@ export abstract class BaseWebComponent<
     this.options.onUpdated?.(this.self);
   }
 
-  /**
-   * Reconciles children of a node with a new set of nodes.
-   */
   private _reconcile(parent: Node | ShadowRoot, newNodes: Node[]): void {
-    const currentNodes = Array.from(parent.childNodes);
-    const maxLength = Math.max(currentNodes.length, newNodes.length);
+    let oldNode = parent.firstChild;
 
-    for (let i = 0; i < maxLength; i++) {
+    for (let i = 0; i < newNodes.length; i++) {
       const newNode = newNodes[i];
-      const oldNode = currentNodes[i];
 
       if (!oldNode) {
         parent.appendChild(newNode);
-      } else if (!newNode) {
-        parent.removeChild(oldNode);
-      } else if (
-        oldNode.nodeType !== newNode.nodeType ||
-        (oldNode instanceof Element && newNode instanceof Element && oldNode.tagName !== newNode.tagName)
-      ) {
-        parent.replaceChild(newNode, oldNode);
-      } else if (oldNode instanceof Element && newNode instanceof Element) {
-        this._updateElement(oldNode, newNode);
-      } else if (oldNode instanceof Text && newNode instanceof Text) {
-        if (oldNode.textContent !== newNode.textContent) {
-          oldNode.textContent = newNode.textContent;
+      } else {
+        const nextOld = oldNode.nextSibling;
+
+        if (oldNode.nodeType !== newNode.nodeType) {
+          parent.replaceChild(newNode, oldNode);
+        } else if (oldNode instanceof Element && newNode instanceof Element) {
+          if (oldNode.tagName !== newNode.tagName) {
+            parent.replaceChild(newNode, oldNode);
+          } else {
+            this._updateElement(oldNode, newNode);
+          }
+        } else if (oldNode instanceof Text && newNode instanceof Text) {
+          if (oldNode.textContent !== newNode.textContent) {
+            oldNode.textContent = newNode.textContent;
+          }
+        } else if (!oldNode.isEqualNode(newNode)) {
+          parent.replaceChild(newNode, oldNode);
         }
-      } else if (!oldNode.isEqualNode(newNode)) {
-        parent.replaceChild(newNode, oldNode);
+
+        oldNode = nextOld;
       }
+    }
+
+    // Remove remaining old nodes not present in the new set
+    while (oldNode) {
+      const nextOld = oldNode.nextSibling;
+
+      parent.removeChild(oldNode);
+      oldNode = nextOld;
     }
   }
 
-  /**
-   * Updates an existing element with properties from a new element.
-   */
   private _updateElement(oldEl: Element, newEl: Element): void {
-    // Update attributes
     const oldAttrs = oldEl.attributes;
     const newAttrs = newEl.attributes;
 
-    // Remove old attributes that are not in a new element
+    // Remove attributes aren't present in a new element
     for (let i = oldAttrs.length - 1; i >= 0; i--) {
-      const { name } = oldAttrs[i];
+      const name = oldAttrs[i].name;
 
-      if (!newEl.hasAttribute(name)) {
-        oldEl.removeAttribute(name);
-      }
+      if (!newEl.hasAttribute(name)) oldEl.removeAttribute(name);
     }
 
-    // Add or update attributes from a new element
+    // Add/Update attributes from new element
     for (let i = 0; i < newAttrs.length; i++) {
       const { name, value } = newAttrs[i];
 
@@ -390,29 +399,24 @@ export abstract class BaseWebComponent<
       }
     }
 
-    // Preserve form element state
     if (
       oldEl instanceof HTMLInputElement ||
       oldEl instanceof HTMLTextAreaElement ||
       oldEl instanceof HTMLSelectElement
     ) {
       const oldFormEl = oldEl as any;
-      const newFormEl = newEl as any;
 
-      if (newEl.hasAttribute('value') && oldFormEl.value !== newFormEl.value) {
-        oldFormEl.value = newFormEl.value;
+      if (newEl.hasAttribute('value') && oldFormEl.value !== (newEl as any).value) {
+        oldFormEl.value = (newEl as any).value;
       }
 
       if (oldEl instanceof HTMLInputElement && (oldEl.type === 'checkbox' || oldEl.type === 'radio')) {
         const isChecked = newEl.hasAttribute('checked');
 
-        if (oldFormEl.checked !== isChecked) {
-          oldFormEl.checked = isChecked;
-        }
+        if (oldFormEl.checked !== isChecked) oldFormEl.checked = isChecked;
       }
     }
 
-    // Reconcile children
     this._reconcile(oldEl, Array.from(newEl.childNodes));
   }
 
@@ -426,30 +430,25 @@ export abstract class BaseWebComponent<
     callback: EventListener,
     options?: AddEventListenerOptions,
   ): void {
-    if (isString(id)) {
-      const kebabId = toKebabCase(id as string);
+    const isStr = isString(id);
+    const target = isStr ? this.shadow : (id as HTMLElement);
+    const kebabId = isStr ? toKebabCase(id as string) : '';
 
-      this.shadow.addEventListener(
-        event,
-        (e) => {
-          const path = e.composedPath();
-          const element = path.find((node) => node instanceof Element && (node.id === id || node.id === kebabId)) as
-            | HTMLElement
-            | undefined;
+    target.addEventListener(
+      event,
+      (e) => {
+        if (isStr) {
+          const el = e
+            .composedPath()
+            .find((n) => n instanceof Element && (n.id === id || n.id === kebabId)) as HTMLElement;
 
-          if (element) {
-            callback.call(element, e);
-          }
-        },
-        { ...options, signal: this.controller.signal },
-      );
-    } else {
-      const element = id as HTMLElement;
-
-      if (element) {
-        element.addEventListener(event, callback, { ...options, signal: this.controller.signal });
-      }
-    }
+          if (el) callback.call(el, e);
+        } else {
+          callback.call(target, e);
+        }
+      },
+      { ...options, signal: this.controller.signal },
+    );
   }
 
   /**
@@ -475,13 +474,7 @@ export abstract class BaseWebComponent<
   }
 
   ref<U extends HTMLElement = HTMLElement>(id: string): U | null {
-    let el = this.shadow.getElementById(id);
-
-    if (!el && id) {
-      el = this.shadow.getElementById(toKebabCase(id));
-    }
-
-    return el as U | null;
+    return (this.shadow.getElementById(id) || (id ? this.shadow.getElementById(toKebabCase(id)) : null)) as U | null;
   }
 }
 

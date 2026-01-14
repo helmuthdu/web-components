@@ -3,14 +3,14 @@ export const isBoolean = (arg: unknown) => typeof arg === 'boolean';
 export const isFunction = (arg: unknown) => typeof arg === 'function';
 export const isNil = (arg: unknown) => arg === undefined || arg === null;
 export const isNumber = (arg: unknown) => typeof arg === 'number';
-export const isObject = (arg: unknown) => typeof arg === 'object' && arg !== null;
+export const isObject = (arg: unknown): arg is object => typeof arg === 'object' && arg !== null;
 export const isString = (arg: unknown) => typeof arg === 'string';
 
 const svgTags = new Set([
   'circle',
   'defs',
   'ellipse',
-  'foreignObject',
+  'foreignobject',
   'g',
   'image',
   'line',
@@ -27,4 +27,14 @@ const svgTags = new Set([
   'use',
 ]);
 
-export const isSVG = (tag: string) => svgTags.has(tag.toLowerCase());
+/**
+ * Checks if a tag is an SVG element.
+ * Optimized to avoid toLowerCase() when possible.
+ */
+export const isSVG = (tag: string): boolean => {
+  if (svgTags.has(tag)) return true;
+
+  const lc = tag.toLowerCase();
+
+  return lc !== tag && svgTags.has(lc);
+};

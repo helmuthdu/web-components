@@ -12,34 +12,49 @@ export const configureFormElement = (
     value?: any;
   },
 ) => {
-  if (!target.attachInternals) {
-    console.warn('attachInternals is not supported in this environment.');
+  const internals = target.attachInternals?.();
 
-    return;
+  if (!internals) {
+    return console.warn('attachInternals is not supported in this environment.');
   }
 
-  const internals = target.attachInternals();
+  const isCheckable = /checkbox|radio/.test(target.getAttribute('type') || target.getAttribute('role') || '');
 
-  // Define "value" property for form interaction
-  const originalValue = Object.getOwnPropertyDescriptor(target, 'value');
+  const sync = () => {
+    const { checked, value } = target as any;
 
-  Object.defineProperty(target, 'value', {
-    configurable: true,
-    get: originalValue?.get || (() => target.getAttribute('value') || ''),
-    set: (value: any) => {
-      const strValue = value === null || value === undefined ? '' : String(value);
+    internals.setFormValue(isCheckable ? (checked ? value || 'on' : '') : value == null ? '' : String(value));
+  };
 
-      if (originalValue?.set) {
-        originalValue.set.call(target, strValue);
-      } else {
-        target.setAttribute('value', strValue);
-      }
+  const defineProp = (prop: string, get: () => any, set: (v: any) => void) => {
+    const descriptor = Object.getOwnPropertyDescriptor(target, prop);
 
-      internals.setFormValue(strValue);
-    },
-  });
+    Object.defineProperty(target, prop, {
+      configurable: true,
+      enumerable: true,
+      get: descriptor?.get || get,
+      set: (v: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        descriptor?.set ? descriptor.set.call(target, v) : set(v);
+        sync();
+      },
+    });
+  };
 
-  // Define "error" property for validation feedback
+  defineProp(
+    'value',
+    () => target.getAttribute('value') || '',
+    (v) => target.setAttribute('value', v == null ? '' : String(v)),
+  );
+
+  if (isCheckable) {
+    defineProp(
+      'checked',
+      () => target.hasAttribute('checked'),
+      (v) => (v ? target.setAttribute('checked', '') : target.removeAttribute('checked')),
+    );
+  }
+
   if (!Object.getOwnPropertyDescriptor(target, 'error')) {
     Object.defineProperty(target, 'error', {
       configurable: true,
@@ -47,48 +62,18 @@ export const configureFormElement = (
     });
   }
 
-  /**
-   * allows setting a custom validation message.
-   * calling `reportValidity()` will show the message in form validation.
-   */
   target.setCustomValidity = (message: string) => {
     internals.setValidity(message ? { customError: true } : {}, message, target);
     internals.reportValidity();
   };
 
-  // ensure value updates trigger validation
   target.addEventListener('input', () => {
-    if (target.hasAttribute('required') && !(target as any).value) {
-      target.setCustomValidity?.('This field is required.');
-    } else {
-      target.setCustomValidity?.('');
-    }
+    const invalid = target.hasAttribute('required') && (isCheckable ? !target.checked : !target.value);
+
+    target.setCustomValidity?.(invalid ? 'This field is required.' : '');
   });
 
-  // support for checkboxes and radio buttons based on role or type
-  const type = target.getAttribute('type');
-  const role = target.getAttribute('role');
-  const isCheckable = type === 'checkbox' || type === 'radio' || role === 'checkbox' || role === 'radio';
-
-  if (isCheckable) {
-    const originalChecked = Object.getOwnPropertyDescriptor(target, 'checked');
-
-    Object.defineProperty(target, 'checked', {
-      configurable: true,
-      get: originalChecked?.get || (() => target.hasAttribute('checked')),
-      set: (value: boolean) => {
-        if (originalChecked?.set) {
-          originalChecked.set.call(target, value);
-        } else if (value) {
-          target.setAttribute('checked', '');
-        } else {
-          target.removeAttribute('checked');
-        }
-
-        internals.setFormValue(value ? (target as any).value || 'on' : '');
-      },
-    });
-  }
+  sync();
 };
 
 /**
@@ -107,13 +92,10 @@ export const createSubmitFormEvent =
     const form = event.target as HTMLFormElement;
 
     if (!form.checkValidity()) {
-      form.reportValidity();
-
-      return;
+      return form.reportValidity();
     }
 
     const formData = new FormData(form);
-    const parsedData = transformer ? transformer(formData) : (Object.fromEntries(formData) as unknown as T);
 
-    handler(parsedData);
+    handler(transformer ? transformer(formData) : (Object.fromEntries(formData) as any));
   };

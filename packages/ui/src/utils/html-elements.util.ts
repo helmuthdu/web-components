@@ -1,9 +1,24 @@
-import { dom, ElementProps, Markup } from './create-element.util';
+import { Child, dom, ElementDom, ElementProps, Markup } from './create-element.util';
+import { isArray, isObject } from './type-check.util';
 
-const createDomElement =
-  <T extends Markup>(tag: T) =>
-  (props: ElementProps<T>, ...children: any[]) =>
-    dom<T>(tag, props, ...children);
+export type ElementFactory<T extends Markup> = {
+  (props: ElementProps<T>, ...children: Child[]): ElementDom<T>;
+  (...children: Child[]): ElementDom<T>;
+};
+
+/**
+ * Creates a functional wrapper for the dom() utility.
+ * Supports optional properties for better DX by checking if the first argument
+ * is a properties object or a child node.
+ */
+const createDomElement = <T extends Markup>(tag: T): ElementFactory<T> =>
+  ((props?: ElementProps<T> | Child, ...children: Child[]): ElementDom<T> => {
+    if (isObject(props) && !(props instanceof Node) && !isArray(props)) {
+      return dom(tag, props as ElementProps<T>, ...children);
+    }
+
+    return dom(tag, {}, props as Child, ...children);
+  }) as ElementFactory<T>;
 
 export const a = createDomElement('a');
 export const abbr = createDomElement('abbr');
@@ -43,6 +58,7 @@ export const figcaption = createDomElement('figcaption');
 export const figure = createDomElement('figure');
 export const footer = createDomElement('footer');
 export const form = createDomElement('form');
+export const fragment = createDomElement('fragment');
 export const h1 = createDomElement('h1');
 export const h2 = createDomElement('h2');
 export const h3 = createDomElement('h3');
@@ -86,6 +102,7 @@ export const ruby = createDomElement('ruby');
 export const s = createDomElement('s');
 export const samp = createDomElement('samp');
 export const script = createDomElement('script');
+export const search = createDomElement('search');
 export const section = createDomElement('section');
 export const select = createDomElement('select');
 export const slot = createDomElement('slot');
@@ -97,6 +114,7 @@ export const style = createDomElement('style');
 export const sub = createDomElement('sub');
 export const summary = createDomElement('summary');
 export const sup = createDomElement('sup');
+export const svg = createDomElement('svg');
 export const table = createDomElement('table');
 export const tbody = createDomElement('tbody');
 export const td = createDomElement('td');

@@ -1,6 +1,4 @@
-import { describe, it, expect } from 'vitest';
-
-import { classMap } from '../styling-element.util';
+import { classMap, loadCSSStyleSheets } from '../styling-element.util';
 
 describe('classMap', () => {
   it('should handle strings', () => {
@@ -37,5 +35,57 @@ describe('classMap', () => {
 
   it('should return unique classes', () => {
     expect(classMap('foo', 'foo', { foo: true })).toBe('foo');
+  });
+});
+
+describe('loadCSSStyleSheets', () => {
+  it('should return empty array for empty payload', async () => {
+    expect(await loadCSSStyleSheets([])).toEqual([]);
+    expect(await loadCSSStyleSheets(undefined as any)).toEqual([]);
+  });
+
+  it('should load CSS from string', async () => {
+    const sheets = await loadCSSStyleSheets(['.foo { color: red; }']);
+
+    expect(sheets.length).toBe(1);
+    expect(sheets[0]).toBeInstanceOf(CSSStyleSheet);
+  });
+
+  it('should cache CSSStyleSheet for the same string', async () => {
+    const css = '.bar { color: blue; }';
+    const sheets1 = await loadCSSStyleSheets([css]);
+    const sheets2 = await loadCSSStyleSheets([css]);
+
+    expect(sheets1[0]).toBe(sheets2[0]);
+  });
+
+  it('should handle already existing CSSStyleSheet', async () => {
+    const sheet = new CSSStyleSheet();
+    const sheets = await loadCSSStyleSheets([sheet]);
+
+    expect(sheets[0]).toBe(sheet);
+  });
+
+  it('should handle mixed payload', async () => {
+    const sheet = new CSSStyleSheet();
+    const css = '.baz { color: green; }';
+    const sheets = await loadCSSStyleSheets([sheet, css]);
+
+    expect(sheets.length).toBe(2);
+    expect(sheets[0]).toBe(sheet);
+    expect(sheets[1]).toBeInstanceOf(CSSStyleSheet);
+  });
+
+  it('should handle default export objects (like from css?raw or similar)', async () => {
+    const css = '.qux { color: yellow; }';
+    const payload = [{ default: css }];
+    const sheets = await loadCSSStyleSheets(payload as any);
+
+    expect(sheets.length).toBe(1);
+    expect(sheets[0]).toBeInstanceOf(CSSStyleSheet);
+  });
+
+  it('should throw error for invalid input', async () => {
+    await expect(loadCSSStyleSheets([123 as any])).rejects.toThrow('Invalid CSS in styles');
   });
 });

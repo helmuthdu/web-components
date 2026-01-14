@@ -1,10 +1,33 @@
+import { classMap } from './styling-element.util';
 import { isArray, isBoolean, isFunction, isNil, isObject, isSVG } from './type-check.util';
 
+/**
+ * Valid markup tags including standard HTML, SVG tags, and a special 'fragment' tag.
+ */
 export type Markup = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap | 'fragment';
 
-export type ElementProps<T extends Markup> = Partial<Omit<ElementType<T>, 'part'>> & { part?: string };
+/**
+ * Valid child types for an element.
+ */
+export type Child = Node | string | number | boolean | null | undefined | Child[];
 
-export type ElementDom<T extends Markup> = ElementType<T> | HTMLElement | SVGElement | DocumentFragment;
+/**
+ * Properties for a given markup tag, excluding 'part' which is handled specially.
+ */
+export type ElementProps<T extends Markup> = Partial<
+  Omit<ElementType<T>, 'part' | 'dataset' | 'className' | 'style'>
+> & {
+  [key: string]: any;
+  class?: any;
+  dataset?: Record<string, any>;
+  part?: string;
+  style?: Partial<CSSStyleDeclaration>;
+};
+
+/**
+ * Resulting DOM type for a given markup tag.
+ */
+export type ElementDom<T extends Markup> = ElementType<T>;
 
 type ElementType<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
   ? HTMLElementTagNameMap[Tag]
@@ -12,77 +35,133 @@ type ElementType<Tag extends Markup> = Tag extends keyof HTMLElementTagNameMap
     ? SVGElementTagNameMap[Tag]
     : DocumentFragment;
 
-type ElementTag<T extends Markup> = T | ((props: ElementProps<T>, children: any[]) => ElementType<T>);
+type ElementTag<T extends Markup> = T | ((props: ElementProps<T>, children: Child[]) => ElementType<T>);
 
 type ElementDraft<T extends Markup> = {
-  children: any[];
+  children: Child[];
   props: ElementProps<T>;
   tag: ElementTag<T>;
 };
 
-const attachAttribute = (attr: string, value: any, element: HTMLElement | SVGElement | DocumentFragment) => {
-  if (element instanceof DocumentFragment) return;
+/**
+ * Attaches an attribute or property to an element.
+ * Handles classes (via classMap), events, booleans, and objects (style, dataset).
+ */
+const attachAttribute = (el: HTMLElement | SVGElement, name: string, value: any): void => {
+  // Class handling with automatic classMap support for better DX
+  if (name === 'class') {
+    el.setAttribute('class', classMap(value));
 
-  const target = element as any;
+    return;
+  }
 
-  if (attr === 'className' || attr === 'class') {
-    element.setAttribute('class', isArray(value) ? value.join(' ') : String(value));
-  } else if (isFunction(value) && /^on[a-z]+/i.test(attr)) {
-    target[attr.toLowerCase()] = value;
-  } else if (isBoolean(value)) {
-    if (value) element.setAttribute(attr, '');
-    else element.removeAttribute(attr);
-  } else if (isObject(value) && target[attr]) {
-    Object.assign(target[attr], value);
-  } else if (!isNil(value)) {
-    element.setAttribute(attr, String(value));
+  // Event handlers (onclick, onmouseover, etc.)
+  if (isFunction(value) && name.startsWith('on')) {
+    (el as any)[name.toLowerCase()] = value;
+
+    return;
+  }
+
+  // Boolean attributes (disabled, checked, etc.)
+  if (isBoolean(value)) {
+    if (value) el.setAttribute(name, '');
+    else el.removeAttribute(name);
+
+    return;
+  }
+
+  // Object-based properties (style, dataset)
+  if (isObject(value) && (name === 'style' || name === 'dataset')) {
+    Object.assign((el as any)[name], value);
+
+    return;
+  }
+
+  // Default attribute setting
+  if (!isNil(value)) {
+    el.setAttribute(name, String(value));
   }
 };
 
-const appendChild = (child: any, element: HTMLElement | SVGElement | DocumentFragment) => {
-  if (!isNil(child)) {
-    if (isArray(child)) {
-      const fragment = document.createDocumentFragment();
+/**
+ * Appends children to an element or fragment.
+ * Supports nested arrays, Nodes, and primitives.
+ */
+const appendChildren = (el: HTMLElement | SVGElement | DocumentFragment, children: Child[]): void => {
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
 
-      child.forEach((c) => appendChild(c, fragment));
-      element.append(fragment);
-    } else if (isObject(child)) {
-      element.append(child as Node);
-    } else if (!isBoolean(child)) {
-      element.append(document.createTextNode(String(child)));
+    if (isNil(child) || isBoolean(child)) continue;
+
+    if (isArray(child)) {
+      appendChildren(el, child);
+    } else {
+      el.append(child as any);
     }
   }
 };
 
-const createElementUtil = (tag: Markup) =>
+/**
+ * Creates an element based on the tag name, handling SVG namespaces.
+ */
+const createElementUtil = (tag: Markup): HTMLElement | SVGElement =>
   isSVG(tag) ? document.createElementNS('http://www.w3.org/2000/svg', tag) : document.createElement(tag);
 
-const composeElement = <T extends Markup>(draft: ElementDraft<T>) => {
-  if (isFunction(draft.tag)) return draft.tag(draft.props, draft.children);
+/**
+ * Composes an element from a draft object.
+ */
+const composeElement = <T extends Markup>(draft: ElementDraft<T>): ElementDom<T> => {
+  const { children, props, tag } = draft;
 
-  const element = draft.tag === 'fragment' ? new DocumentFragment() : createElementUtil(draft.tag);
+  if (isFunction(tag)) {
+    return tag(props, children) as any;
+  }
 
-  Object.entries(draft.props ?? {}).forEach(([key, value]) => attachAttribute(key, value, element));
-  draft.children.forEach((child) => appendChild(child, element));
+  const isFrag = tag === 'fragment';
+  const el = isFrag ? document.createDocumentFragment() : createElementUtil(tag);
 
-  return element;
+  if (!isFrag && props) {
+    for (const key in props) {
+      attachAttribute(el as HTMLElement | SVGElement, key, (props as any)[key]);
+    }
+  }
+
+  appendChildren(el, children);
+
+  return el as ElementDom<T>;
 };
 
-export const fragment = (...children: any[]) => composeElement({ children, props: {}, tag: 'fragment' });
+/**
+ * Creates a DocumentFragment containing the provided children.
+ */
+export const fragment = (...children: Child[]): DocumentFragment =>
+  composeElement({ children, props: {}, tag: 'fragment' }) as DocumentFragment;
 
-export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: any[]): ElementDom<T> =>
+/**
+ * Main utility to create DOM elements or functional components.
+ * Similar to React.createElement or h().
+ */
+export const dom = <T extends Markup>(tag: T, props: ElementProps<T> = {}, ...children: Child[]): ElementDom<T> =>
   composeElement<T>({ children, props, tag });
 
 const templateElement = typeof document !== 'undefined' ? document.createElement('template') : null;
 
-export const raw = (string: string) => {
+/**
+ * Parses an HTML string into a NodeList.
+ * Automatically removes script tags for basic security.
+ */
+export const raw = (string: string): NodeListOf<ChildNode> => {
   if (!templateElement) return [] as unknown as NodeListOf<ChildNode>;
 
   templateElement.innerHTML = string;
 
   // Remove script elements for security
-  if (string.includes('<script')) {
-    templateElement.content.querySelectorAll('script').forEach((script) => script.remove());
+  if (string.toLowerCase().includes('<script')) {
+    const scripts = templateElement.content.querySelectorAll('script');
+
+    for (let i = 0; i < scripts.length; i++) {
+      scripts[i].remove();
+    }
   }
 
   return templateElement.content.childNodes;
